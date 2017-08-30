@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ShopList3</string>
+    <string name="hour_ago">" час. назад"</string>
+    <string name="minutes_ago">" мин. назад"</string>
+    <string name="seconds_ago">" сек. назад"</string>
+    <string name="note_made_in_future_humor">привет от Марти Макфлая</string>
+</resources>
