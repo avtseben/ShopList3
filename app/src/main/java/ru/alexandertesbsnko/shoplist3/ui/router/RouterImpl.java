@@ -18,7 +18,7 @@ public class RouterImpl implements IRouter{
     }
 
     @Override
-    public void finishChain(String screen) {
+    public void finishChain() {
         System.out.println("finish");
     }
 }

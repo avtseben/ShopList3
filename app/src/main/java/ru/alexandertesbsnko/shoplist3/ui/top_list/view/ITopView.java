@@ -14,4 +14,7 @@ public interface ITopView {
     interface OnNewListButtonClickListener {
         void onNewListClicked();
     }
+
+    void removeItemFromList(int position);
+
 }

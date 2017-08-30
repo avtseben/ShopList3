@@ -2,6 +2,7 @@ package ru.alexandertesbsnko.shoplist3.di.top_list;
 
 
 import dagger.Subcomponent;
+import ru.alexandertesbsnko.shoplist3.ui.router.IRouter;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.view.TopListFragment;
 
 
@@ -9,6 +10,6 @@ import ru.alexandertesbsnko.shoplist3.ui.top_list.view.TopListFragment;
 @TopListScope
 public interface TopListComponent {
 
-    void inject(TopListFragment mainFragment);
+    void inject(TopListFragment topListFragment);
 
 }

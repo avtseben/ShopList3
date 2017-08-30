@@ -1,12 +1,19 @@
 package ru.alexandertesbsnko.shoplist3.ui.top_list.presenter;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import ru.alexandertesbsnko.shoplist3.R;
+import ru.alexandertesbsnko.shoplist3.ui.router.IRouter;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.view.ITopView;
+import ru.alexandertesbsnko.shoplist3.util.DateBuilder;
+
 
 public interface ITopPresenter extends
         ITopView.OnNewListButtonClickListener
@@ -22,12 +29,16 @@ public interface ITopPresenter extends
 
         private List<TopListItemDataModel> data = new ArrayList<>();
         private ITopView topView;
+        @Inject IRouter router = new IRouter.Fake();//TODO bullshit refactor to;
+
 
         {   //Add Fake datas
-            data.add(new TopListItemDataModel(1L,1493701200000L,"Будни"));
-            data.add(new TopListItemDataModel(2L,1484629200000L,"День рождения Томы"));
-            data.add(new TopListItemDataModel(3L,1502946000000L,"В поход"));
-            data.add(new TopListItemDataModel(4L,System.currentTimeMillis(),"Список"));
+            data.add(new TopListItemDataModel(1L,DateBuilder.timeTitleBuilder(1493701200000L),"Будни", R.drawable.bag_1));
+            data.add(new TopListItemDataModel(2L,DateBuilder.timeTitleBuilder(1484629200000L),"День рождения Томы",R.drawable.bag_2));
+            data.add(new TopListItemDataModel(3L,DateBuilder.timeTitleBuilder(1502946000000L),"В поход",R.drawable.bag_3));
+            data.add(new TopListItemDataModel(4L,DateBuilder.timeTitleBuilder(System.currentTimeMillis()),"Список",R.drawable.bag_1));
+//            SLApplication.get(getContext()).applicationComponent().plus(new RouterModule()).inject(this);
+            System.out.println(">>Fake Data created");
         }
 
 
@@ -48,6 +59,8 @@ public interface ITopPresenter extends
             System.out.println(">>You press delete List" +
                     "id:" + data.get(position).getId() + "\n" +
                     "name:" + data.get(position).getName());
+            data.remove(position);
+            topView.removeItemFromList(position);
         }
 
         @Override
@@ -69,9 +82,13 @@ public interface ITopPresenter extends
 
         @Override
         public void onItemClicked(TopListItemDataModel shopListObj) {
+            System.out.println(">>Router " + router);
+            System.out.println(">>On Item clicked " + topView);
             System.out.println(">>You has select shoppingList\n" +
                     "id:" + shopListObj.getId() + "\n" +
                     "name:" + shopListObj.getName());
+            router.navigate(IRouter.Screen.SHOPING_LIST);
+
         }
     }
 }

@@ -4,13 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
-import ru.alexandertesbsnko.shoplist3.util.DateBuilder;
 
 public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ListViewHolder> {
 
@@ -19,14 +19,14 @@ public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ListView
     }
 
     private OnClickListener listener;
-    private List<TopListItemDataModel> mResults;
+    private List<TopListItemDataModel> data;
 
     public void setOnItemClickListener(OnClickListener listener) {
         this.listener = listener;
     }
 
     public TopListAdapter(List<TopListItemDataModel> shopLists) {
-        mResults = shopLists;
+        data = shopLists;
     }
 
     @Override
@@ -38,30 +38,25 @@ public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ListView
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-
-        holder.name.setText(mResults.get(position).getName());
-        holder.date.setText(DateBuilder.timeTitleBuilder(mResults
-                .get(position)
-                .getDateMilis()));
+        holder.image.setImageResource(data.get(position).getImageId());
+        holder.name.setText(data.get(position).getName());
+        holder.date.setText(data.get(position).getDateTitle());
     }
 
     @Override
     public int getItemCount() {
-        return mResults.size();
-    }
-
-    public TopListItemDataModel getListItem(int position) {
-        return mResults.get(position);
+        return data.size();
     }
 
 
     public class ListViewHolder extends RecyclerView.ViewHolder {
-
+        ImageView image;
         TextView name;
         TextView date;
 
         public ListViewHolder(View itemView) {
             super(itemView);
+            image = ((ImageView) itemView.findViewById(R.id.image_in_shopList_title));
             name = ((TextView) itemView.findViewById(R.id.tv_list_name));
             date = ((TextView) itemView.findViewById(R.id.tv_list_date));
             itemView.setOnClickListener(new View.OnClickListener() {

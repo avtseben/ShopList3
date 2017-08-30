@@ -1,7 +1,6 @@
 package ru.alexandertesbsnko.shoplist3.ui.top_list.view;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,6 +27,7 @@ public class TopListFragment extends Fragment implements ITopView {
 
     public OnShopListItemClickListener listenerShopListSelected;
     public OnNewListButtonClickListener listenerNewList;
+    private TopListAdapter adapter;
 
     @Inject
     ITopPresenter iTopPresenter;
@@ -37,20 +37,20 @@ public class TopListFragment extends Fragment implements ITopView {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);//
         SLApplication.get(getContext()).applicationComponent().plus(new TopListModule()).inject(this);
-        }
+    }
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fmt_top_list,container, false);
+        View view = inflater.inflate(R.layout.fmt_top_list, container, false);
         final List<TopListItemDataModel> topList = iTopPresenter.loadTopList();
 
-        if(listenerShopListSelected == null) {
+        if (listenerShopListSelected == null) {
             this.listenerShopListSelected = (OnShopListItemClickListener) iTopPresenter;
         }
-        if(listenerNewList == null) {
+        if (listenerNewList == null) {
             this.listenerNewList = (OnNewListButtonClickListener) iTopPresenter;
         }
 
@@ -61,9 +61,9 @@ public class TopListFragment extends Fragment implements ITopView {
                 listenerNewList.onNewListClicked();
             }
         });
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.rv_top);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false));
-        TopListAdapter adapter = new TopListAdapter(topList);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_top);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        adapter = new TopListAdapter(topList);
         adapter.setOnItemClickListener(new TopListAdapter.OnClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
@@ -82,18 +82,7 @@ public class TopListFragment extends Fragment implements ITopView {
         super.onDestroyView();
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if(listenerShopListSelected == null) {
-//            this.listenerShopListSelected = (OnShopListItemClickListener) context;
-//        }
-//        if(listenerNewList == null) {
-//            this.listenerNewList = (OnNewListButtonClickListener) context;
-//        }
-//    }
-
-    public void setUpItemTouchHelper(RecyclerView recyclerView){
+    public void setUpItemTouchHelper(RecyclerView recyclerView) {
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
                 0/*drag drop не нужен*/, ItemTouchHelper.UP
@@ -103,19 +92,25 @@ public class TopListFragment extends Fragment implements ITopView {
             public boolean onMove(RecyclerView recyclerView,
                                   RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
-                //Нам не нужен Drag&Prop
                 return false;
             }
+
             @Override
             public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 return super.getSwipeDirs(recyclerView, viewHolder);
             }
+
             @Override
-            public void onSwiped (RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 iTopPresenter.deleteShopingList(viewHolder.getAdapterPosition());
             }
         };
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void removeItemFromList(int position) {
+        adapter.notifyItemRemoved(position);
     }
 }
