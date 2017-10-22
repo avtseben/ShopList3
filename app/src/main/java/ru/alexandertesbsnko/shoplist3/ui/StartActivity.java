@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import ru.alexandertesbsnko.shoplist3.R;
+import ru.alexandertesbsnko.shoplist3.di.router.RouterProvider;
+import ru.alexandertesbsnko.shoplist3.ui.router.RouterImpl;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.view.TopListFragment;
 
 public class StartActivity extends AppCompatActivity {
@@ -19,5 +21,6 @@ public class StartActivity extends AppCompatActivity {
             ft.replace(R.id.fragment_container, new TopListFragment());
             ft.commit();
         }
+        RouterProvider.INSTANCE.getRouter().setFragmentManager(getSupportFragmentManager());
     }
 }

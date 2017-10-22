@@ -39,4 +39,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'org.jetbrains:annotations-java5:15.0'
     compile 'javax.inject:javax.inject:1'
+    //Expandable recyclerView
+    compile 'com.bignerdranch.android:expandablerecyclerview:2.1.1'
 }

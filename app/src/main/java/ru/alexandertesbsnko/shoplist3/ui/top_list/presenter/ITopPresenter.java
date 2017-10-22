@@ -1,12 +1,15 @@
 package ru.alexandertesbsnko.shoplist3.ui.top_list.presenter;
 
 
+import android.os.Bundle;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.di.router.RouterProvider;
 import ru.alexandertesbsnko.shoplist3.ui.router.IRouter;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.ShoppingListFragment;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.view.ITopView;
 import ru.alexandertesbsnko.shoplist3.util.DateBuilder;
@@ -83,7 +86,9 @@ public interface ITopPresenter extends
             System.out.println(">>You has select shoppingList\n" +
                     "id:" + shopListObj.getId() + "\n" +
                     "name:" + shopListObj.getName());
-            router.navigate(IRouter.Screen.SHOPING_LIST);
+            Bundle bundle = new Bundle();
+            bundle.putLong(ShoppingListFragment.SHOP_LIST_ID,shopListObj.getId());
+            router.navigate(IRouter.Screen.SHOPING_LIST,bundle);
 
         }
     }
