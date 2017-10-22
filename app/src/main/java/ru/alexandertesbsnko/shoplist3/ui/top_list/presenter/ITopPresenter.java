@@ -1,14 +1,11 @@
 package ru.alexandertesbsnko.shoplist3.ui.top_list.presenter;
 
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import ru.alexandertesbsnko.shoplist3.R;
+import ru.alexandertesbsnko.shoplist3.di.router.RouterProvider;
 import ru.alexandertesbsnko.shoplist3.ui.router.IRouter;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.view.ITopView;
@@ -29,7 +26,7 @@ public interface ITopPresenter extends
 
         private List<TopListItemDataModel> data = new ArrayList<>();
         private ITopView topView;
-        @Inject IRouter router = new IRouter.Fake();//TODO bullshit refactor to;
+        private IRouter router = RouterProvider.INSTANCE.getRouter();
 
 
         {   //Add Fake datas
@@ -37,7 +34,6 @@ public interface ITopPresenter extends
             data.add(new TopListItemDataModel(2L,DateBuilder.timeTitleBuilder(1484629200000L),"День рождения Томы",R.drawable.bag_2));
             data.add(new TopListItemDataModel(3L,DateBuilder.timeTitleBuilder(1502946000000L),"В поход",R.drawable.bag_3));
             data.add(new TopListItemDataModel(4L,DateBuilder.timeTitleBuilder(System.currentTimeMillis()),"Список",R.drawable.bag_1));
-//            SLApplication.get(getContext()).applicationComponent().plus(new RouterModule()).inject(this);
             System.out.println(">>Fake Data created");
         }
 

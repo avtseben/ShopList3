@@ -5,7 +5,6 @@ package ru.alexandertesbsnko.shoplist3.ui.top_list.model;
  * это набор продуктов и дату составления списка
  */
 public class TopListItemDataModel {
-//    public class TopListItemDataModel implements Parcelable {
 
     private long id;
     private String name;
@@ -43,34 +42,4 @@ public class TopListItemDataModel {
     public void setName(String name) {
         this.name = name;
     }
-
-//    @Override
-//    public int describeContents() {
-//        return 0;
-//    }
-//
-//    @Override
-//    public void writeToParcel(Parcel parcel, int i) {
-//        parcel.writeLong(id);
-//        parcel.writeString(dateTitle);
-//        parcel.writeString(name);
-//    }
-//
-//    public static final Parcelable.Creator<TopListItemDataModel> CREATOR = new Parcelable.Creator<TopListItemDataModel>() {
-//        // распаковываем объект из Parcel
-//        public TopListItemDataModel createFromParcel(Parcel in) {
-//            return new TopListItemDataModel(in);
-//        }
-//
-//        public TopListItemDataModel[] newArray(int size) {
-//            return new TopListItemDataModel[size];
-//        }
-//    };
-//
-//    // конструктор, считывающий данные из Parcel
-//    private TopListItemDataModel(Parcel parcel) {
-//        id = parcel.readLong();
-//        dateTitle = parcel.readLong();
-//        name = parcel.readString();
-//    }
 }
