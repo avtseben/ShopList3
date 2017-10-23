@@ -1,16 +1,13 @@
 package ru.alexandertesbsnko.shoplist3.ui.top_list.presenter;
 
 
-import android.os.Bundle;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.di.router.RouterProvider;
 import ru.alexandertesbsnko.shoplist3.ui.router.IRouter;
-import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.ShoppingListFragment;
-import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
+import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItem;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.view.ITopView;
 import ru.alexandertesbsnko.shoplist3.util.DateBuilder;
 
@@ -18,7 +15,7 @@ import ru.alexandertesbsnko.shoplist3.util.DateBuilder;
 public interface ITopPresenter {
 
 
-    List<TopListItemDataModel> loadTopList();
+    List<TopListItem> loadTopList();
     void selectExitingShopingList(int position);
     void deleteShopingList(int position);
     void bindView(ITopView iProfileView);
@@ -26,22 +23,22 @@ public interface ITopPresenter {
 
     class Fake implements ITopPresenter{
 
-        private List<TopListItemDataModel> data = new ArrayList<>();
+        private List<TopListItem> data = new ArrayList<>();
         private ITopView topView;
         private IRouter router = RouterProvider.INSTANCE.getRouter();
 
 
         {   //Add Fake datas
-            data.add(new TopListItemDataModel(1L,DateBuilder.timeTitleBuilder(1493701200000L),"Будни", R.drawable.bag_1));
-            data.add(new TopListItemDataModel(2L,DateBuilder.timeTitleBuilder(1484629200000L),"День рождения Томы",R.drawable.bag_2));
-            data.add(new TopListItemDataModel(3L,DateBuilder.timeTitleBuilder(1502946000000L),"В поход",R.drawable.bag_3));
-            data.add(new TopListItemDataModel(4L,DateBuilder.timeTitleBuilder(System.currentTimeMillis()),"Список",R.drawable.bag_1));
+            data.add(new TopListItem(1L,DateBuilder.timeTitleBuilder(1493701200000L),"Будни", R.drawable.bag_1));
+            data.add(new TopListItem(2L,DateBuilder.timeTitleBuilder(1484629200000L),"День рождения Томы",R.drawable.bag_2));
+            data.add(new TopListItem(3L,DateBuilder.timeTitleBuilder(1502946000000L),"В поход",R.drawable.bag_3));
+            data.add(new TopListItem(4L,DateBuilder.timeTitleBuilder(System.currentTimeMillis()),"Список",R.drawable.bag_1));
             System.out.println(">>Fake Data created");
         }
 
 
         @Override
-        public List<TopListItemDataModel> loadTopList() {
+        public List<TopListItem> loadTopList() {
             return this.data;
         }
 

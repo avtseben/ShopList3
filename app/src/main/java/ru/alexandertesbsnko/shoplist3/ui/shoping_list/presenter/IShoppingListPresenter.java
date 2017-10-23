@@ -1,16 +1,12 @@
 package ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter;
 
 
-import ru.alexandertesbsnko.shoplist3.di.router.RouterProvider;
-import ru.alexandertesbsnko.shoplist3.ui.router.IRouter;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Category;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Merchandise;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Shop;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.IShoppingListView;
-import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
-import ru.alexandertesbsnko.shoplist3.ui.top_list.view.ITopView;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -22,18 +18,12 @@ import java.util.ArrayList;
 public interface IShoppingListPresenter {
 
     ShoppingList loadShoppingListById(long id);
-
     ShoppingList loadNewShoppingList();
-
-
     void bindView(IShoppingListView view);
-
     void unbindView();
-
-    void updateShoppingItem(long id, int bought);
-
+    void buyShoppingItem(long id);
+    void deleteShoppingItem(long id);
     List<ShoppingItem> findShoppingItemLike(String pattern);
-
 
     class Fake implements IShoppingListPresenter {
 
@@ -108,13 +98,14 @@ public interface IShoppingListPresenter {
         }
 
         @Override
-        public void updateShoppingItem(long id, int bought) {
-            //
-
+        public void buyShoppingItem(long id) {
+            shoppingItemsFakeStorage.get(id).setState(ShoppingItem.BOUGHT);
+            System.out.println("Buy: " + shoppingItemsFakeStorage.get(id).getMerchandise().getName());
         }
-
-
+        @Override
+        public void deleteShoppingItem(long id) {
+            shoppingItemsFakeStorage.get(id).setState(ShoppingItem.DELETED);
+            System.out.println("Delete: " + shoppingItemsFakeStorage.get(id).getMerchandise().getName());
+        }
     }
-
-
 }

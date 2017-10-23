@@ -1,6 +1,6 @@
 package ru.alexandertesbsnko.shoplist3.ui.top_list.view;
 
-import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
+import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItem;
 
 /**
  * Created by avtseben on 29.08.17.
@@ -8,7 +8,7 @@ import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
 
 public interface ITopView {
     interface OnShopListItemClickListener {
-        void onItemClicked(TopListItemDataModel shopListObj);
+        void onItemClicked(TopListItem shopListObj);
     }
 
     interface OnNewListButtonClickListener {

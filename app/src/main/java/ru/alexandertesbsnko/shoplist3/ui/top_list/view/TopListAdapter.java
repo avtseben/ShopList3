@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.alexandertesbsnko.shoplist3.R;
-import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
+import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItem;
 
 public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ListViewHolder> {
 
@@ -19,13 +19,13 @@ public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ListView
     }
 
     private OnClickListener listener;
-    private List<TopListItemDataModel> data;
+    private List<TopListItem> data;
 
     public void setOnItemClickListener(OnClickListener listener) {
         this.listener = listener;
     }
 
-    public TopListAdapter(List<TopListItemDataModel> shopLists) {
+    public TopListAdapter(List<TopListItem> shopLists) {
         data = shopLists;
     }
 

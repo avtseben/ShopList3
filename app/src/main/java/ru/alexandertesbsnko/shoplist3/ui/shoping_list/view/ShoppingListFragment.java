@@ -72,10 +72,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         if (shoppingLisId != 0) {
             shoppingList = presenter.loadShoppingListById(shoppingLisId);
             for (ShoppingItem item : shoppingList.getShoppingItems()) {
-                //Добавляем в список только экземпляры у которых статус "в списке"
-                if (item.getState() == ShoppingItem.IN_LIST) {
-                    smartAdd(item);
-                }
+                smartAdd(item);
             }
         } else {
             shoppingList = presenter.loadNewShoppingList();
@@ -122,12 +119,10 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
                     ShoppingItem si = ((ShoppingItem) adapter.getListItem(position));
                     if (direction == ItemTouchHelper.RIGHT) {
                         adapter.deleteProductInstance(position);
-                        si.setState(ShoppingItem.BOUGHT);
-//                        presenter.updateShoppingItem(si.getId(),  ShoppingItem.BOUGHT);
+                        presenter.buyShoppingItem(si.getId());
                     } else if (direction == ItemTouchHelper.LEFT) {
                         adapter.deleteProductInstance(position);
-                        si.setState(ShoppingItem.DELETED);
-//                        presenter.deleteProductInstanceById(si.getId());
+                        presenter.deleteShoppingItem(si.getId());
                     }
                 }
             }

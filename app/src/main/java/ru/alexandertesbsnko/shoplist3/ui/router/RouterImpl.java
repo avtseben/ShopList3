@@ -8,7 +8,7 @@ import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.ui.AbstractFragment;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.ShoppingListFragment;
-import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
+import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItem;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.view.TopListFragment;
 
 public class RouterImpl implements IRouter {
@@ -68,7 +68,7 @@ public class RouterImpl implements IRouter {
     }
 
     @Override
-    public void onItemClicked(TopListItemDataModel shopListObj) {
+    public void onItemClicked(TopListItem shopListObj) {
         Bundle bundle = new Bundle();
         bundle.putLong(ShoppingListFragment.SHOP_LIST_ID,shopListObj.getId());
         this.navigate(IRouter.Screen.SHOPING_LIST,bundle);

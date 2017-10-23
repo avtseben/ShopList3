@@ -3,7 +3,6 @@ package ru.alexandertesbsnko.shoplist3.ui.top_list.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -20,7 +19,7 @@ import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.SLApplication;
 import ru.alexandertesbsnko.shoplist3.di.top_list.TopListModule;
 import ru.alexandertesbsnko.shoplist3.ui.AbstractFragment;
-import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
+import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItem;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.presenter.ITopPresenter;
 
 
@@ -46,7 +45,7 @@ public class TopListFragment extends AbstractFragment implements ITopView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fmt_top_list, container, false);
-        final List<TopListItemDataModel> topList = presenter.loadTopList();
+        final List<TopListItem> topList = presenter.loadTopList();
 
         this.listenerShopListSelected = router;
         this.listenerNewList = router;
