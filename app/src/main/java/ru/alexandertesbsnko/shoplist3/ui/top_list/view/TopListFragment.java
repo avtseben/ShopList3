@@ -31,7 +31,7 @@ public class TopListFragment extends AbstractFragment implements ITopView {
     private TopListAdapter adapter;
 
     @Inject
-    ITopPresenter iTopPresenter;
+    ITopPresenter presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,14 +46,10 @@ public class TopListFragment extends AbstractFragment implements ITopView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fmt_top_list, container, false);
-        final List<TopListItemDataModel> topList = iTopPresenter.loadTopList();
+        final List<TopListItemDataModel> topList = presenter.loadTopList();
 
-        if (listenerShopListSelected == null) {
-            this.listenerShopListSelected = router;//TODO presenter не должен быть слушателем кликов. Презентор не должен знать об Android specific
-        }
-        if (listenerNewList == null) {
-            this.listenerNewList = router;
-        }
+        this.listenerShopListSelected = router;
+        this.listenerNewList = router;
 
         ImageView btn = (ImageView) view.findViewById(R.id.btn_newList);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -72,14 +68,14 @@ public class TopListFragment extends AbstractFragment implements ITopView {
             }
         });
         recyclerView.setAdapter(adapter);
-        iTopPresenter.bindView(this);
+        presenter.bindView(this);
         setUpItemTouchHelper(recyclerView);
         return view;
     }
 
     @Override
     public void onDestroyView() {
-        iTopPresenter.unbindView();
+        presenter.unbindView();
         super.onDestroyView();
     }
 
@@ -103,7 +99,7 @@ public class TopListFragment extends AbstractFragment implements ITopView {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                iTopPresenter.deleteShopingList(viewHolder.getAdapterPosition());
+                presenter.deleteShopingList(viewHolder.getAdapterPosition());
             }
         };
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);

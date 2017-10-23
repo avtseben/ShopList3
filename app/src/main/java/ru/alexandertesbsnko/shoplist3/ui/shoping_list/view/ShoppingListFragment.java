@@ -86,6 +86,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         adapter = new ShoppingListAdapter(getContext(), mParentItemList);
         mRecyclerView.setAdapter(adapter);
 
+        presenter.bindView(this);
         setUpItemTouchHelper();
         return view;
     }
