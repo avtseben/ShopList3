@@ -18,6 +18,11 @@ public class RouterImpl implements IRouter{
     }
 
     @Override
+    public void navigate(String screen) {
+        this.navigate(screen,new Bundle());
+    }
+
+    @Override
     public void navigate(String screen, Bundle bundle) {
         if(screen.equals(Screen.TOP_LIST)){
             abstractNavigate(new TopListFragment());
@@ -25,7 +30,6 @@ public class RouterImpl implements IRouter{
         if(screen.equals(Screen.SHOPING_LIST)){
             abstractNavigate(ShoppingListFragment.newInstance(bundle));
         }
-
     }
 
     private void abstractNavigate(Fragment fragment){

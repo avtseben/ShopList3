@@ -10,6 +10,7 @@ import android.util.Log;
 
 public interface IRouter {
     void navigate(String screen, Bundle bundle);
+    void navigate(String screen);
     void backTo(String screen);
     void finishChain();
     void setFragmentManager(FragmentManager fragmentManager);
@@ -22,6 +23,11 @@ public interface IRouter {
     class Fake implements IRouter{
         @Override
         public void navigate(String screen, Bundle bundle) {
+            Log.d(this.getClass().getSimpleName(),"Navigate to: " + screen);
+        }
+
+        @Override
+        public void navigate(String screen) {
             Log.d(this.getClass().getSimpleName(),"Navigate to: " + screen);
         }
 
