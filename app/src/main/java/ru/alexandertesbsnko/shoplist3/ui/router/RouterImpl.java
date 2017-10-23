@@ -1,10 +1,9 @@
 package ru.alexandertesbsnko.shoplist3.ui.router;
 
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-
-import java.util.Map;
 
 import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.ShoppingListFragment;
@@ -21,18 +20,19 @@ public class RouterImpl implements IRouter{
     @Override
     public void navigate(String screen, Bundle bundle) {
         if(screen.equals(Screen.TOP_LIST)){
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.fragment_container, new TopListFragment());
-            ft.addToBackStack(null);
-            ft.commit();
+            abstractNavigate(new TopListFragment());
         } else
         if(screen.equals(Screen.SHOPING_LIST)){
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.fragment_container, ShoppingListFragment.newInstance(bundle));
-            ft.addToBackStack(null);
-            ft.commit();
+            abstractNavigate(ShoppingListFragment.newInstance(bundle));
         }
 
+    }
+
+    private void abstractNavigate(Fragment fragment){
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.fragment_container, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     @Override
