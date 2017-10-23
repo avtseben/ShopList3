@@ -23,11 +23,13 @@ public class RouterImpl implements IRouter{
         if(screen.equals(Screen.TOP_LIST)){
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.fragment_container, new TopListFragment());
+            ft.addToBackStack(null);
             ft.commit();
         } else
         if(screen.equals(Screen.SHOPING_LIST)){
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.fragment_container, ShoppingListFragment.newInstance(bundle));
+            ft.addToBackStack(null);
             ft.commit();
         }
 

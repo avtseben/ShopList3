@@ -2,6 +2,7 @@ package ru.alexandertesbsnko.shoplist3.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
@@ -16,11 +17,13 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        FragmentManager fm = getSupportFragmentManager();
         if(savedInstanceState == null){
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.addToBackStack(null);
             ft.replace(R.id.fragment_container, new TopListFragment());
             ft.commit();
         }
-        RouterProvider.INSTANCE.getRouter().setFragmentManager(getSupportFragmentManager());
+        RouterProvider.INSTANCE.getRouter().setFragmentManager(fm);
     }
 }
