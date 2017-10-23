@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
     private RecyclerView mRecyclerView;
     List<ParentItem> mParentItemList;
     ShoppingList shoppingList;
+    TextView totalCostTextView;
 
 
     @Inject
@@ -56,9 +58,16 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
         setHasOptionsMenu(true);
         setRetainInstance(true);
         SLApplication.get(getContext()).applicationComponent().plus(new ShopingListModule()).inject(this);
-        listener = presenter;
+    }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fmt_shopping_list, container, false);
+        listener = presenter;
         mParentItemList = new ArrayList<>();
+        totalCostTextView = (TextView) view.findViewById(R.id.total_sl_cost);
 
         long shoppingLisId = 0;
         shoppingLisId = getArguments().getLong(SHOP_LIST_ID);
@@ -73,14 +82,6 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
         } else {
             shoppingList = presenter.loadNewShoppingList();
         }
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fmt_shopping_list, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -173,17 +174,12 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
     }
 
     public void addProduct(ShoppingItem product) {
-        addProductToList(product);
+        smartAdd(product);
         adapter = new ShoppingListAdapter(getContext(), mParentItemList);
         mRecyclerView.setAdapter(adapter);
     }
 
-    private void addProductToList(ShoppingItem product) {
-        smartAdd(product);
-    }
-
     private void    smartAdd(ShoppingItem shoppingItem) {
-        System.out.println("smart add");
         String category = shoppingItem.getMerchandise().getCategory().getName();
         String imageName = shoppingItem.getMerchandise().getCategory().getImage();
         boolean productAdded = false;
@@ -200,6 +196,7 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
         if (!productAdded) {
             mParentItemList.add(new ParentItem(category, imageName, shoppingItem));
         }
+        totalCostTextView.setText(String.valueOf(shoppingList.getTotalCost()) + " p");
     }
 
     public void removeItemFromList(int position) {

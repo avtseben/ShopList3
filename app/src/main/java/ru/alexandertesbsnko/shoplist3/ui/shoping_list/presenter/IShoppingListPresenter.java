@@ -48,6 +48,7 @@ public interface IShoppingListPresenter extends
                     ,"Молоко");
             Shop lenta = new Shop(1l,"Лента");
             ShoppingItem milkItem = new ShoppingItem(1,lenta,milk, 49);
+//            milkItem.setQuantity(1.5d);
             shoppingItemsFakeStorage.put(milkItem.getId(),milkItem);
             shi1.add(milkItem);
 
@@ -56,6 +57,7 @@ public interface IShoppingListPresenter extends
                     ,new Category(1,"Кисломочные продукты","milk")
                     ,"Творог");
             ShoppingItem tvorogItem = new ShoppingItem(1,lenta,tvorog, 120);
+            tvorogItem.increaseQuantity();
             shoppingItemsFakeStorage.put(tvorogItem.getId(),tvorogItem);
             shi1.add(tvorogItem);
 

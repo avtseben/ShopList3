@@ -23,5 +23,13 @@ public class ShoppingList {
         return this.shoppingItems;
     }
 
+    public double getTotalCost(){
+        double cost = 0;
+        for (ShoppingItem shoppingItem : shoppingItems) {
+            cost += shoppingItem.getPrice() * shoppingItem.getQuantity();
+        }
+        return cost;
+    }
+
 
 }

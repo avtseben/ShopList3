@@ -23,6 +23,21 @@ public class ShoppingItem {
         this.price = price;
     }
 
+    public void increaseQuantity(){
+        quantity++;
+    }
+
+    public void decreaseQuantity(){
+        if(quantity == 1){
+            return;
+        }
+        quantity--;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
     public void setState(int newState){
         this.state = newState;
     }
