@@ -47,11 +47,19 @@ public interface IShoppingListPresenter extends
                     ,new Category(1,"Кисломочные продукты","milk")
                     ,"Молоко");
             Shop lenta = new Shop(1l,"Лента");
-            ShoppingItem s1 = new ShoppingItem(1,lenta,milk, 49);
-            shoppingItemsFakeStorage.put(s1.getId(),s1);
-            shi1.add(s1);
-            ShoppingList sl1 = new ShoppingList(1l,shi1);
+            ShoppingItem milkItem = new ShoppingItem(1,lenta,milk, 49);
+            shoppingItemsFakeStorage.put(milkItem.getId(),milkItem);
+            shi1.add(milkItem);
 
+            Merchandise tvorog =new Merchandise(
+                    1l
+                    ,new Category(1,"Кисломочные продукты","milk")
+                    ,"Творог");
+            ShoppingItem tvorogItem = new ShoppingItem(1,lenta,tvorog, 120);
+            shoppingItemsFakeStorage.put(tvorogItem.getId(),tvorogItem);
+            shi1.add(tvorogItem);
+
+            ShoppingList sl1 = new ShoppingList(1l,shi1);
             shoppingListFakeStorage.put(sl1.getId(),sl1);
 
             System.out.println(">>Fake Data created");

@@ -9,7 +9,7 @@ public class ShoppingItem {
     public static final int IN_BASKET = 2;
     public static final int BOUGHT = 3;
     private int state = IN_LIST;
-    private int quantity = 1;
+    private double quantity = 1;
     private final long id;
     private final Shop shop;
     private final Merchandise merchandise;
@@ -39,7 +39,7 @@ public class ShoppingItem {
         return merchandise;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
