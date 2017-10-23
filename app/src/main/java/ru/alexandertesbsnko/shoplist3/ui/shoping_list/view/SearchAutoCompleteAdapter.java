@@ -12,7 +12,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.alexandertesbsnko.shoplist3.R;
-import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Merchandise;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.IShoppingListPresenter;
 
@@ -63,7 +62,7 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
-                    List<Merchandise> products = presenter.findMerchandiseLike(constraint.toString());
+                    List<ShoppingItem> products = presenter.findShoppingItemLike(constraint.toString());
                     filterResults.values = products;
                     filterResults.count = products.size();
                 }

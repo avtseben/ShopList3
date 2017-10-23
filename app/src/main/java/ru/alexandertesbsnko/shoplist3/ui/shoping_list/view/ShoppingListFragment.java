@@ -34,8 +34,6 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.IShoppingListPre
 public class ShoppingListFragment extends Fragment implements IShoppingListView {
 
     public static final String SHOP_LIST_ID = "SHOP_LIST_ID";
-//    public OnShopListItemClickListener listenerShopListSelected;
-//    public OnNewListButtonClickListener listenerNewList;
     private OnSendButtonClickListener listener;
     private ShoppingListAdapter adapter;
     private RecyclerView mRecyclerView;
@@ -61,38 +59,43 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
         listener = presenter;
 
         mParentItemList = new ArrayList<>();
-        //Есть ли в аргументах готовый списко продуктов ил составляем новый
+
         long shoppingLisId = 0;
         shoppingLisId = getArguments().getLong(SHOP_LIST_ID);
-        if(shoppingLisId != 0){
+        if (shoppingLisId != 0) {
             shoppingList = presenter.loadShoppingListById(shoppingLisId);
+            for (ShoppingItem item : shoppingList.getShoppingItems()) {
+                //Добавляем в список только экземпляры у которых статус "в списке"
+                if (item.getState() == ShoppingItem.IN_LIST) {
+                    smartAdd(item);
+                }
+            }
         } else {
             shoppingList = presenter.loadNewShoppingList();
         }
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fmt_shopping_list,container, false);
+        View view = inflater.inflate(R.layout.fmt_shopping_list, container, false);
 
-        setUpRecyclerView(view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
+        mRecyclerView.setAdapter(adapter);
+
         setUpItemTouchHelper();
         return view;
     }
 
-    private void setUpRecyclerView(View view){
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.rv_product_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ShoppingListAdapter(getContext(),mParentItemList);
-        mRecyclerView.setAdapter(adapter);
-    }
 
-    public void setUpItemTouchHelper(){
+    public void setUpItemTouchHelper() {
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
-                0/*drag drop не нужен*/, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT
+                0/*drag drop не нужен*/, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT
                 /*задаём направление свайпа которое слушаем*/) {
 
             @Override
@@ -102,6 +105,7 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
                 //Нам не нужен Drag&Prop
                 return false;
             }
+
             @Override
             public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 if (!viewHolder.getClass().equals(ChildProductViewHolder.class)) {
@@ -110,16 +114,17 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
                 }
                 return super.getSwipeDirs(recyclerView, viewHolder);
             }
+
             @Override
-            public void onSwiped (RecyclerView.ViewHolder viewHolder, int direction) {
-                if(viewHolder.getClass().equals(ChildProductViewHolder.class)) {
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                if (viewHolder.getClass().equals(ChildProductViewHolder.class)) {
                     int position = viewHolder.getAdapterPosition();
                     ShoppingItem si = ((ShoppingItem) adapter.getListItem(position));
-                    if(direction == ItemTouchHelper.RIGHT) {
+                    if (direction == ItemTouchHelper.RIGHT) {
                         adapter.deleteProductInstance(position);
                         si.setState(ShoppingItem.BOUGHT);
 //                        presenter.updateShoppingItem(si.getId(),  ShoppingItem.BOUGHT);
-                    } else if(direction == ItemTouchHelper.LEFT) {
+                    } else if (direction == ItemTouchHelper.LEFT) {
                         adapter.deleteProductInstance(position);
                         si.setState(ShoppingItem.DELETED);
 //                        presenter.deleteProductInstanceById(si.getId());
@@ -139,15 +144,14 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu,menu);
+        inflater.inflate(R.menu.menu, menu);
         //Setup search item
         MenuItem searchItem = menu.findItem(R.id.search_item);
         final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) MenuItemCompat.getActionView(searchItem);
-        autoCompleteTextView.setAdapter(new SearchAutoCompleteAdapter(presenter,getContext()));
+        autoCompleteTextView.setAdapter(new SearchAutoCompleteAdapter(presenter, getContext()));
         autoCompleteTextView.setWidth(800);//TODO without this it would wrap input chars
         autoCompleteTextView.setHint("название продукта");
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShoppingItem shoppingItem = (ShoppingItem) parent.getItemAtPosition(position);
@@ -160,7 +164,7 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
         sendItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                if(listener != null){
+                if (listener != null) {
                     listener.onSendButtonClicked(shoppingList);
                 }
                 return true;
@@ -170,7 +174,7 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
 
     public void addProduct(ShoppingItem product) {
         addProductToList(product);
-        adapter = new ShoppingListAdapter(getContext(),mParentItemList);
+        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -178,13 +182,14 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
         smartAdd(product);
     }
 
-    private void smartAdd(ShoppingItem shoppingItem){
+    private void    smartAdd(ShoppingItem shoppingItem) {
+        System.out.println("smart add");
         String category = shoppingItem.getMerchandise().getCategory().getName();
         String imageName = shoppingItem.getMerchandise().getCategory().getImage();
         boolean productAdded = false;
-        for(ParentItem pi : mParentItemList){
+        for (ParentItem pi : mParentItemList) {
             //Если продукты такой категории уже есть в списке
-            if(pi.getName().equals(category)) {
+            if (pi.getName().equals(category)) {
                 pi.addChild(shoppingItem);
                 productAdded = true;
                 break;
@@ -192,8 +197,8 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
         }
         //Если в предыдущем цыкле не нашлось в списке катаегории куда "положить"
         //продукт то создаём эту категорию и кладём в неё продукт
-        if(!productAdded) {
-            mParentItemList.add(new ParentItem(category,imageName,shoppingItem));
+        if (!productAdded) {
+            mParentItemList.add(new ParentItem(category, imageName, shoppingItem));
         }
     }
 

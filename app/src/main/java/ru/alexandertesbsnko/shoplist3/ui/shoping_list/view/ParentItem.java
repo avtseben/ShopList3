@@ -25,6 +25,7 @@ public class ParentItem implements ParentListItem {
     public void addChild(ShoppingItem shoppingItem) {
         mShoppingItemList.add(shoppingItem);
     }
+
     public void removeChildFromParent(ShoppingItem shoppingItem){
        mShoppingItemList.remove(shoppingItem);
     }

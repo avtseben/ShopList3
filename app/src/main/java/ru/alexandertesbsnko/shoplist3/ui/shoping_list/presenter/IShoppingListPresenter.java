@@ -29,14 +29,13 @@ public interface IShoppingListPresenter extends
     void bindView(IShoppingListView view);
     void unbindView();
     void updateShoppingItem(long id, int bought);
-    List<Merchandise> findMerchandiseLike(String pattern);
+    List<ShoppingItem> findShoppingItemLike(String pattern);
 
 
     class Fake implements IShoppingListPresenter {
 
         private Map<Long,ShoppingList> shoppingListFakeStorage = new HashMap<>(1);
         private Map<Long,ShoppingItem> shoppingItemsFakeStorage = new HashMap<>(1);
-        private Map<Long,Merchandise> merchandiseFakeStorage = new HashMap<>(1);
         private IShoppingListView view;
         private IRouter router = RouterProvider.INSTANCE.getRouter();
 
@@ -52,6 +51,7 @@ public interface IShoppingListPresenter extends
             shoppingItemsFakeStorage.put(s1.getId(),s1);
             shi1.add(s1);
             ShoppingList sl1 = new ShoppingList(1l,shi1);
+
             shoppingListFakeStorage.put(sl1.getId(),sl1);
 
             System.out.println(">>Fake Data created");
@@ -59,11 +59,12 @@ public interface IShoppingListPresenter extends
 
 
         @Override
-        public List<Merchandise> findMerchandiseLike(String pattern){
-            List<Merchandise> findedList = new ArrayList<>();
-            for (Merchandise merchandise : merchandiseFakeStorage.values()) {
-                if(merchandise.getName().contains(pattern)){
-                    findedList.add(merchandise);
+        public List<ShoppingItem> findShoppingItemLike(String pattern){
+            System.out.println("autocomplete pattern: " + pattern);
+            List<ShoppingItem> findedList = new ArrayList<>();
+            for (ShoppingItem item : shoppingItemsFakeStorage.values()) {
+                if(item.getMerchandise().getName().contains(pattern)){
+                    findedList.add(item);
                 }
             }
             return findedList;

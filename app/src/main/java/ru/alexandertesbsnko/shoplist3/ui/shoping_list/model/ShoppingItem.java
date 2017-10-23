@@ -27,6 +27,10 @@ public class ShoppingItem {
         this.state = newState;
     }
 
+    public int getState() {
+        return state;
+    }
+
     public long getId(){
         return this.id;
     }

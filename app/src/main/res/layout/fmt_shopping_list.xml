@@ -13,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <Button
+    <TextView
         android:layout_width="57dp"
         android:layout_height="57dp"
-        android:id="@+id/send_button"
-        android:drawableRight="@drawable/ic_send_black_24dp"
+        android:id="@+id/total_sl_cost"
         android:layout_alignParentTop="true"
         android:layout_gravity="end|top"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:text="00р." />
 
 </android.support.design.widget.CoordinatorLayout>
