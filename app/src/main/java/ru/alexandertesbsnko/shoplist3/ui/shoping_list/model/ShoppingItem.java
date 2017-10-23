@@ -5,8 +5,7 @@ import android.view.View;
 /**
  * Created by avtseben on 22.10.17.
  */
-public class ShoppingItem
-{
+public class ShoppingItem {
     public static final int DELETED = 0;
     public static final int IN_LIST = 1;
     public static final int IN_BASKET = 2;

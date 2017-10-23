@@ -8,6 +8,8 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 
 public interface IShoppingListView {
 
+    void refreshCost();
+
     interface OnSendButtonClickListener {
         void onSendButtonClicked(ShoppingList shoppingList);
     }

@@ -80,7 +80,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
+        adapter = new ShoppingListAdapter(getContext(), mParentItemList,this);
         mRecyclerView.setAdapter(adapter);
 
         presenter.bindView(this);
@@ -124,7 +124,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
                         adapter.deleteProductInstance(position);
                         presenter.deleteShoppingItem(si.getId());
                     }
-                    refreshCostView();
+                    refreshCost();
                 }
             }
         };
@@ -171,7 +171,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
 
     public void addProduct(ShoppingItem product) {
         smartAdd(product);
-        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
+        adapter = new ShoppingListAdapter(getContext(), mParentItemList,this);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -192,10 +192,12 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         if (!productAdded) {
             mParentItemList.add(new ParentItem(category, imageName, shoppingItem));
         }
-        refreshCostView();
+        refreshCost();
     }
 
-    private void refreshCostView(){
+
+    @Override
+    public void refreshCost() {
         totalCostTextView.setText(String.valueOf(shoppingList.getTotalCost()) + " p");
     }
 
