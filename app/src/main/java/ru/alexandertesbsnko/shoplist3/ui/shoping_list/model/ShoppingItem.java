@@ -1,9 +1,12 @@
 package ru.alexandertesbsnko.shoplist3.ui.shoping_list.model;
 
+import android.view.View;
+
 /**
  * Created by avtseben on 22.10.17.
  */
-public class ShoppingItem {
+public class ShoppingItem
+{
     public static final int DELETED = 0;
     public static final int IN_LIST = 1;
     public static final int IN_BASKET = 2;
@@ -24,15 +27,18 @@ public class ShoppingItem {
     }
 
     public void increaseQuantity(){
+        System.out.println("increase");
         quantity++;
     }
 
     public void decreaseQuantity(){
+        System.out.println("decrease");
         if(quantity == 1){
             return;
         }
         quantity--;
     }
+
 
     public void setQuantity(double quantity) {
         this.quantity = quantity;
@@ -65,4 +71,5 @@ public class ShoppingItem {
     public double getPrice() {
         return price;
     }
+
 }

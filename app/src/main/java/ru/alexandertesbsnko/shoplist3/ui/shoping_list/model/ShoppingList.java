@@ -1,5 +1,7 @@
 package ru.alexandertesbsnko.shoplist3.ui.shoping_list.model;
 
+import android.view.View;
+
 import java.util.List;
 
 /**
@@ -26,10 +28,18 @@ public class ShoppingList {
     public double getTotalCost(){
         double cost = 0;
         for (ShoppingItem shoppingItem : shoppingItems) {
-            cost += shoppingItem.getPrice() * shoppingItem.getQuantity();
+            if(shoppingItem.getState() != ShoppingItem.DELETED) {
+                cost += shoppingItem.getPrice() * shoppingItem.getQuantity();
+            }
         }
         return cost;
     }
+
+    public void addShoppingItem(ShoppingItem item){
+        shoppingItems.add(item);
+    }
+
+
 
 
 }

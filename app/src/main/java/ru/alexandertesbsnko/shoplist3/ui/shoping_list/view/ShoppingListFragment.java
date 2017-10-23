@@ -124,6 +124,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
                         adapter.deleteProductInstance(position);
                         presenter.deleteShoppingItem(si.getId());
                     }
+                    refreshCostView();
                 }
             }
         };
@@ -151,6 +152,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShoppingItem shoppingItem = (ShoppingItem) parent.getItemAtPosition(position);
                 autoCompleteTextView.setText("");
+                presenter.addShoppingItem(shoppingItem,shoppingList.getId());
                 addProduct(shoppingItem);
             }
         });
@@ -190,11 +192,15 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         if (!productAdded) {
             mParentItemList.add(new ParentItem(category, imageName, shoppingItem));
         }
+        refreshCostView();
+    }
+
+    private void refreshCostView(){
         totalCostTextView.setText(String.valueOf(shoppingList.getTotalCost()) + " p");
     }
 
-    public void removeItemFromList(int position) {
-        adapter.notifyItemRemoved(position);
-    }
+//    public void removeItemFromList(int position) {
+//        adapter.notifyItemRemoved(position);
+//    }
 
 }

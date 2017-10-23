@@ -25,6 +25,8 @@ public interface IShoppingListPresenter {
     void deleteShoppingItem(long id);
     List<ShoppingItem> findShoppingItemLike(String pattern);
 
+    void addShoppingItem(ShoppingItem shoppingItem, long id);
+
     class Fake implements IShoppingListPresenter {
 
         private Map<Long, ShoppingList> shoppingListFakeStorage = new HashMap<>(1);
@@ -106,6 +108,11 @@ public interface IShoppingListPresenter {
         public void deleteShoppingItem(long id) {
             shoppingItemsFakeStorage.get(id).setState(ShoppingItem.DELETED);
             System.out.println("Delete: " + shoppingItemsFakeStorage.get(id).getMerchandise().getName());
+        }
+
+        @Override
+        public void addShoppingItem(ShoppingItem shoppingItem, long shoppingListId){
+            shoppingListFakeStorage.get(shoppingListId).addShoppingItem(shoppingItem);
         }
     }
 }
