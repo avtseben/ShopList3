@@ -19,11 +19,12 @@ import javax.inject.Inject;
 import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.SLApplication;
 import ru.alexandertesbsnko.shoplist3.di.top_list.TopListModule;
+import ru.alexandertesbsnko.shoplist3.ui.AbstractFragment;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItemDataModel;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.presenter.ITopPresenter;
 
 
-public class TopListFragment extends Fragment implements ITopView {
+public class TopListFragment extends AbstractFragment implements ITopView {
 
     public OnShopListItemClickListener listenerShopListSelected;
     public OnNewListButtonClickListener listenerNewList;
@@ -48,10 +49,10 @@ public class TopListFragment extends Fragment implements ITopView {
         final List<TopListItemDataModel> topList = iTopPresenter.loadTopList();
 
         if (listenerShopListSelected == null) {
-            this.listenerShopListSelected = (OnShopListItemClickListener) iTopPresenter;
+            this.listenerShopListSelected = router;//TODO presenter не должен быть слушателем кликов. Презентор не должен знать об Android specific
         }
         if (listenerNewList == null) {
-            this.listenerNewList = (OnNewListButtonClickListener) iTopPresenter;
+            this.listenerNewList = router;
         }
 
         ImageView btn = (ImageView) view.findViewById(R.id.btn_newList);

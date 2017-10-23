@@ -15,9 +15,8 @@ import ru.alexandertesbsnko.shoplist3.ui.top_list.view.ITopView;
 import ru.alexandertesbsnko.shoplist3.util.DateBuilder;
 
 
-public interface ITopPresenter extends
-        ITopView.OnNewListButtonClickListener
-       ,ITopView.OnShopListItemClickListener {
+public interface ITopPresenter {
+
 
     List<TopListItemDataModel> loadTopList();
     void selectExitingShopingList(int position);
@@ -74,22 +73,5 @@ public interface ITopPresenter extends
             topView = null;
         }
 
-        @Override
-        public void onNewListClicked() {
-            System.out.println(">>You press create new List");
-        }
-
-        @Override
-        public void onItemClicked(TopListItemDataModel shopListObj) {
-            System.out.println(">>Router " + router);
-            System.out.println(">>On Item clicked " + topView);
-            System.out.println(">>You has select shoppingList\n" +
-                    "id:" + shopListObj.getId() + "\n" +
-                    "name:" + shopListObj.getName());
-            Bundle bundle = new Bundle();
-            bundle.putLong(ShoppingListFragment.SHOP_LIST_ID,shopListObj.getId());
-            router.navigate(IRouter.Screen.SHOPING_LIST,bundle);
-
-        }
     }
 }

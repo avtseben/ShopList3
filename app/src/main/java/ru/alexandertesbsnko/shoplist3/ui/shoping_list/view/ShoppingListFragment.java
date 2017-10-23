@@ -1,10 +1,8 @@
 package ru.alexandertesbsnko.shoplist3.ui.shoping_list.view;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,12 +25,13 @@ import javax.inject.Inject;
 import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.SLApplication;
 import ru.alexandertesbsnko.shoplist3.di.shoping_list.ShopingListModule;
+import ru.alexandertesbsnko.shoplist3.ui.AbstractFragment;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.IShoppingListPresenter;
 
 
-public class ShoppingListFragment extends Fragment implements IShoppingListView {
+public class ShoppingListFragment extends AbstractFragment implements IShoppingListView {
 
     public static final String SHOP_LIST_ID = "SHOP_LIST_ID";
     private OnSendButtonClickListener listener;
@@ -41,7 +40,6 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
     List<ParentItem> mParentItemList;
     ShoppingList shoppingList;
     TextView totalCostTextView;
-
 
     @Inject
     IShoppingListPresenter presenter;
@@ -65,7 +63,7 @@ public class ShoppingListFragment extends Fragment implements IShoppingListView 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fmt_shopping_list, container, false);
-        listener = presenter;
+        listener = router;
         mParentItemList = new ArrayList<>();
         totalCostTextView = (TextView) view.findViewById(R.id.total_sl_cost);
 

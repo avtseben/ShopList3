@@ -4,11 +4,18 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.IShoppingListView;
+import ru.alexandertesbsnko.shoplist3.ui.top_list.view.ITopView;
+
 /**
  * Created by avtseben on 29.08.17.
  */
 
-public interface IRouter {
+public interface IRouter extends
+        IShoppingListView.OnSendButtonClickListener
+       ,ITopView.OnNewListButtonClickListener
+       ,ITopView.OnShopListItemClickListener {
+
     void navigate(String screen, Bundle bundle);
     void navigate(String screen);
     void backTo(String screen);
@@ -18,32 +25,5 @@ public interface IRouter {
     class Screen {
         public static final String TOP_LIST = "top_list";
         public static final String SHOPING_LIST = "shoping_list";
-    }
-
-    class Fake implements IRouter{
-        @Override
-        public void navigate(String screen, Bundle bundle) {
-            Log.d(this.getClass().getSimpleName(),"Navigate to: " + screen);
-        }
-
-        @Override
-        public void navigate(String screen) {
-            Log.d(this.getClass().getSimpleName(),"Navigate to: " + screen);
-        }
-
-        @Override
-        public void backTo(String screen) {
-            System.out.println("Back to: " + screen);
-        }
-
-        @Override
-        public void finishChain() {
-            System.out.println("Finish");
-        }
-
-        @Override
-        public void setFragmentManager(FragmentManager fragmentManager){
-            //NOP
-        }
     }
 }
