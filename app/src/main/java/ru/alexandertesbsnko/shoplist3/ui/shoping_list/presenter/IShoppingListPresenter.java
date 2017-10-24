@@ -50,7 +50,7 @@ public interface IShoppingListPresenter {
                     1l
                     , new Category(1, "Кисломочные продукты", "milk")
                     , "Творог");
-            ShoppingItem tvorogItem = new ShoppingItem(1, lenta, tvorog, 120);
+            ShoppingItem tvorogItem = new ShoppingItem(2, lenta, tvorog, 120);
             tvorogItem.increaseQuantity();
             shoppingItemsFakeStorage.put(tvorogItem.getId(), tvorogItem);
             shi1.add(tvorogItem);
