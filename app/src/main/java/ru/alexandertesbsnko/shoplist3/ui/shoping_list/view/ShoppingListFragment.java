@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     List<ParentItem> mParentItemList;
     ShoppingList shoppingList;
     TextView totalCostTextView;
+    TextView totalBoughtCostTextView;
+    ImageView totalBoughtCostIcon;
 
     @Inject
     IShoppingListPresenter presenter;
@@ -66,6 +69,8 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         listener = router;
         mParentItemList = new ArrayList<>();
         totalCostTextView = (TextView) view.findViewById(R.id.total_sl_cost);
+        totalBoughtCostTextView = (TextView) view.findViewById(R.id.total_bought_cost);
+        totalBoughtCostIcon = (ImageView)view.findViewById(R.id.total_bought_icon);
 
         long shoppingLisId = 0;
         shoppingLisId = getArguments().getLong(SHOP_LIST_ID);
@@ -198,11 +203,17 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
 
     @Override
     public void refreshCost() {
-        totalCostTextView.setText(String.valueOf(shoppingList.getTotalCost()) + " p");
+        if(shoppingList.getTotalCost() > 0) {
+            totalCostTextView.setText(String.valueOf(shoppingList.getTotalCost()) + " p");
+        } else {
+            totalCostTextView.setText("");
+        }
+        if(shoppingList.getTotalBoughtCost() > 0) {
+            totalBoughtCostTextView.setText(String.valueOf(shoppingList.getTotalBoughtCost()) + " p");
+            totalBoughtCostIcon.setVisibility(View.VISIBLE);
+        } else {
+            totalBoughtCostTextView.setText("");
+            totalBoughtCostIcon.setVisibility(View.GONE);
+        }
     }
-
-//    public void removeItemFromList(int position) {
-//        adapter.notifyItemRemoved(position);
-//    }
-
 }

@@ -29,10 +29,20 @@ public class ShoppingList {
         double cost = 0;
         for (ShoppingItem shoppingItem : shoppingItems) {
             if(shoppingItem.getState() != ShoppingItem.DELETED) {
-                cost += shoppingItem.getPrice() * shoppingItem.getQuantity();
+                cost += shoppingItem.getCost();
             }
         }
         return cost;
+    }
+
+    public double getTotalBoughtCost(){
+        double boughtCost = 0;
+        for (ShoppingItem shoppingItem : shoppingItems) {
+            if(shoppingItem.getState() == ShoppingItem.BOUGHT & shoppingItem.getState() != ShoppingItem.DELETED) {
+                boughtCost += shoppingItem.getCost();
+            }
+        }
+        return boughtCost;
     }
 
     public void addShoppingItem(ShoppingItem item){

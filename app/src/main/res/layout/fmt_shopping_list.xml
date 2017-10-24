@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_main_content"
     android:orientation="vertical"
@@ -15,14 +16,43 @@
         android:layout_height="match_parent"
         android:clipChildren="true" />
 
-    <TextView
-        android:layout_width="57dp"
-        android:layout_height="57dp"
-        android:id="@+id/total_sl_cost"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="end|top"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:text="00р." />
+
+
+
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top">
+
+        <TextView
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:id="@+id/total_sl_cost"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:text="" />
+
+        <TextView
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:id="@+id/total_bought_cost"
+            android:layout_gravity="end"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:text="00" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            app:srcCompat="@drawable/ic_shopping_basket_black_24dp"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:visibility="visible"
+            android:id="@+id/total_bought_icon"/>
+    </GridLayout>
 
 </android.support.design.widget.CoordinatorLayout>
