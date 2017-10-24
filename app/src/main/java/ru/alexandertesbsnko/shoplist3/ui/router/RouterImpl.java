@@ -64,7 +64,7 @@ public class RouterImpl implements IRouter {
 
     @Override
     public void onNewListClicked() {
-        System.out.println(">>You press create new List");
+        this.navigate(IRouter.Screen.SHOPING_LIST);
     }
 
     @Override

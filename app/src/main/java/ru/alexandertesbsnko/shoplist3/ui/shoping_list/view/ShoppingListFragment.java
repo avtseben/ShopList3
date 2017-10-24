@@ -4,8 +4,10 @@ package ru.alexandertesbsnko.shoplist3.ui.shoping_list.view;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -44,6 +46,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     TextView totalBoughtCostTextView;
     ImageView totalBoughtCostIcon;
 
+
     @Inject
     IShoppingListPresenter presenter;
 
@@ -70,7 +73,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         mParentItemList = new ArrayList<>();
         totalCostTextView = (TextView) view.findViewById(R.id.total_sl_cost);
         totalBoughtCostTextView = (TextView) view.findViewById(R.id.total_bought_cost);
-        totalBoughtCostIcon = (ImageView)view.findViewById(R.id.total_bought_icon);
+        totalBoughtCostIcon = (ImageView) view.findViewById(R.id.total_bought_icon);
 
         long shoppingLisId = 0;
         shoppingLisId = getArguments().getLong(SHOP_LIST_ID);
@@ -82,10 +85,11 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         } else {
             shoppingList = presenter.loadNewShoppingList();
         }
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(shoppingList.getName());
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ShoppingListAdapter(getContext(), mParentItemList,this);
+        adapter = new ShoppingListAdapter(getContext(), mParentItemList, this);
         mRecyclerView.setAdapter(adapter);
 
         presenter.bindView(this);
@@ -157,7 +161,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShoppingItem shoppingItem = (ShoppingItem) parent.getItemAtPosition(position);
                 autoCompleteTextView.setText("");
-                presenter.addShoppingItem(shoppingItem,shoppingList.getId());
+                presenter.addShoppingItem(shoppingItem, shoppingList.getId());
                 addProduct(shoppingItem);
             }
         });
@@ -176,11 +180,11 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
 
     public void addProduct(ShoppingItem product) {
         smartAdd(product);
-        adapter = new ShoppingListAdapter(getContext(), mParentItemList,this);
+        adapter = new ShoppingListAdapter(getContext(), mParentItemList, this);
         mRecyclerView.setAdapter(adapter);
     }
 
-    private void    smartAdd(ShoppingItem shoppingItem) {
+    private void smartAdd(ShoppingItem shoppingItem) {
         String category = shoppingItem.getMerchandise().getCategory().getName();
         String imageName = shoppingItem.getMerchandise().getCategory().getImage();
         boolean productAdded = false;
@@ -203,12 +207,12 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
 
     @Override
     public void refreshCost() {
-        if(shoppingList.getTotalCost() > 0) {
+        if (shoppingList.getTotalCost() > 0) {
             totalCostTextView.setText(String.valueOf(shoppingList.getTotalCost()) + " p");
         } else {
             totalCostTextView.setText("");
         }
-        if(shoppingList.getTotalBoughtCost() > 0) {
+        if (shoppingList.getTotalBoughtCost() > 0) {
             totalBoughtCostTextView.setText(String.valueOf(shoppingList.getTotalBoughtCost()) + " p");
             totalBoughtCostIcon.setVisibility(View.VISIBLE);
         } else {

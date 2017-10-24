@@ -55,7 +55,7 @@ public interface IShoppingListPresenter {
             shoppingItemsFakeStorage.put(tvorogItem.getId(), tvorogItem);
             shi1.add(tvorogItem);
 
-            ShoppingList sl1 = new ShoppingList(1l, shi1);
+            ShoppingList sl1 = new ShoppingList(1l, "Будни", shi1);
             shoppingListFakeStorage.put(sl1.getId(), sl1);
 
             System.out.println(">>Fake Data created");
@@ -77,7 +77,7 @@ public interface IShoppingListPresenter {
         @Override
         public ShoppingList loadNewShoppingList() {
             List<ShoppingItem> shi = new ArrayList<>();
-            ShoppingList sl = new ShoppingList(4l, shi);
+            ShoppingList sl = new ShoppingList(4l, "Новый Список", shi);
             shoppingListFakeStorage.put(sl.getId(), sl);
             return sl;
         }

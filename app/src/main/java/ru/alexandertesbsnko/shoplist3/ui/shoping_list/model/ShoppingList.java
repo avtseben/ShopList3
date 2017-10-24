@@ -10,10 +10,12 @@ import java.util.List;
 
 public class ShoppingList {
     private final long id;
+    private final String name;
     private final List<ShoppingItem> shoppingItems;
 
-    public ShoppingList(long id, List<ShoppingItem> shoppingItems){
+    public ShoppingList(long id, String name, List<ShoppingItem> shoppingItems){
         this.id = id;
+        this.name = name;
         this.shoppingItems = shoppingItems;
     }
 
@@ -49,7 +51,7 @@ public class ShoppingList {
         shoppingItems.add(item);
     }
 
-
-
-
+    public String getName() {
+        return name;
+    }
 }

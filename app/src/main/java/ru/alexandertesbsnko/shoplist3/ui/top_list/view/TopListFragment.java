@@ -3,6 +3,7 @@ package ru.alexandertesbsnko.shoplist3.ui.top_list.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -49,6 +50,8 @@ public class TopListFragment extends AbstractFragment implements ITopView {
 
         this.listenerShopListSelected = router;
         this.listenerNewList = router;
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.top_list_title);
 
         ImageView btn = (ImageView) view.findViewById(R.id.btn_newList);
         btn.setOnClickListener(new View.OnClickListener() {
