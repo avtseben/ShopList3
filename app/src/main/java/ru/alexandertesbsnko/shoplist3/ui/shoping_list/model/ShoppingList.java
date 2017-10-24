@@ -1,12 +1,6 @@
 package ru.alexandertesbsnko.shoplist3.ui.shoping_list.model;
 
-import android.view.View;
-
 import java.util.List;
-
-/**
- * Created by avtseben on 22.10.17.
- */
 
 public class ShoppingList {
     private final long id;
