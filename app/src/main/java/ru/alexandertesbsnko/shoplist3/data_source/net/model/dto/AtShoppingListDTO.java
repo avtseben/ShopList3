@@ -3,9 +3,6 @@ package ru.alexandertesbsnko.shoplist3.data_source.net.model.dto;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by avtseben on 24.10.17.
- */
 public class AtShoppingListDTO {
     private Long id;
     private Date date;

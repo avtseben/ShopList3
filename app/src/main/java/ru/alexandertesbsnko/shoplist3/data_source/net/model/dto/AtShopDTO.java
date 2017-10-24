@@ -1,17 +1,12 @@
 package ru.alexandertesbsnko.shoplist3.data_source.net.model.dto;
 
 
-import ru.alexandertsebenko.shoplist.api.ifaces.Gid;
-import ru.rtcomm.platform.api.annotation.UniqField;
-
-public class AtShopDTO implements Gid {
+public class AtShopDTO  {
     public Long id;
 
-    @UniqField
     public String address;
     public String name;
 
-    @Override
     public Long getId() {
         return id;
     }

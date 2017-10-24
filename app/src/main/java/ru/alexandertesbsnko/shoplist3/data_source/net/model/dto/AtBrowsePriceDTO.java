@@ -1,19 +1,11 @@
 package ru.alexandertesbsnko.shoplist3.data_source.net.model.dto;
 
-
-import ru.alexandertsebenko.shoplist.api.ifaces.Gid;
-import ru.rtcomm.platform.api.annotation.UniqField;
-
 public class AtBrowsePriceDTO  {
     public Long priceId;
 
-    @UniqField
     public String productName;
-    @UniqField
     public String packName;
-    @UniqField
     public String brandName;
-    @UniqField
     public String shopName;
 
     public Integer price;

@@ -1,8 +1,5 @@
 package ru.alexandertesbsnko.shoplist3.data_source.net.model.dto;
 
-/**
- * Created by avtseben on 24.10.17.
- */
 public class AtShoppingItemDTO {
 
     private Long id;
