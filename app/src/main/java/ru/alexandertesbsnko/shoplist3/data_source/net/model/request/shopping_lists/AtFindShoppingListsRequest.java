@@ -3,7 +3,9 @@ package ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_li
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.AbstractRequest;
 
 public class AtFindShoppingListsRequest extends AbstractRequest {
+
     private Long id;
+
     private Long userId;
 
     public Long getId() {

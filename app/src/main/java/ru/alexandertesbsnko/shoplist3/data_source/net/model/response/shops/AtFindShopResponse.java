@@ -1,9 +1,9 @@
 package ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shops;
 
-import ru.alexandertsebenko.shoplist.api.dto.AtShopDTO;
-import ru.rtcomm.platform.api.response.AbstractResponse;
-
 import java.util.List;
+
+import ru.alexandertesbsnko.shoplist3.data_source.net.model.dto.AtShopDTO;
+import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.AbstractResponse;
 
 public class AtFindShopResponse extends AbstractResponse {
     private List<AtShopDTO> shopList;

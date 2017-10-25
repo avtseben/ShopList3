@@ -1,10 +1,13 @@
 package ru.alexandertesbsnko.shoplist3.data_source.net.model.dto;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Date;
 import java.util.List;
 
 public class AtShoppingListDTO {
     private Long id;
+    @Expose
     private Date date;
     private String name;
     private List<AtShoppingItemDTO> shoppingItems;

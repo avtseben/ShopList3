@@ -2,6 +2,8 @@ package ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter;
 
 import java.util.List;
 
+import ru.alexandertesbsnko.shoplist3.repository.shopping_list.IShoppingListRepository;
+import ru.alexandertesbsnko.shoplist3.repository.shopping_list.RestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.IShoppingListView;
@@ -9,27 +11,26 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.IShoppingListView;
 /**
  * Created by avtseben on 24.10.17.
  */
+//TODO тест класс
+public class RestPresenterImpl extends AbstractPresenter implements IShoppingListPresenter {
 
-public class RestPresenterImpl implements IShoppingListPresenter {
+
+    IShoppingListRepository repository = new RestShoppingListRepository();
 
     @Override
-    public ShoppingList loadShoppingListById(long id) {
-        return null;
+    public ShoppingList loadShoppingListById(long id){
+        ShoppingList shoppingList = null;
+        try {
+            shoppingList = repository.loadShoppingListById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return shoppingList;
     }
 
     @Override
     public ShoppingList loadNewShoppingList() {
         return null;
-    }
-
-    @Override
-    public void bindView(IShoppingListView view) {
-
-    }
-
-    @Override
-    public void unbindView() {
-
     }
 
     @Override
