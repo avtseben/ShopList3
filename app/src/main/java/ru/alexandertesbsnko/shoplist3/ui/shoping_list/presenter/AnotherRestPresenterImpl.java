@@ -35,7 +35,7 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
     }
 
     @Override
-    public void incrementQuantity(long shoppingItemId) {
+    public void incrementQuantity(long shoppingItemId) {//TODO оптимизировать в мапу
         List<ShoppingItem> items = shoppingList.getShoppingItems();
         for (ShoppingItem item : items) {
             if(item.getId() == shoppingItemId){
@@ -51,6 +51,26 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
         for (ShoppingItem item : items) {
             if(item.getId() == shoppingItemId){
                 item.decreaseQuantity();
+            }
+        }
+        view.setTotalCost(shoppingList.getTotalCost());
+    }
+
+    public void buyShoppingItem(long id){
+        List<ShoppingItem> items = shoppingList.getShoppingItems();
+        for (ShoppingItem item : items) {
+            if(item.getId() == id){
+                item.setState(ShoppingItem.BOUGHT);
+            }
+        }
+        view.setTotalBoughtCost(shoppingList.getTotalBoughtCost());
+    }
+
+    public void deleteShoppingItem(long id){
+        List<ShoppingItem> items = shoppingList.getShoppingItems();
+        for (ShoppingItem item : items) {
+            if(item.getId() == id){
+                item.setState(ShoppingItem.DELETED);
             }
         }
         view.setTotalCost(shoppingList.getTotalCost());
@@ -80,6 +100,7 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
 
     private void handleSuccessLoadShoppingList(@NonNull ShoppingList shoppingList) {
         this.shoppingList = shoppingList;
+
         setShoppingListOnView();
     }
 

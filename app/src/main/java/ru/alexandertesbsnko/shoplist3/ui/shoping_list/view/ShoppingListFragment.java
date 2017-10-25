@@ -119,10 +119,10 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
                     ShoppingItem si = ((ShoppingItem) adapter.getListItem(position));
                     if (direction == ItemTouchHelper.RIGHT) {
                         adapter.deleteProductInstance(position);
-//                        presenter.buyShoppingItem(si.getId());
+                        presenter.buyShoppingItem(si.getId());
                     } else if (direction == ItemTouchHelper.LEFT) {
                         adapter.deleteProductInstance(position);
-//                        presenter.deleteShoppingItem(si.getId());
+                        presenter.deleteShoppingItem(si.getId());
                     }
                 }
             }
