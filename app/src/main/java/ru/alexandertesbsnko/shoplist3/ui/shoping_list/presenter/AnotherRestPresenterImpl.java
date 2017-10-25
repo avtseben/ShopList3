@@ -34,6 +34,28 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
         loadShoppingListFromData(1);
     }
 
+    @Override
+    public void incrementQuantity(long shoppingItemId) {
+        List<ShoppingItem> items = shoppingList.getShoppingItems();
+        for (ShoppingItem item : items) {
+            if(item.getId() == shoppingItemId){
+                item.increaseQuantity();
+            }
+        }
+        view.setTotalCost(shoppingList.getTotalCost());
+    }
+
+    @Override
+    public void decrementQuantity(long shoppingItemId) {
+        List<ShoppingItem> items = shoppingList.getShoppingItems();
+        for (ShoppingItem item : items) {
+            if(item.getId() == shoppingItemId){
+                item.decreaseQuantity();
+            }
+        }
+        view.setTotalCost(shoppingList.getTotalCost());
+    }
+
 
     private void loadShoppingListFromData(long id) {
         Subscription subscription = new AsyncRestShoppingListRepository().loadShoppingListById(id)
@@ -89,4 +111,5 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
     public List<ShoppingItem> searchShoppingItems(String pattern) {
         return new ArrayList<>(0);//TODO stub
     }
+
 }

@@ -15,19 +15,24 @@ public class ChildProductViewHolder extends ChildViewHolder {
     FrameLayout increaseFrame;
     TextView mProductInstanceView;
     TextView shoppingItemQuantity;
+    IShoppingListView superView;
 
-    public ChildProductViewHolder(View itemView){
+    public ChildProductViewHolder(View itemView,IShoppingListView superView){
         super(itemView);
+        this.superView = superView;
         decreaseFrame = (FrameLayout) itemView.findViewById(R.id.decrease_quantity_frame);
         increaseFrame = (FrameLayout) itemView.findViewById(R.id.increase_quantity_frame);
         mProductInstanceView = (TextView) itemView.findViewById(R.id.tv_product_name);
         shoppingItemQuantity = (TextView) itemView.findViewById(R.id.tv_product_quantity);
     }
+
+
+
     public void bind(final ShoppingItem shoppingItem){
         decreaseFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shoppingItem.decreaseQuantity();
+                superView.decrementQuantity(shoppingItem.getId());
                 refreshQuantityView(shoppingItem);
             }
         });
@@ -35,14 +40,11 @@ public class ChildProductViewHolder extends ChildViewHolder {
         increaseFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shoppingItem.increaseQuantity();
+                superView.incrementQuantity(shoppingItem.getId());
                 refreshQuantityView(shoppingItem);
             }
         });
-
         mProductInstanceView.setText(shoppingItem.getMerchandise().getName());
-        refreshQuantityView(shoppingItem);
-
     }
 
     private void refreshQuantityView(ShoppingItem shoppingItem){

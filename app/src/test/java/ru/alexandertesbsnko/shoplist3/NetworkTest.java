@@ -15,7 +15,7 @@ import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShopping
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.RestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
-import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.RestPresenterImpl;
+//import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.RestPresenterImpl;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -84,7 +84,7 @@ public class NetworkTest {
 
     @Test
     public void testAsyncPresenter() {
-        RestPresenterImpl presenter = new RestPresenterImpl();
+//        RestPresenterImpl presenter = new RestPresenterImpl();
 /*        presenter.asyncLoadShoppingListById(1l)
                 .subscribe(new Subscriber<ShoppingList>() {
                     @Override

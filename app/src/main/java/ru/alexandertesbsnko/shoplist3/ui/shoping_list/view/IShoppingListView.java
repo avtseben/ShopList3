@@ -24,6 +24,8 @@ public interface IShoppingListView {
     void searchShoppingItems(String pattern);
 
     void setFindedShoppingItems(List<ShoppingItem> findedShoppingItems);
+    void incrementQuantity(long shoppingItemId);
+    void decrementQuantity(long shoppingItemId);
 
     interface OnSendButtonClickListener {
         void onSendButtonClicked(ShoppingList shoppingList);

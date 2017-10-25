@@ -7,7 +7,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,11 +29,7 @@ import ru.alexandertesbsnko.shoplist3.SLApplication;
 import ru.alexandertesbsnko.shoplist3.di.shoping_list.ShopingListModule;
 import ru.alexandertesbsnko.shoplist3.ui.AbstractFragment;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
-import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.IShoppingListPresenter;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 public class ShoppingListFragment extends AbstractFragment implements IShoppingListView {
@@ -202,7 +197,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         for (ShoppingItem shoppingItem : shoppingItems) {
             smartAdd(shoppingItem);
         }
-        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
+        adapter = new ShoppingListAdapter(getContext(), mParentItemList, this);
         mRecyclerView.setAdapter(adapter);
         setUpItemTouchHelper();
     }
@@ -235,7 +230,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     @Override
     public void addShoppingItem(ShoppingItem shoppingItem) {
         smartAdd(shoppingItem);
-        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
+        adapter = new ShoppingListAdapter(getContext(), mParentItemList,this);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -247,5 +242,15 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     @Override
     public void setFindedShoppingItems(List<ShoppingItem> findedShoppingItems) {
         searchAutoCompleteAdapter.setResults(findedShoppingItems);
+    }
+
+    @Override
+    public void incrementQuantity(long shoppingItemId){
+        presenter.incrementQuantity(shoppingItemId);
+    }
+
+    @Override
+    public void decrementQuantity(long shoppingItemId){
+        presenter.decrementQuantity(shoppingItemId);
     }
 }
