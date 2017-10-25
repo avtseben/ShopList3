@@ -2,19 +2,21 @@ package ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter;
 
 import java.util.List;
 
+import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.IShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.RestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.IShoppingListView;
+import rx.Observable;
 
 /**
  * Created by avtseben on 24.10.17.
  */
 //TODO тест класс
-public class RestPresenterImpl extends AbstractPresenter implements IShoppingListPresenter {
+public class RestPresenterImpl implements IShoppingListPresenter {
 
-
+    private IShoppingListView view;
     IShoppingListRepository repository = new RestShoppingListRepository();
 
     @Override
@@ -27,6 +29,7 @@ public class RestPresenterImpl extends AbstractPresenter implements IShoppingLis
         }
         return shoppingList;
     }
+
 
     @Override
     public ShoppingList loadNewShoppingList() {
@@ -51,5 +54,22 @@ public class RestPresenterImpl extends AbstractPresenter implements IShoppingLis
     @Override
     public void addShoppingItem(ShoppingItem shoppingItem, long id) {
 
+    }
+
+    @Override
+    public Observable<ShoppingList> asyncLoadShoppingListById(long id) {
+        return new AsyncRestShoppingListRepository().loadShoppingListById(id);
+    }
+
+
+    @Override
+    public void bindView(IShoppingListView view) {
+        this.view = view;
+    }
+
+
+    @Override
+    public void unbindView() {
+        view = null;
     }
 }

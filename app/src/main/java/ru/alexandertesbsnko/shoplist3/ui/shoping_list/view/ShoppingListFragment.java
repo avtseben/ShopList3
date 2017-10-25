@@ -75,7 +75,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         totalBoughtCostTextView = (TextView) view.findViewById(R.id.total_bought_cost);
         totalBoughtCostIcon = (ImageView) view.findViewById(R.id.total_bought_icon);
 
-        long shoppingLisId = 0;
+        long shoppingLisId;
         shoppingLisId = getArguments().getLong(SHOP_LIST_ID);
         if (shoppingLisId != 0) {
             shoppingList = presenter.loadShoppingListById(shoppingLisId);
@@ -85,6 +85,12 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         } else {
             shoppingList = presenter.loadNewShoppingList();
         }
+
+
+
+
+
+
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(shoppingList.getName());
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);

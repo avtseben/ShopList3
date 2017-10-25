@@ -11,6 +11,7 @@ import ru.alexandertesbsnko.shoplist3.data_source.net.common.ServiceBuilder;
 import ru.alexandertesbsnko.shoplist3.data_source.net.shopping_list.ShoppingListsService;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_lists.AtFindShoppingListsRequest;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shopping_lists.AtFindShoppingListsResponse;
+import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.RestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import rx.Observable;
@@ -22,61 +23,23 @@ import rx.schedulers.Schedulers;
 public class NetworkTest {
     @Test
     public void testFindShoppingListsApiEndpoint() throws Exception {
-        ShoppingListsService service = new ServiceBuilder().buildShoppingListService();
-        AtFindShoppingListsRequest request = new AtFindShoppingListsRequest();
-        MySubscriber subscriber = new MySubscriber();
-        request.setId(1l);
-        Observable<AtFindShoppingListsResponse> observable0 = service.atFindShoppingListsAsync(request);
-        Observable<AtFindShoppingListsResponse> observable = service.atFindShoppingListsAsync(request);
-        observable
-                .subscribeOn(Schedulers.io())
-                .mergeWith(observable0)
-//                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber
-//                        new Subscriber<AtFindShoppingListsResponse>() {
-//                    @Override
-//                    public final void onCompleted() {
-//                        System.out.println("Completed");
-//                    }
-//
-//                    @Override
-//                    public final void onError(Throwable e) {
-//                        System.out.println("Error");
-//                    }
-//
-//                    @Override
-//                    public void onNext(AtFindShoppingListsResponse response) {
-//                        System.out.println(response.getShoppingLists().get(0).getName());
-//                        System.out.println();
-//
-//                    }
-//                }
-                );
-        Subscription subscription = observable0.subscribe(subscriber);
-        subscription.unsubscribe();
 
-    }
+        AsyncRestShoppingListRepository repo = new AsyncRestShoppingListRepository();
+        repo.loadShoppingListById(1)
+                .subscribe(new Subscriber<ShoppingList>() {
+                    @Override
+                    public final void onCompleted() {
+                    }
 
-    class MySubscriber extends Subscriber {
-        @Override
-        public final void onCompleted() {
-            System.out.println("Completed");
-        }
+                    @Override
+                    public final void onError(Throwable e) {
+                    }
 
-        @Override
-        public final void onError(Throwable e) {
-            System.out.println("Error");
-        }
-
-        @Override
-        public void onNext(Object o) {
-            System.out.println(((AtFindShoppingListsResponse) o).getShoppingLists().get(0).getName());
-            System.out.println();
-        }
-    }
-
-    private void hello() {
-        System.out.println("hello");
+                    @Override
+                    public void onNext(ShoppingList shoppingList) {
+                        System.out.println(shoppingList.getName());
+                    }
+                });
     }
 
     @Test

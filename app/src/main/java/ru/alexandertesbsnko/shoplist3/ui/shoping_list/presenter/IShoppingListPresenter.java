@@ -7,6 +7,7 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Shop;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.IShoppingListView;
+import rx.Observable;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 public interface IShoppingListPresenter {
 
+    Observable<ShoppingList> asyncLoadShoppingListById(long id);
     ShoppingList loadShoppingListById(long id);
     ShoppingList loadNewShoppingList();
     void bindView(IShoppingListView view);
@@ -80,6 +82,11 @@ public interface IShoppingListPresenter {
             ShoppingList sl = new ShoppingList(4l, "Новый Список", shi);
             shoppingListFakeStorage.put(sl.getId(), sl);
             return sl;
+        }
+
+        @Override
+        public Observable<ShoppingList> asyncLoadShoppingListById(long id) {
+            return null;
         }
 
         @Override

@@ -1,41 +1,61 @@
 package ru.alexandertesbsnko.shoplist3.repository.shopping_list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.alexandertesbsnko.shoplist3.data_source.net.common.ServiceBuilder;
+import ru.alexandertesbsnko.shoplist3.data_source.net.model.dto.AtShoppingItemDTO;
+import ru.alexandertesbsnko.shoplist3.data_source.net.model.dto.AtShoppingListDTO;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_lists.AtFindShoppingListsRequest;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shopping_lists.AtFindShoppingListsResponse;
 import ru.alexandertesbsnko.shoplist3.data_source.net.shopping_list.ShoppingListsService;
 
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Category;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Merchandise;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Shop;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
-import rx.Subscriber;
+import rx.Observable;
+import rx.functions.Func1;
 
-public class AsyncRestShoppingListRepository implements IShoppingListRepository {
+public class AsyncRestShoppingListRepository  {
 
-    private IDtoAdapter adapter = new DtoAdapter();
-
-    @Override
-    public ShoppingList loadShoppingListById(long id) {
+    public Observable<ShoppingList> loadShoppingListById(long id) {
         ShoppingListsService service = new ServiceBuilder().buildShoppingListService();
         AtFindShoppingListsRequest request = new AtFindShoppingListsRequest();
         request.setId(id);
-        final ShoppingList output;
-        service.atFindShoppingListsAsync(request)
-//                .subscribeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<AtFindShoppingListsResponse>() {
-                    @Override
-                    public final void onCompleted() {
-                    }
+        return service.atFindShoppingListsAsync(request).map(new AsyncDtoAdapter());
+    }
 
-                    @Override
-                    public final void onError(Throwable e) {
-                    }
+    class AsyncDtoAdapter implements Func1<AtFindShoppingListsResponse,ShoppingList> {
 
-                    @Override
-                    public void onNext(AtFindShoppingListsResponse response) {
-                        ShoppingList output = adapter.adapt(response.getShoppingLists().get(0));
-                    }
-                });
+        @Override
+        public ShoppingList call(AtFindShoppingListsResponse response) {
+            AtShoppingListDTO atShoppingListDTO = response.getShoppingLists().get(0);
+            List<ShoppingItem > shoppingItems = new ArrayList<>();
+            for (AtShoppingItemDTO atShoppingItemDTO : atShoppingListDTO.getShoppingItems()) {
+                Merchandise merchandise = new Merchandise(
+                        atShoppingItemDTO.getMerchandise().getId()
+                        , new Category(
+                        atShoppingItemDTO.getMerchandise().getCategory().getId()
+                        , atShoppingItemDTO.getMerchandise().getCategory().getName()
+                        , "milk")
+                        , atShoppingItemDTO.getMerchandise().getProduct().getName());
+                Shop shop = new Shop(
+                        atShoppingItemDTO.getShop().getId()
+                        , atShoppingItemDTO.getShop().getName());
+                ShoppingItem shoppingItem = new ShoppingItem(
+                        atShoppingItemDTO.getId()
+                        , shop
+                        , merchandise
+                        , atShoppingItemDTO.getPrice());
+                shoppingItems.add(shoppingItem);
+            }
 
-        return null;
+            return new ShoppingList(
+                    atShoppingListDTO.getId()
+                    , atShoppingListDTO.getName()
+                    , shoppingItems);
+        }
     }
 }
