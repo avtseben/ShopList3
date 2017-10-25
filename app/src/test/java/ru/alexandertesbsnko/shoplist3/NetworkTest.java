@@ -85,7 +85,7 @@ public class NetworkTest {
     @Test
     public void testAsyncPresenter() {
         RestPresenterImpl presenter = new RestPresenterImpl();
-        presenter.asyncLoadShoppingListById(1l)
+/*        presenter.asyncLoadShoppingListById(1l)
                 .subscribe(new Subscriber<ShoppingList>() {
                     @Override
                     public void onCompleted() {
@@ -104,7 +104,7 @@ public class NetworkTest {
                         System.out.println(shoppingList.getName());
 //                        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(shoppingList.getName());
                     }
-                });
+                });*/
 
     }
 

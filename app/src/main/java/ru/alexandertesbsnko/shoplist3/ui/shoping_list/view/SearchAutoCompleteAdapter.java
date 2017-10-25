@@ -19,11 +19,11 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
 
 
     private List<ShoppingItem> mResults;
-    private final IShoppingListPresenter presenter;
+    private final IShoppingListView parentView;
     private final Context mContext;
 
-    public SearchAutoCompleteAdapter(IShoppingListPresenter presenter, Context context) {
-        this.presenter = presenter;
+    public SearchAutoCompleteAdapter(IShoppingListView parentView, Context context) {
+        this.parentView = parentView;
         this.mContext = context;
     }
 
@@ -55,6 +55,10 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
         return convertView;
     }
 
+    public void setResults(List<ShoppingItem> mResults) {
+        this.mResults = mResults;
+    }
+
     @Override
     public Filter getFilter() {
         Filter filter = new Filter() {
@@ -62,9 +66,9 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
-                    List<ShoppingItem> products = presenter.findShoppingItemLike(constraint.toString());
-                    filterResults.values = products;
-                    filterResults.count = products.size();
+                    parentView.searchShoppingItems(constraint.toString());
+//                    filterResults.values = products;
+//                    filterResults.count = products.size();  //TODO с этим чтото делать
                 }
                 return filterResults;
             }

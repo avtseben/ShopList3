@@ -1,5 +1,8 @@
 package ru.alexandertesbsnko.shoplist3.ui.shoping_list.view;
 
+import java.util.List;
+
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 
 /**
@@ -8,7 +11,19 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 
 public interface IShoppingListView {
 
-    void refreshCost();
+    void setUpShopingList(List<ShoppingItem> shoppingItems);
+
+    void setTotalCost(double totalCost);
+
+    void setTotalBoughtCost(double totalBoughtCost);
+
+    void setListName(String name);
+
+    void addShoppingItem(ShoppingItem shoppingItem);
+
+    void searchShoppingItems(String pattern);
+
+    void setFindedShoppingItems(List<ShoppingItem> findedShoppingItems);
 
     interface OnSendButtonClickListener {
         void onSendButtonClicked(ShoppingList shoppingList);

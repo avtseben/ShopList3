@@ -42,9 +42,9 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     public static final String SHOP_LIST_ID = "SHOP_LIST_ID";
     private OnSendButtonClickListener listener;
     private ShoppingListAdapter adapter;
+    private SearchAutoCompleteAdapter searchAutoCompleteAdapter;
     private RecyclerView mRecyclerView;
     List<ParentItem> mParentItemList;
-//    ShoppingList shoppingList;
     TextView totalCostTextView;
     TextView totalBoughtCostTextView;
     ImageView totalBoughtCostIcon;
@@ -77,38 +77,20 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         totalCostTextView = (TextView) view.findViewById(R.id.total_sl_cost);
         totalBoughtCostTextView = (TextView) view.findViewById(R.id.total_bought_cost);
         totalBoughtCostIcon = (ImageView) view.findViewById(R.id.total_bought_icon);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        long shoppingLisId = getArguments().getLong(SHOP_LIST_ID);
-        presenter.asyncLoadShoppingListById(shoppingLisId)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ShoppingList>() {
-                    @Override
-                    public void onCompleted() {
-                        System.out.println(">>Completed!!!!");
-                    }
+        long shoppingLisId = getArguments().getLong(SHOP_LIST_ID);//TODO пока не знаю что с этим делать
 
-                    @Override
-                    public void onError(Throwable e) {
-                        System.out.println(">>Error!!!");
-                        System.out.println(e);
-                    }
-
-                    @Override
-                    public void onNext(ShoppingList shoppingList) {
-                        for (ShoppingItem item : shoppingList.getShoppingItems()) {
-                            smartAdd(item);
-                        }
-                        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(shoppingList.getName());
-                        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
-                        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
-                        mRecyclerView.setAdapter(adapter);
-                        setUpItemTouchHelper();
-                    }
-                });
         presenter.bindView(this);
+        presenter.loadShoppingList();
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        presenter.unbindView();
+        super.onDestroyView();
     }
 
 
@@ -142,12 +124,11 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
                     ShoppingItem si = ((ShoppingItem) adapter.getListItem(position));
                     if (direction == ItemTouchHelper.RIGHT) {
                         adapter.deleteProductInstance(position);
-                        presenter.buyShoppingItem(si.getId());
+//                        presenter.buyShoppingItem(si.getId());
                     } else if (direction == ItemTouchHelper.LEFT) {
                         adapter.deleteProductInstance(position);
-                        presenter.deleteShoppingItem(si.getId());
+//                        presenter.deleteShoppingItem(si.getId());
                     }
-                    refreshCost();
                 }
             }
         };
@@ -155,19 +136,16 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
-    @Override
-    public void onDestroyView() {
-        presenter.unbindView();
-        super.onDestroyView();
-    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu, menu);
         //Setup search item
         MenuItem searchItem = menu.findItem(R.id.search_item);
+        searchAutoCompleteAdapter = new SearchAutoCompleteAdapter(this, getContext());
         final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) MenuItemCompat.getActionView(searchItem);
-        autoCompleteTextView.setAdapter(new SearchAutoCompleteAdapter(presenter, getContext()));
+        autoCompleteTextView.setAdapter(searchAutoCompleteAdapter);
         autoCompleteTextView.setWidth(800);//TODO without this it would wrap input chars
         autoCompleteTextView.setHint("название продукта");
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -176,7 +154,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
                 ShoppingItem shoppingItem = (ShoppingItem) parent.getItemAtPosition(position);
                 autoCompleteTextView.setText("");
 //                presenter.addShoppingItem(shoppingItem, shoppingList.getId());//TODO do not use global
-                addProduct(shoppingItem);
+//                addProduct(shoppingItem);
             }
         });
         //Setup send item
@@ -192,11 +170,11 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         });
     }
 
-    public void addProduct(ShoppingItem product) {
-        smartAdd(product);
-        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
-        mRecyclerView.setAdapter(adapter);
-    }
+//    public void addProduct(ShoppingItem product) {
+//        smartAdd(product);
+//        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
+//        mRecyclerView.setAdapter(adapter);
+//    }
 
     private void smartAdd(ShoppingItem shoppingItem) {
         String category = shoppingItem.getMerchandise().getCategory().getName();
@@ -215,23 +193,59 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         if (!productAdded) {
             mParentItemList.add(new ParentItem(category, imageName, shoppingItem));
         }
-//        refreshCost();
     }
 
 
     @Override
-    public void refreshCost() {
-//        if (shoppingList.getTotalCost() > 0) {
-//            totalCostTextView.setText(String.valueOf(shoppingList.getTotalCost()) + " p");
-//        } else {
-//            totalCostTextView.setText("");
-//        }
-//        if (shoppingList.getTotalBoughtCost() > 0) {
-//            totalBoughtCostTextView.setText(String.valueOf(shoppingList.getTotalBoughtCost()) + " p");
-//            totalBoughtCostIcon.setVisibility(View.VISIBLE);
-//        } else {
-//            totalBoughtCostTextView.setText("");
-//            totalBoughtCostIcon.setVisibility(View.GONE);
-//        }
+    public void setUpShopingList(List<ShoppingItem> shoppingItems) {
+        mParentItemList = new ArrayList<>();
+        for (ShoppingItem shoppingItem : shoppingItems) {
+            smartAdd(shoppingItem);
+        }
+        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
+        mRecyclerView.setAdapter(adapter);
+        setUpItemTouchHelper();
+    }
+
+    @Override
+    public void setTotalCost(double totalCost) {
+        if (totalCost > 0) {
+            totalCostTextView.setText(String.valueOf(totalCost) + " p");
+        } else {
+            totalCostTextView.setText("");
+        }
+    }
+
+    @Override
+    public void setTotalBoughtCost(double totalBoughtCost) {
+        if (totalBoughtCost > 0) {
+            totalBoughtCostTextView.setText(totalBoughtCost + " p");
+            totalBoughtCostIcon.setVisibility(View.VISIBLE);
+        } else {
+            totalBoughtCostTextView.setText("");
+            totalBoughtCostIcon.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setListName(String name) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(name);
+    }
+
+    @Override
+    public void addShoppingItem(ShoppingItem shoppingItem) {
+        smartAdd(shoppingItem);
+        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void searchShoppingItems(String pattern) {
+        presenter.searchShoppingItems(pattern);
+    }
+
+    @Override
+    public void setFindedShoppingItems(List<ShoppingItem> findedShoppingItems) {
+        searchAutoCompleteAdapter.setResults(findedShoppingItems);
     }
 }
