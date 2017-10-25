@@ -11,15 +11,13 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 
 public class ChildProductViewHolder extends ChildViewHolder {
 
-    IShoppingListView superView;
     FrameLayout decreaseFrame;
     FrameLayout increaseFrame;
     TextView mProductInstanceView;
     TextView shoppingItemQuantity;
 
-    public ChildProductViewHolder(View itemView, IShoppingListView superView){
+    public ChildProductViewHolder(View itemView){
         super(itemView);
-        this.superView = superView;
         decreaseFrame = (FrameLayout) itemView.findViewById(R.id.decrease_quantity_frame);
         increaseFrame = (FrameLayout) itemView.findViewById(R.id.increase_quantity_frame);
         mProductInstanceView = (TextView) itemView.findViewById(R.id.tv_product_name);
@@ -60,7 +58,6 @@ public class ChildProductViewHolder extends ChildViewHolder {
         } else {
             shoppingItemQuantity.setText("");
         }
-        superView.refreshCost();
     }
 
 

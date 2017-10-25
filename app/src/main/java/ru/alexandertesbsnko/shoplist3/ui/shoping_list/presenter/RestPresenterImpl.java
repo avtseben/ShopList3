@@ -9,6 +9,7 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.IShoppingListView;
 import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by avtseben on 24.10.17.
@@ -18,6 +19,7 @@ public class RestPresenterImpl implements IShoppingListPresenter {
 
     private IShoppingListView view;
     IShoppingListRepository repository = new RestShoppingListRepository();
+    private ShoppingList shoppingList;
 
     @Override
     public ShoppingList loadShoppingListById(long id){
@@ -58,9 +60,30 @@ public class RestPresenterImpl implements IShoppingListPresenter {
 
     @Override
     public Observable<ShoppingList> asyncLoadShoppingListById(long id) {
-        return new AsyncRestShoppingListRepository().loadShoppingListById(id);
+        Observable<ShoppingList> observable = new AsyncRestShoppingListRepository().loadShoppingListById(id);
+        observable.subscribe(new Subscriber<ShoppingList>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(ShoppingList shoppingList) {
+                setShoppingList(shoppingList);
+                System.out.println(">>Complete from presenter" + shoppingList.getName());
+            }
+        });
+        return observable;
     }
 
+    void setShoppingList(ShoppingList shoppingList){
+        this.shoppingList = shoppingList;
+        System.out.println(">> from presenter" + this.shoppingList.getName());
+    }
 
     @Override
     public void bindView(IShoppingListView view) {

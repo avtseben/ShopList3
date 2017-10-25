@@ -32,6 +32,9 @@ import ru.alexandertesbsnko.shoplist3.ui.AbstractFragment;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.IShoppingListPresenter;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class ShoppingListFragment extends AbstractFragment implements IShoppingListView {
@@ -41,7 +44,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     private ShoppingListAdapter adapter;
     private RecyclerView mRecyclerView;
     List<ParentItem> mParentItemList;
-    ShoppingList shoppingList;
+//    ShoppingList shoppingList;
     TextView totalCostTextView;
     TextView totalBoughtCostTextView;
     ImageView totalBoughtCostIcon;
@@ -68,38 +71,43 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fmt_shopping_list, container, false);
+        final View view = inflater.inflate(R.layout.fmt_shopping_list, container, false);
         listener = router;
         mParentItemList = new ArrayList<>();
         totalCostTextView = (TextView) view.findViewById(R.id.total_sl_cost);
         totalBoughtCostTextView = (TextView) view.findViewById(R.id.total_bought_cost);
         totalBoughtCostIcon = (ImageView) view.findViewById(R.id.total_bought_icon);
 
-        long shoppingLisId;
-        shoppingLisId = getArguments().getLong(SHOP_LIST_ID);
-        if (shoppingLisId != 0) {
-            shoppingList = presenter.loadShoppingListById(shoppingLisId);
-            for (ShoppingItem item : shoppingList.getShoppingItems()) {
-                smartAdd(item);
-            }
-        } else {
-            shoppingList = presenter.loadNewShoppingList();
-        }
+        long shoppingLisId = getArguments().getLong(SHOP_LIST_ID);
+        presenter.asyncLoadShoppingListById(shoppingLisId)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ShoppingList>() {
+                    @Override
+                    public void onCompleted() {
+                        System.out.println(">>Completed!!!!");
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        System.out.println(">>Error!!!");
+                        System.out.println(e);
+                    }
 
-
-
-
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(shoppingList.getName());
-
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ShoppingListAdapter(getContext(), mParentItemList, this);
-        mRecyclerView.setAdapter(adapter);
-
+                    @Override
+                    public void onNext(ShoppingList shoppingList) {
+                        for (ShoppingItem item : shoppingList.getShoppingItems()) {
+                            smartAdd(item);
+                        }
+                        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(shoppingList.getName());
+                        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
+                        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
+                        mRecyclerView.setAdapter(adapter);
+                        setUpItemTouchHelper();
+                    }
+                });
         presenter.bindView(this);
-        setUpItemTouchHelper();
         return view;
     }
 
@@ -167,7 +175,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShoppingItem shoppingItem = (ShoppingItem) parent.getItemAtPosition(position);
                 autoCompleteTextView.setText("");
-                presenter.addShoppingItem(shoppingItem, shoppingList.getId());
+//                presenter.addShoppingItem(shoppingItem, shoppingList.getId());//TODO do not use global
                 addProduct(shoppingItem);
             }
         });
@@ -177,7 +185,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 if (listener != null) {
-                    listener.onSendButtonClicked(shoppingList);
+//                    listener.onSendButtonClicked(shoppingList);/TODO do not use global
                 }
                 return true;
             }
@@ -186,7 +194,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
 
     public void addProduct(ShoppingItem product) {
         smartAdd(product);
-        adapter = new ShoppingListAdapter(getContext(), mParentItemList, this);
+        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -207,23 +215,23 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         if (!productAdded) {
             mParentItemList.add(new ParentItem(category, imageName, shoppingItem));
         }
-        refreshCost();
+//        refreshCost();
     }
 
 
     @Override
     public void refreshCost() {
-        if (shoppingList.getTotalCost() > 0) {
-            totalCostTextView.setText(String.valueOf(shoppingList.getTotalCost()) + " p");
-        } else {
-            totalCostTextView.setText("");
-        }
-        if (shoppingList.getTotalBoughtCost() > 0) {
-            totalBoughtCostTextView.setText(String.valueOf(shoppingList.getTotalBoughtCost()) + " p");
-            totalBoughtCostIcon.setVisibility(View.VISIBLE);
-        } else {
-            totalBoughtCostTextView.setText("");
-            totalBoughtCostIcon.setVisibility(View.GONE);
-        }
+//        if (shoppingList.getTotalCost() > 0) {
+//            totalCostTextView.setText(String.valueOf(shoppingList.getTotalCost()) + " p");
+//        } else {
+//            totalCostTextView.setText("");
+//        }
+//        if (shoppingList.getTotalBoughtCost() > 0) {
+//            totalBoughtCostTextView.setText(String.valueOf(shoppingList.getTotalBoughtCost()) + " p");
+//            totalBoughtCostIcon.setVisibility(View.VISIBLE);
+//        } else {
+//            totalBoughtCostTextView.setText("");
+//            totalBoughtCostIcon.setVisibility(View.GONE);
+//        }
     }
 }

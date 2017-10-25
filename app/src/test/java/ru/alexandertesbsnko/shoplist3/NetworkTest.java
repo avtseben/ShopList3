@@ -13,7 +13,9 @@ import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_lis
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shopping_lists.AtFindShoppingListsResponse;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.RestShoppingListRepository;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.RestPresenterImpl;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -23,6 +25,27 @@ import rx.schedulers.Schedulers;
 public class NetworkTest {
     @Test
     public void testFindShoppingListsApiEndpoint() throws Exception {
+        ShoppingListsService service = new ServiceBuilder().buildShoppingListService();
+        AtFindShoppingListsRequest request = new AtFindShoppingListsRequest();
+        request.setId(1l);
+        service.atFindShoppingListsAsync(request)
+                .subscribe(new Subscriber<AtFindShoppingListsResponse>() {
+                    @Override
+                    public final void onCompleted() {
+                    }
+
+                    @Override
+                    public final void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(AtFindShoppingListsResponse response) {
+                        System.out.println(response);
+                    }
+                });
+    }
+    @Test
+    public void testAsyncRepo() throws Exception {
 
         AsyncRestShoppingListRepository repo = new AsyncRestShoppingListRepository();
         repo.loadShoppingListById(1)
@@ -60,20 +83,28 @@ public class NetworkTest {
     }
 
     @Test
-    public void testObservable() {
-        Observable observable = Observable.create(new Observable.OnSubscribe<String>() {
+    public void testAsyncPresenter() {
+        RestPresenterImpl presenter = new RestPresenterImpl();
+        presenter.asyncLoadShoppingListById(1l)
+                .subscribe(new Subscriber<ShoppingList>() {
+                    @Override
+                    public void onCompleted() {
+                        System.out.println(">>Completed!!!!");
+                    }
 
-                                                      @Override
-                                                      public void call(Subscriber<? super String> subscriber) {
-                                                          subscriber.onNext("Hello");
-                                                          subscriber.onCompleted();
-                                                          subscriber.onError(new Exception());
+                    @Override
+                    public void onError(Throwable e) {
 
-                                                      }
-                                                  }
-        );
-        observable.skip(0);
-        System.out.println();
+                    }
+
+                    @Override
+                    public void onNext(ShoppingList shoppingList) {
+
+                        System.out.println(">>List loaded!!!!");
+                        System.out.println(shoppingList.getName());
+//                        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(shoppingList.getName());
+                    }
+                });
 
     }
 

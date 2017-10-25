@@ -16,9 +16,7 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Shop;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class AsyncRestShoppingListRepository  {
 
@@ -27,9 +25,7 @@ public class AsyncRestShoppingListRepository  {
         AtFindShoppingListsRequest request = new AtFindShoppingListsRequest();
         request.setId(id);
         Observable<AtFindShoppingListsResponse> observable = service.atFindShoppingListsAsync(request);
-        Observable<ShoppingList> observable1 = observable
-                .map(new AsyncDtoAdapter());
-        return observable1;
+        return observable.map(new AsyncDtoAdapter());
     }
 
     class AsyncDtoAdapter implements Func1<AtFindShoppingListsResponse,ShoppingList> {

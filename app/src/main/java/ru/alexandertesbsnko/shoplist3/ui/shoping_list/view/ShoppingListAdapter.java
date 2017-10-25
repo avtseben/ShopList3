@@ -18,11 +18,9 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 public class ShoppingListAdapter extends ExpandableRecyclerAdapter<ParentCategoryViewHolder,ChildProductViewHolder> {
 
     private final LayoutInflater mInflater;
-    private final IShoppingListView superView;
 
-    public ShoppingListAdapter(Context context, @NonNull List<? extends ParentListItem> parentItemList,IShoppingListView superView) {
+    public ShoppingListAdapter(Context context, @NonNull List<? extends ParentListItem> parentItemList) {
         super(parentItemList);
-        this.superView = superView;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -35,7 +33,7 @@ public class ShoppingListAdapter extends ExpandableRecyclerAdapter<ParentCategor
     @Override
     public ChildProductViewHolder onCreateChildViewHolder(ViewGroup viewGroup) {
         View view = mInflater.inflate(R.layout.list_item_product_child,viewGroup,false);
-        return new ChildProductViewHolder(view,superView);
+        return new ChildProductViewHolder(view);
     }
 
     @Override
