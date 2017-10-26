@@ -3,12 +3,15 @@ package ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter;
 
 import android.support.annotation.NonNull;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.IShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.RestShoppingListRepository;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.IShoppingListView;
@@ -129,13 +132,22 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
     }
 
     @Override
-    public void searchShoppingItems(String pattern) {
-        interactor.searchShoppingItemsByProductName(pattern);
-
+    public void searchProductsByName(String pattern) {
+        System.out.println("in  presenter " + pattern);
+        interactor.searchProductsByName(pattern);
+        setFindedProductsOnView(null);//Fake
     }
 
-    private void setFindedShoppingItemsOnView(List<ShoppingItem> items){
-        view.setFindedShoppingItems(items);
+    private void setFindedProductsOnView(List<Product> items){
+        //Fake
+        List<Product> productList = new ArrayList<>();
+        Product milk = new Product(1,"Молоко_fake","кисломол");
+        Product bread = new Product(2,"Хлеб_fake","хлеб");
+        Product tvorog = new Product(3,"Творог_fake","кисломол");
+        items = Arrays.asList(milk,bread,tvorog);
+        //
+        System.out.println("in  presenter finded items " + items);
+        view.setFindedProducts(items);
     }
 
 }

@@ -2,6 +2,7 @@ package ru.alexandertesbsnko.shoplist3.ui.shoping_list.view;
 
 import java.util.List;
 
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 
@@ -18,7 +19,7 @@ public interface IShoppingListView {
 
     //Autocomplete searching
     void searchShoppingItems(String pattern); //#Uplink interface
-    void setFindedShoppingItems(List<ShoppingItem> findedShoppingItems);
+    void setFindedProducts(List<Product> findedProducts);
     void addShoppingItem(ShoppingItem shoppingItem);
 
     //Change shoppingItem quantity #Uplink interface

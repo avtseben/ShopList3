@@ -12,12 +12,12 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.alexandertesbsnko.shoplist3.R;
-import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
 
 public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable{
 
 
-    private List<ShoppingItem> mResults;
+    private List<Product> mResults;
     private final IShoppingListView superView;
     private final Context mContext;
 
@@ -47,15 +47,17 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
             LayoutInflater inflater = LayoutInflater.from(mContext);
             convertView = inflater.inflate(R.layout.search_dropdown_item,null);//Инфлэйтим
         }
-        ShoppingItem shoppingItem = (ShoppingItem) getItem(position);
-        ((TextView) convertView.findViewById(R.id.text1)).setText(shoppingItem.getMerchandise().getName());
-        ((TextView) convertView.findViewById(R.id.text2)).setText(shoppingItem.getMerchandise().getCategory().getName());
+        Product product = (Product) getItem(position);
+        ((TextView) convertView.findViewById(R.id.product_name)).setText(product.getName());
+        ((TextView) convertView.findViewById(R.id.product_category_name)).setText(product.getCategoryName());
 
         return convertView;
     }
 
-    public void setResults(List<ShoppingItem> mResults) {
-        this.mResults = mResults;
+
+    public void setResults(List<Product> findedProducts) {
+        this.mResults = findedProducts;
+        System.out.println("Serach adapter set results: " + mResults);
     }
 
     @Override
@@ -66,8 +68,9 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     superView.searchShoppingItems(constraint.toString());
-//                    filterResults.values = products;
-//                    filterResults.count = products.size();  //TODO с этим чтото делать
+                    System.out.println("Perform filtering: " + mResults);
+                    filterResults.values = mResults;
+                    filterResults.count = mResults.size();
                 }
                 return filterResults;
             }
@@ -75,7 +78,8 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults results) {
                 if (results != null && results.count > 0) {
-                    mResults = (List<ShoppingItem>) results.values;
+                    mResults = (List<Product>) results.values;
+                    System.out.println("Publish results: " + mResults);
                     notifyDataSetChanged();
                 } else {
                     notifyDataSetInvalidated();

@@ -12,6 +12,7 @@ import ru.alexandertesbsnko.shoplist3.data_source.net.shopping_list.ShoppingList
 
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Category;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Merchandise;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Shop;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
@@ -28,7 +29,7 @@ public class AsyncRestShoppingListRepository  {
         return observable.map(new AsyncDtoAdapter());
     }
 
-    public Observable<List<ShoppingItem>> searchShoppingItemsByProductName(String pattern) {
+    public Observable<List<Product>> searchProductsByName(String pattern) {
 
         return null;//// TODO: 26.10.17
     }

@@ -28,6 +28,7 @@ import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.SLApplication;
 import ru.alexandertesbsnko.shoplist3.di.shoping_list.ShopingListModule;
 import ru.alexandertesbsnko.shoplist3.ui.AbstractFragment;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.IShoppingListPresenter;
 
@@ -240,13 +241,12 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
      */
     @Override
     public void searchShoppingItems(String pattern) {
-        System.out.println("in super view " + pattern);
-        presenter.searchShoppingItems(pattern);
+        presenter.searchProductsByName(pattern);
     }
 
     @Override
-    public void setFindedShoppingItems(List<ShoppingItem> findedShoppingItems) {
-        searchAutoCompleteAdapter.setResults(findedShoppingItems);
+    public void setFindedProducts(List<Product> findedProducts) {
+        searchAutoCompleteAdapter.setResults(findedProducts);
     }
 
     @Override
