@@ -57,7 +57,6 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
 
     public void setResults(List<Product> findedProducts) {
         this.mResults = findedProducts;
-        System.out.println("Serach adapter set results: " + mResults);
     }
 
     @Override
@@ -68,7 +67,6 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     superView.searchShoppingItems(constraint.toString());
-                    System.out.println("Perform filtering: " + mResults);
                     filterResults.values = mResults;
                     filterResults.count = mResults.size();
                 }
@@ -79,7 +77,6 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
             protected void publishResults(CharSequence charSequence, FilterResults results) {
                 if (results != null && results.count > 0) {
                     mResults = (List<Product>) results.values;
-                    System.out.println("Publish results: " + mResults);
                     notifyDataSetChanged();
                 } else {
                     notifyDataSetInvalidated();

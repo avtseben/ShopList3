@@ -133,7 +133,6 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
 
     @Override
     public void searchProductsByName(String pattern) {
-        System.out.println("in  presenter " + pattern);
         interactor.searchProductsByName(pattern);
         setFindedProductsOnView(null);//Fake
     }
