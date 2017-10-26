@@ -14,7 +14,10 @@ import ru.alexandertesbsnko.shoplist3.di.shoping_list.ShoppingListsInteractorPro
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.IShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.RestShoppingListRepository;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Category;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Merchandise;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Shop;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.IShoppingListView;
@@ -167,11 +170,23 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
     }
 
     private void setFindedProductsOnView(List<Product> items){
-        System.out.println("Presenter set finded products");
-        for (Product item : items) {
-            System.out.println(item.getName());
-        }
         view.setFindedProducts(items);
     }
 
+    @Override
+    public void addProduct(Product product) {
+        //TODO fake
+        ShoppingItem newShoppingItem = new ShoppingItem(
+                100
+                ,new Shop(100,"Лента")
+                ,new Merchandise(100
+                    ,new Category(1,product.getCategoryName(),"milk")
+                   ,product.getName() )
+                ,100d);
+        //
+        //TODO обратится к интерактору за shopping Item'ом для продукта
+        shoppingList.getShoppingItems().add(newShoppingItem);
+        view.addShoppingItem(newShoppingItem);
+        view.setTotalCost(shoppingList.getTotalCost());
+    }
 }

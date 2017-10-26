@@ -147,10 +147,9 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ShoppingItem shoppingItem = (ShoppingItem) parent.getItemAtPosition(position);
+                Product product = (Product) parent.getItemAtPosition(position);
                 autoCompleteTextView.setText("");
-//                presenter.addShoppingItem(shoppingItem, shoppingList.getId());//TODO do not use global
-//                addProduct(shoppingItem);
+                presenter.addProduct(product);
             }
         });
         //Setup send item
@@ -165,12 +164,6 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
             }
         });
     }
-
-//    public void addProduct(ShoppingItem product) {
-//        smartAdd(product);
-//        adapter = new ShoppingListAdapter(getContext(), mParentItemList);
-//        mRecyclerView.setAdapter(adapter);
-//    }
 
     private void smartAdd(ShoppingItem shoppingItem) {
         String category = shoppingItem.getMerchandise().getCategory().getName();
