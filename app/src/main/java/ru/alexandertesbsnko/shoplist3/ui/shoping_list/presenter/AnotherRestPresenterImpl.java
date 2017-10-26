@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.IShoppingListInteractor;
+import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.ShoppingListInteractor;
+import ru.alexandertesbsnko.shoplist3.di.shoping_list.ShoppingListsInteractorProvider;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.IShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.RestShoppingListRepository;
@@ -28,7 +31,7 @@ import rx.subscriptions.CompositeSubscription;
 public class AnotherRestPresenterImpl implements IShoppingListPresenter {
 
     private IShoppingListView view;
-    AsyncRestShoppingListRepository interactor = new AsyncRestShoppingListRepository();//TODO обращаться к интерфейсу переделать репозиторий в интерактор
+    IShoppingListInteractor interactor = ShoppingListsInteractorProvider.INSTANCE.provide();
     private ShoppingList shoppingList;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
@@ -113,6 +116,12 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
         System.out.println(">>ShowErorrOnView");
     }
 
+    private void handleErrorLoadProducts(Throwable throwable) {
+        throwable.printStackTrace();
+        System.out.println(">>HideProgress");//TODO stub
+        System.out.println(">>ShowErorrOnView");
+    }
+
     private void setShoppingListOnView(){
         view.setUpShopingList(shoppingList.getShoppingItems());
         view.setTotalCost(shoppingList.getTotalCost());
@@ -133,19 +142,35 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
 
     @Override
     public void searchProductsByName(String pattern) {
-//        interactor.searchProductsByName(pattern);
-        setFindedProductsOnView(null);//Fake
+        Subscription subscription  = interactor.searchProductsByName(pattern)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Product>>() {
+                    @Override
+                    public void onCompleted() {}
+
+                    @Override
+                    public void onError(Throwable e) {
+                        handleErrorLoadProducts(e);
+                    }
+
+                    @Override
+                    public void onNext(List<Product> products) {
+                        handleSuccessLoadProducts(products);
+                    }
+                });
+        compositeSubscription.add(subscription);
+    }
+
+    private void handleSuccessLoadProducts(@NonNull List<Product> products) {
+        setFindedProductsOnView(products);
     }
 
     private void setFindedProductsOnView(List<Product> items){
-        //Fake
-        List<Product> productList = new ArrayList<>();
-        Product milk = new Product(1,"Молоко_fake","кисломол");
-        Product bread = new Product(2,"Хлеб_fake","хлеб");
-        Product tvorog = new Product(3,"Творог_fake","кисломол");
-        items = Arrays.asList(milk,bread,tvorog);
-        //
-        System.out.println("in  presenter finded items " + items);
+        System.out.println("Presenter set finded products");
+        for (Product item : items) {
+            System.out.println(item.getName());
+        }
         view.setFindedProducts(items);
     }
 

@@ -24,6 +24,7 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 //import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.RestPresenterImpl;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.AnotherRestPresenterImpl;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -91,33 +92,8 @@ public class NetworkTest {
     }
 
     @Test
-    public void testProductService() {
-        ProductsService service = new ServiceBuilder().buildProductsService();
-        AtFindProductRequest request = new AtFindProductRequest();
-        request.setNameLike("%Мол%");
-        Observable<AtFindProductResponse> observable = service.atFindProductAsync(request);
-
-
-        IProductsRepository repository = new ProductsRepository();
-        repository.searchProductsByNameLike("Мол")
-                .subscribe(new Subscriber<List<Product>>() {
-                    @Override
-                    public void onCompleted() {
-                        System.out.println("Complete");
-
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        System.out.println("Fail");
-                    }
-                    @Override
-                    public void onNext(List<Product> products) {
-                        for (Product product : products) {
-                            System.out.println(product.getName());
-                        }
-                    }
-                });
+    public void testPresenterProductSearch() {
+        new AnotherRestPresenterImpl().searchProductsByName("Мол");
     }
 
     @Test
