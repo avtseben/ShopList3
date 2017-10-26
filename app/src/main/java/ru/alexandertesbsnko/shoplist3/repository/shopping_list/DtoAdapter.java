@@ -14,30 +14,24 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 public class DtoAdapter implements IDtoAdapter{
 
     @Override
-    public ShoppingList adapt(AtShoppingListDTO atShoppingListDTO){
-        List<ShoppingItem> shoppingItems = new ArrayList<>();
-        for (AtShoppingItemDTO atShoppingItemDTO : atShoppingListDTO.getShoppingItems()) {
-            Merchandise merchandise = new Merchandise(
-                    atShoppingItemDTO.getMerchandise().getId()
-                    , new Category(
-                    atShoppingItemDTO.getMerchandise().getCategory().getId()
-                    , atShoppingItemDTO.getMerchandise().getCategory().getName()
-                    , "milk")
-                    , atShoppingItemDTO.getMerchandise().getProduct().getName());
-            Shop shop = new Shop(
-                    atShoppingItemDTO.getShop().getId()
-                    , atShoppingItemDTO.getShop().getName());
-            ShoppingItem shoppingItem = new ShoppingItem(
-                    atShoppingItemDTO.getId()
-                    , shop
-                    , merchandise
-                    , atShoppingItemDTO.getPrice());
-            shoppingItems.add(shoppingItem);
-        }
-
-        return new ShoppingList(
-                atShoppingListDTO.getId()
-                , atShoppingListDTO.getName()
-                , shoppingItems);
+    public ShoppingItem adapt(AtShoppingItemDTO atShoppingItemDTO){
+        Merchandise merchandise = new Merchandise(
+                atShoppingItemDTO.getMerchandise().getId()
+                , new Category(
+                atShoppingItemDTO.getMerchandise().getCategory().getId()
+                , atShoppingItemDTO.getMerchandise().getCategory().getName()
+                , "milk")//TODO hardcode. createfield in backend
+                , atShoppingItemDTO.getMerchandise().getProduct().getName());
+        Shop shop = new Shop(
+                atShoppingItemDTO.getShop().getId()
+                , atShoppingItemDTO.getShop().getName());
+        ShoppingItem shoppingItem = new ShoppingItem(
+                atShoppingItemDTO.getId()
+                , shop
+                , merchandise
+                , atShoppingItemDTO.getPrice());
+        return shoppingItem;
     }
+
+
 }

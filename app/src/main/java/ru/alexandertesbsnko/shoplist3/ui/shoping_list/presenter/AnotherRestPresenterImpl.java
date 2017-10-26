@@ -13,7 +13,6 @@ import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.ShoppingList
 import ru.alexandertesbsnko.shoplist3.di.shoping_list.ShoppingListsInteractorProvider;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.IShoppingListRepository;
-import ru.alexandertesbsnko.shoplist3.repository.shopping_list.RestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Category;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Merchandise;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;

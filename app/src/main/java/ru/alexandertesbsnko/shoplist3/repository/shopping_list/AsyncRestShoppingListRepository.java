@@ -7,7 +7,9 @@ import ru.alexandertesbsnko.shoplist3.data_source.net.common.ServiceBuilder;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.dto.AtShoppingItemDTO;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.dto.AtShoppingListDTO;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_lists.AtFindShoppingListsRequest;
+import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_lists.AtInsertItemToShoppingListRequest;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shopping_lists.AtFindShoppingListsResponse;
+import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shopping_lists.AtInsertItemToShoppingListResponse;
 import ru.alexandertesbsnko.shoplist3.data_source.net.shopping_list.ShoppingListsService;
 
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Category;
@@ -26,10 +28,19 @@ public class AsyncRestShoppingListRepository  {
         AtFindShoppingListsRequest request = new AtFindShoppingListsRequest();
         request.setId(id);
         Observable<AtFindShoppingListsResponse> observable = service.atFindShoppingListsAsync(request);
-        return observable.map(new AsyncDtoAdapter());
+        return observable.map(new ListDtoAdapter());
     }
 
-    class AsyncDtoAdapter implements Func1<AtFindShoppingListsResponse,ShoppingList> {
+    public  Observable<ShoppingItem> insertItemToShoppingList(long shoppingListId, long productId){
+        ShoppingListsService service = new ServiceBuilder().buildShoppingListService();
+        AtInsertItemToShoppingListRequest request = new AtInsertItemToShoppingListRequest();
+        request.setShoppingListId(shoppingListId);
+        request.setProductId(productId);
+        Observable<AtInsertItemToShoppingListResponse> observable = service.atInsertItemToShoppingList(request);
+        return observable.map(new ItemDtoAdapter());
+    }
+
+    class ListDtoAdapter implements Func1<AtFindShoppingListsResponse,ShoppingList> {
 
         @Override
         public ShoppingList call(AtFindShoppingListsResponse response) {
@@ -41,7 +52,7 @@ public class AsyncRestShoppingListRepository  {
                         , new Category(
                         atShoppingItemDTO.getMerchandise().getCategory().getId()
                         , atShoppingItemDTO.getMerchandise().getCategory().getName()
-                        , "milk")
+                        , "milk")//TODO hardcode. createfield in backend
                         , atShoppingItemDTO.getMerchandise().getProduct().getName());
                 Shop shop = new Shop(
                         atShoppingItemDTO.getShop().getId()
@@ -58,6 +69,14 @@ public class AsyncRestShoppingListRepository  {
                     atShoppingListDTO.getId()
                     , atShoppingListDTO.getName()
                     , shoppingItems);
+        }
+    }
+
+    class ItemDtoAdapter implements Func1<AtInsertItemToShoppingListResponse,ShoppingItem> {
+
+        @Override
+        public ShoppingItem call(AtInsertItemToShoppingListResponse response) {
+            return new DtoAdapter().adapt(response.getNewShoppingItem());
         }
     }
 }

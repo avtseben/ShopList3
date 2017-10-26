@@ -20,7 +20,6 @@ import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shopping_li
 import ru.alexandertesbsnko.shoplist3.repository.products.IProductsRepository;
 import ru.alexandertesbsnko.shoplist3.repository.products.ProductsRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShoppingListRepository;
-import ru.alexandertesbsnko.shoplist3.repository.shopping_list.RestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
@@ -86,12 +85,7 @@ public class NetworkTest {
     }
 
 
-    @Test
-    public void testFindShoppingListsRestRepositoryAdapter() throws Exception {
-        RestShoppingListRepository repository = new RestShoppingListRepository();
-        ShoppingList list = repository.loadShoppingListById(1l);
-        System.out.println();
-    }
+
 
     @Test
     public void testPresenterProductSearch() {
@@ -150,6 +144,29 @@ public class NetworkTest {
                     }
                 });
 
+    }
+    @Test
+    public void testInsertItemToShoppingListRepository() {
+        AsyncRestShoppingListRepository repository = new AsyncRestShoppingListRepository();
+
+        repository.insertItemToShoppingList(1,14)
+                .subscribe(new Subscriber<ShoppingItem>() {
+                    @Override
+                    public void onCompleted() {
+                        System.out.println("Complete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        System.out.println("Error");
+                    }
+
+                    @Override
+                    public void onNext(ShoppingItem shoppingItem) {
+                        System.out.println(shoppingItem.getMerchandise().getName());
+                    }
+                });
     }
 
 }
