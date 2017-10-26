@@ -9,6 +9,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import retrofit2.Call;
+import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.NewShoppingListInteractor;
 import ru.alexandertesbsnko.shoplist3.data_source.net.common.ServiceBuilder;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.products.AtFindProductRequest;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.products.AtFindProductResponse;
@@ -32,6 +33,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class NetworkTest {
+    int onNextCount = 0;
     @Test
     public void testFindShoppingListsApiEndpoint() throws Exception {
         ShoppingListsService service = new ServiceBuilder().buildShoppingListService();
@@ -118,6 +120,36 @@ public class NetworkTest {
                         }
                     }
                 });
+    }
+
+    @Test
+    public void testNewInteractor() {
+
+        NewShoppingListInteractor interactor = new NewShoppingListInteractor();
+        interactor.searchProductsByName("сл")
+                .subscribe(new Subscriber<List<Product>>() {
+                    @Override
+                    public void onCompleted() {
+                        System.out.println("Completed!");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        System.out.println("Error!");
+                    }
+
+                    @Override
+                    public void onNext(List<Product> products) {
+                        onNextCount++;
+                        System.out.println("OnNext!");
+                        for (Product product : products) {
+                            System.out.println(product.getName());
+                        }
+                        System.out.println(onNextCount);
+                    }
+                });
+
     }
 
 }
