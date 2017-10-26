@@ -6,6 +6,7 @@ public class AtProductDTO {
 
     public String name;
     public Long productCategoryId;
+    public String productCategoryName;
     public Integer proteins;
     public Integer fat;
     public Integer carbohydrates;
@@ -56,5 +57,13 @@ public class AtProductDTO {
 
     public void setCarbohydrates(Integer carbohydrates) {
         this.carbohydrates = carbohydrates;
+    }
+
+    public String getProductCategoryName() {
+        return productCategoryName;
+    }
+
+    public void setProductCategoryName(String productCategoryName) {
+        this.productCategoryName = productCategoryName;
     }
 }

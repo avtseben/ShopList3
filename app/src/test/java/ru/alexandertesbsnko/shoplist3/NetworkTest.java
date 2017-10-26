@@ -4,15 +4,23 @@ package ru.alexandertesbsnko.shoplist3;
 import org.junit.Test;
 
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import retrofit2.Call;
 import ru.alexandertesbsnko.shoplist3.data_source.net.common.ServiceBuilder;
+import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.products.AtFindProductRequest;
+import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.products.AtFindProductResponse;
+import ru.alexandertesbsnko.shoplist3.data_source.net.products.ProductsService;
 import ru.alexandertesbsnko.shoplist3.data_source.net.shopping_list.ShoppingListsService;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_lists.AtFindShoppingListsRequest;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shopping_lists.AtFindShoppingListsResponse;
+import ru.alexandertesbsnko.shoplist3.repository.products.IProductsRepository;
+import ru.alexandertesbsnko.shoplist3.repository.products.ProductsRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.RestShoppingListRepository;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 //import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.RestPresenterImpl;
@@ -83,29 +91,57 @@ public class NetworkTest {
     }
 
     @Test
-    public void testAsyncPresenter() {
-//        RestPresenterImpl presenter = new RestPresenterImpl();
-/*        presenter.asyncLoadShoppingListById(1l)
-                .subscribe(new Subscriber<ShoppingList>() {
+    public void testProductService() {
+        ProductsService service = new ServiceBuilder().buildProductsService();
+        AtFindProductRequest request = new AtFindProductRequest();
+        request.setNameLike("%Мол%");
+        Observable<AtFindProductResponse> observable = service.atFindProductAsync(request);
+
+
+        IProductsRepository repository = new ProductsRepository();
+        repository.searchProductsByNameLike("Мол")
+                .subscribe(new Subscriber<List<Product>>() {
                     @Override
                     public void onCompleted() {
-                        System.out.println(">>Completed!!!!");
-                    }
+                        System.out.println("Complete");
 
+                    }
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
+                        System.out.println("Fail");
                     }
-
                     @Override
-                    public void onNext(ShoppingList shoppingList) {
-
-                        System.out.println(">>List loaded!!!!");
-                        System.out.println(shoppingList.getName());
-//                        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(shoppingList.getName());
+                    public void onNext(List<Product> products) {
+                        for (Product product : products) {
+                            System.out.println(product.getName());
+                        }
                     }
-                });*/
+                });
+    }
 
+    @Test
+    public void testAsyncProductRepository() {
+        IProductsRepository repository = new ProductsRepository();
+        repository.searchProductsByNameLike("%о%")
+                .subscribe(new Subscriber<List<Product>>() {
+                    @Override
+                    public void onCompleted() {
+                        System.out.println("Complete");
+
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        System.out.println("Fail");
+                    }
+                    @Override
+                    public void onNext(List<Product> products) {
+                        for (Product product : products) {
+                            System.out.println(product.getName());
+                        }
+                    }
+                });
     }
 
 }

@@ -29,11 +29,6 @@ public class AsyncRestShoppingListRepository  {
         return observable.map(new AsyncDtoAdapter());
     }
 
-    public Observable<List<Product>> searchProductsByName(String pattern) {
-
-        return null;//// TODO: 26.10.17
-    }
-
     class AsyncDtoAdapter implements Func1<AtFindShoppingListsResponse,ShoppingList> {
 
         @Override
