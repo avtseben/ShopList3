@@ -21,8 +21,9 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import rx.Observable;
 import rx.functions.Func1;
 
-public class AsyncRestShoppingListRepository  {
+public class AsyncRestShoppingListRepository implements IShoppingListRepository {
 
+    @Override
     public Observable<ShoppingList> loadShoppingListById(long id) {
         ShoppingListsService service = new ServiceBuilder().buildShoppingListService();
         AtFindShoppingListsRequest request = new AtFindShoppingListsRequest();
@@ -31,6 +32,7 @@ public class AsyncRestShoppingListRepository  {
         return observable.map(new ListDtoAdapter());
     }
 
+    @Override
     public  Observable<ShoppingItem> insertItemToShoppingList(long shoppingListId, long productId){
         ShoppingListsService service = new ServiceBuilder().buildShoppingListService();
         AtInsertItemToShoppingListRequest request = new AtInsertItemToShoppingListRequest();

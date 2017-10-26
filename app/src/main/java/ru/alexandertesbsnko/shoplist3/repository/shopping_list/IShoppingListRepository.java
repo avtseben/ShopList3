@@ -1,13 +1,10 @@
 package ru.alexandertesbsnko.shoplist3.repository.shopping_list;
 
-
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
-
-/**
- * Created by avtseben on 25.10.17.
- */
+import rx.Observable;
 
 public interface IShoppingListRepository {
-    ShoppingList loadShoppingListById(long id) throws Exception;
-
+    Observable<ShoppingList> loadShoppingListById(long id);
+    Observable<ShoppingItem> insertItemToShoppingList(long shoppingListId, long productId);
 }

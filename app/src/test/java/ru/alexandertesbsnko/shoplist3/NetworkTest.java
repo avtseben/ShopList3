@@ -6,14 +6,9 @@ import org.junit.Test;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import retrofit2.Call;
-import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.NewShoppingListInteractor;
+import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.ShoppingListInteractor;
 import ru.alexandertesbsnko.shoplist3.data_source.net.common.ServiceBuilder;
-import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.products.AtFindProductRequest;
-import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.products.AtFindProductResponse;
-import ru.alexandertesbsnko.shoplist3.data_source.net.products.ProductsService;
 import ru.alexandertesbsnko.shoplist3.data_source.net.shopping_list.ShoppingListsService;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_lists.AtFindShoppingListsRequest;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shopping_lists.AtFindShoppingListsResponse;
@@ -25,11 +20,7 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 //import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.RestPresenterImpl;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.AnotherRestPresenterImpl;
-import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class NetworkTest {
     int onNextCount = 0;
@@ -119,7 +110,7 @@ public class NetworkTest {
     @Test
     public void testNewInteractor() {
 
-        NewShoppingListInteractor interactor = new NewShoppingListInteractor();
+        ShoppingListInteractor interactor = new ShoppingListInteractor();
         interactor.searchProductsByName("сл")
                 .subscribe(new Subscriber<List<Product>>() {
                     @Override
