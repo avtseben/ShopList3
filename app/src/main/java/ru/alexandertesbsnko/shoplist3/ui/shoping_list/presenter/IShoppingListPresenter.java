@@ -12,7 +12,7 @@ public interface IShoppingListPresenter {
     void decrementQuantity(long shoppingItemId);
     void bindView(IShoppingListView view);
     void unbindView();
-    List<ShoppingItem> searchShoppingItems(String pattern);
+    void searchShoppingItems(String pattern);
 
     void buyShoppingItem(long id);
 

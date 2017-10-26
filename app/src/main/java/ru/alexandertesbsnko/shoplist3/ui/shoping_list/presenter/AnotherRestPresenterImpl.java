@@ -25,7 +25,7 @@ import rx.subscriptions.CompositeSubscription;
 public class AnotherRestPresenterImpl implements IShoppingListPresenter {
 
     private IShoppingListView view;
-    IShoppingListRepository repository = new RestShoppingListRepository();
+    AsyncRestShoppingListRepository interactor = new AsyncRestShoppingListRepository();//TODO обращаться к интерфейсу переделать репозиторий в интерактор
     private ShoppingList shoppingList;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
@@ -78,7 +78,7 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
 
 
     private void loadShoppingListFromData(long id) {
-        Subscription subscription = new AsyncRestShoppingListRepository().loadShoppingListById(id)
+        Subscription subscription = new AsyncRestShoppingListRepository().loadShoppingListById(id)//TODO обращаться к интерфейсу
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ShoppingList>() {
@@ -129,8 +129,13 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
     }
 
     @Override
-    public List<ShoppingItem> searchShoppingItems(String pattern) {
-        return new ArrayList<>(0);//TODO stub
+    public void searchShoppingItems(String pattern) {
+        interactor.searchShoppingItemsByProductName(pattern);
+
+    }
+
+    private void setFindedShoppingItemsOnView(List<ShoppingItem> items){
+        view.setFindedShoppingItems(items);
     }
 
 }

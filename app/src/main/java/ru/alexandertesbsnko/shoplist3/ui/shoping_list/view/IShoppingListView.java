@@ -12,18 +12,16 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 public interface IShoppingListView {
 
     void setUpShopingList(List<ShoppingItem> shoppingItems);
-
     void setTotalCost(double totalCost);
-
     void setTotalBoughtCost(double totalBoughtCost);
-
     void setListName(String name);
 
+    //Autocomplete searching
+    void searchShoppingItems(String pattern); //#Uplink interface
+    void setFindedShoppingItems(List<ShoppingItem> findedShoppingItems);
     void addShoppingItem(ShoppingItem shoppingItem);
 
-    void searchShoppingItems(String pattern);
-
-    void setFindedShoppingItems(List<ShoppingItem> findedShoppingItems);
+    //Change shoppingItem quantity #Uplink interface
     void incrementQuantity(long shoppingItemId);
     void decrementQuantity(long shoppingItemId);
 

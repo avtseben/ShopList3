@@ -234,8 +234,13 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         mRecyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Метод для дочерних view елементов
+     * @param pattern
+     */
     @Override
     public void searchShoppingItems(String pattern) {
+        System.out.println("in super view " + pattern);
         presenter.searchShoppingItems(pattern);
     }
 

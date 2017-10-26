@@ -13,17 +13,16 @@ import java.util.List;
 
 import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
-import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.IShoppingListPresenter;
 
 public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable{
 
 
     private List<ShoppingItem> mResults;
-    private final IShoppingListView parentView;
+    private final IShoppingListView superView;
     private final Context mContext;
 
-    public SearchAutoCompleteAdapter(IShoppingListView parentView, Context context) {
-        this.parentView = parentView;
+    public SearchAutoCompleteAdapter(IShoppingListView superView, Context context) {
+        this.superView = superView;
         this.mContext = context;
     }
 
@@ -66,7 +65,7 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
-                    parentView.searchShoppingItems(constraint.toString());
+                    superView.searchShoppingItems(constraint.toString());
 //                    filterResults.values = products;
 //                    filterResults.count = products.size();  //TODO с этим чтото делать
                 }
