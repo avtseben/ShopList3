@@ -21,7 +21,7 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 //import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.RestPresenterImpl;
-import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.AnotherRestPresenterImpl;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.ShoppingListPresenter;
 import rx.Subscriber;
 
 public class NetworkTest {
@@ -82,7 +82,7 @@ public class NetworkTest {
 
     @Test
     public void testPresenterProductSearch() {
-        new AnotherRestPresenterImpl().searchProductsByName("Мол");
+        new ShoppingListPresenter().searchProductsByName("Мол");
     }
 
     @Test

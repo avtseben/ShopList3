@@ -31,7 +31,7 @@ import rx.subscriptions.CompositeSubscription;
  * Created by avtseben on 24.10.17.
  */
 //TODO тест класс
-public class AnotherRestPresenterImpl implements IShoppingListPresenter {
+public class ShoppingListPresenter implements IShoppingListPresenter {
 
     private IShoppingListView view;
     IShoppingListInteractor interactor = ShoppingListsInteractorProvider.INSTANCE.provide();
