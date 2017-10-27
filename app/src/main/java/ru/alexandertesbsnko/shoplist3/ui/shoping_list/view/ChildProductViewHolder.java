@@ -45,6 +45,7 @@ public class ChildProductViewHolder extends ChildViewHolder {
             }
         });
         mProductInstanceView.setText(shoppingItem.getMerchandise().getName());
+        refreshQuantityView(shoppingItem);
     }
 
     private void refreshQuantityView(ShoppingItem shoppingItem){
