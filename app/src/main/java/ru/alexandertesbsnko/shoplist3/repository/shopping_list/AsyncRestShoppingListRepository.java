@@ -64,22 +64,7 @@ public class AsyncRestShoppingListRepository implements IShoppingListRepository 
             AtShoppingListDTO atShoppingListDTO = response.getShoppingLists().get(0);
             List<ShoppingItem > shoppingItems = new ArrayList<>();
             for (AtShoppingItemDTO atShoppingItemDTO : atShoppingListDTO.getShoppingItems()) {
-                Merchandise merchandise = new Merchandise(
-                        atShoppingItemDTO.getMerchandise().getId()
-                        , new Category(
-                        atShoppingItemDTO.getMerchandise().getCategory().getId()
-                        , atShoppingItemDTO.getMerchandise().getCategory().getName()
-                        , "milk")//TODO hardcode. createfield in backend
-                        , atShoppingItemDTO.getMerchandise().getProduct().getName());
-                Shop shop = new Shop(
-                        atShoppingItemDTO.getShop().getId()
-                        , atShoppingItemDTO.getShop().getName());
-                ShoppingItem shoppingItem = new ShoppingItem(
-                        atShoppingItemDTO.getId()
-                        , shop
-                        , merchandise
-                        , atShoppingItemDTO.getPrice());
-                shoppingItems.add(shoppingItem);
+                shoppingItems.add(new DtoAdapter().adapt(atShoppingItemDTO));
             }
 
             return new ShoppingList(

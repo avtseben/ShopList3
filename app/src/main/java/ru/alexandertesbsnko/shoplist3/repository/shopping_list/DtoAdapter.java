@@ -25,6 +25,8 @@ public class DtoAdapter implements IDtoAdapter{
                 , shop
                 , merchandise
                 , atShoppingItemDTO.getPrice());
+        shoppingItem.setState(atShoppingItemDTO.getState());
+        shoppingItem.setQuantity(atShoppingItemDTO.getQuantity());
         return shoppingItem;
     }
 

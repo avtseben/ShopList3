@@ -185,7 +185,13 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
     }
 
     private void setShoppingListOnView() {
-        view.setUpShopingList(shoppingList.getShoppingItems());
+        List<ShoppingItem> onlyInListStateItems = new ArrayList<>();
+        for (ShoppingItem shoppingItem : shoppingList.getShoppingItems()) {
+            if(shoppingItem.getState() == ShoppingItem.IN_LIST){
+                onlyInListStateItems.add(shoppingItem);//View имеет дело только со элементами с нужным статусом
+            }
+        }
+        view.setUpShopingList(onlyInListStateItems);
         view.setTotalCost(shoppingList.getTotalCost());
         view.setTotalBoughtCost(shoppingList.getTotalBoughtCost());
         view.setListName(shoppingList.getName());
