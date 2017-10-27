@@ -22,15 +22,14 @@ public class ShoppingItem {
 
     public void increaseQuantity(){
         quantity++;
-        System.out.println(merchandise.getName() + " " + quantity +  " increase quantity. cost = " + getCost());
     }
 
-    public void decreaseQuantity(){
+    public boolean decreaseQuantity(){
         if(quantity == 1){
-            return;
+            return false;
         }
         quantity--;
-        System.out.println(merchandise.getName() + " " + quantity + " decrease quantity. cost = " + getCost());
+        return true;
     }
 
     public double getCost(){

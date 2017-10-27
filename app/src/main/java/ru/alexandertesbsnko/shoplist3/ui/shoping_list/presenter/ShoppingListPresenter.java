@@ -45,24 +45,61 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
 
     @Override
     public void incrementQuantity(long shoppingItemId) {//TODO оптимизировать в мапу
+        ShoppingItem theItem = null;
         List<ShoppingItem> items = shoppingList.getShoppingItems();
         for (ShoppingItem item : items) {
             if (item.getId() == shoppingItemId) {
                 item.increaseQuantity();
+                theItem = item;
             }
         }
         view.setTotalCost(shoppingList.getTotalCost());
+        if(theItem == null){
+            return;
+        }
+        updateQuantityInDataLayer(theItem);
+    }
+
+    private void updateQuantityInDataLayer(ShoppingItem theItem) {
+        Subscription subscription = interactor.updateShoppingItemQuantity(theItem)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<AckResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        handleUexpectedError(e);
+                    }
+
+                    @Override
+                    public void onNext(AckResponse ackResponse) {
+                        handleExpectedErrors(ackResponse);
+                    }
+                });
+        compositeSubscription.add(subscription);
     }
 
     @Override
     public void decrementQuantity(long shoppingItemId) {
+        ShoppingItem theItem = null;
         List<ShoppingItem> items = shoppingList.getShoppingItems();
         for (ShoppingItem item : items) {
             if (item.getId() == shoppingItemId) {
-                item.decreaseQuantity();
+                boolean isChanged = item.decreaseQuantity();
+                if(!isChanged){
+                    return;
+                }
+                theItem = item;
             }
         }
         view.setTotalCost(shoppingList.getTotalCost());
+        if(theItem == null){
+            return;
+        }
+        updateQuantityInDataLayer(theItem);
     }
 
     public void buyShoppingItem(long id) {

@@ -14,4 +14,5 @@ public interface IShoppingListInteractor {
     Observable<ShoppingItem> insertItemToShoppingList(long shoppingListId, long productId);
     Observable<AckResponse> buyShoppingItem(long id);
     Observable<AckResponse> deleteShoppingItem(long id);
+    Observable<AckResponse> updateShoppingItemQuantity(ShoppingItem shoppingItemId);
 }
