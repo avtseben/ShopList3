@@ -1,14 +1,19 @@
 package ru.alexandertesbsnko.shoplist3.data_source.common;
 
-/**
- * Created by avtseben on 27.10.17.
- */
-
 public class AckResponse {
 
     public enum State {
         OK,
         ERROR
+    }
+    private BasicInfoCode error;
+
+    public BasicInfoCode getError() {
+        return error;
+    }
+
+    public void setError(BasicInfoCode error) {
+        this.error = error;
     }
 
     private State state = State.OK;

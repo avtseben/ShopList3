@@ -9,10 +9,10 @@ public class Category {
     private final String name;
     private final String image;
 
-    public Category(long id, String name, String image) {
+    public Category(long id, String name, String briefName) {
         this.id = id;
         this.name = name;
-        this.image = image;
+        this.image = briefName;
     }
 
     public long getId() {

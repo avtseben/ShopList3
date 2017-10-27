@@ -10,12 +10,16 @@ public class DtoAdapter implements IDtoAdapter{
 
     @Override
     public ShoppingItem adapt(AtShoppingItemDTO atShoppingItemDTO){
+        if(atShoppingItemDTO == null) {
+            return null;
+        }
         Merchandise merchandise = new Merchandise(
                 atShoppingItemDTO.getMerchandise().getId()
                 , new Category(
-                atShoppingItemDTO.getMerchandise().getCategory().getId()
-                , atShoppingItemDTO.getMerchandise().getCategory().getName()
-                , "milk")//TODO hardcode. createfield in backend
+                    atShoppingItemDTO.getMerchandise().getCategory().getId()
+                    , atShoppingItemDTO.getMerchandise().getCategory().getName()
+                    , atShoppingItemDTO.getMerchandise().getCategory().getBriefName()
+                )
                 , atShoppingItemDTO.getMerchandise().getProduct().getName());
         Shop shop = new Shop(
                 atShoppingItemDTO.getShop().getId()
@@ -29,6 +33,5 @@ public class DtoAdapter implements IDtoAdapter{
         shoppingItem.setQuantity(atShoppingItemDTO.getQuantity());
         return shoppingItem;
     }
-
 
 }

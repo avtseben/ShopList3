@@ -191,7 +191,7 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
 
     private void handleExpectedErrors(AckResponse response) {
         if(response.getState() == AckResponse.State.ERROR){
-            System.out.println("Expected Error");
+            view.shopErrorMessage("Ожидаемая проблема. Ты что-то не так делаешь");
         } else {
             System.out.println("All Ok");
         }
@@ -200,25 +200,23 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
 
     private void handleUexpectedError(Throwable throwable) {
         throwable.printStackTrace();
-        System.out.println(">>UnexpectedError");//TODO stub
+        view.shopErrorMessage("Ой! Неожиданная проблема. Возможно нет связи с сервером");
     }
 
     private void handleErrorLoadShoppingList(Throwable throwable) {
         throwable.printStackTrace();
-        System.out.println(">>HideProgress");//TODO stub
-        System.out.println(">>ShowErorrOnView");
+        view.shopErrorMessage("Ой! Что-то сломалось. Возможно нет связи с сервером");
     }
 
     private void handleErrorLoadProducts(Throwable throwable) {
         throwable.printStackTrace();
-        System.out.println(">>HideProgress");//TODO stub
-        System.out.println(">>ShowErorrOnView");
+        view.shopErrorMessage("Ой! Что-то сломалось. Возможно нет связи с сервером");
     }
 
     private void handleErrorInsertNewShoppingItem(Throwable throwable) {
         throwable.printStackTrace();
-        System.out.println(">>HideProgress");//TODO stub
-        System.out.println(">>ShowErorrOnViewShoppingItem");
+        view.shopErrorMessage("Ой! Что-то сломалось. Возможно нет связи с сервером");
+
     }
 
     private void setShoppingListOnView() {
@@ -300,6 +298,12 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
     }
 
     private void handleSuccessInsertShoppingItem(@NonNull ShoppingItem newShoppingItem) {
+        if(newShoppingItem == null){
+            view.shopErrorMessage("Не удалось добавить в список. " +
+                    "Мы попробовали создать покупку по названию продукта," +
+                    " но от сервера пришёл null. Возможно нет цены для данного продукта");
+            return;
+        }
         shoppingList.getShoppingItems().add(newShoppingItem);
         view.addShoppingItem(newShoppingItem);
         view.setTotalCost(shoppingList.getTotalCost());

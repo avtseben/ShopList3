@@ -1,8 +1,9 @@
 package ru.alexandertesbsnko.shoplist3.data_source.net.model.dto;
 
 public class AtProductCategoryDTO {
-    public Long id;
-    public String name;
+    private Long id;
+    private String name;
+    private String briefName;
 
     public Long getId() {
         return id;
@@ -18,5 +19,13 @@ public class AtProductCategoryDTO {
 
     public void setName(String briefName) {
         this.name = briefName;
+    }
+
+    public String getBriefName() {
+        return briefName;
+    }
+
+    public void setBriefName(String briefName) {
+        this.briefName = briefName;
     }
 }

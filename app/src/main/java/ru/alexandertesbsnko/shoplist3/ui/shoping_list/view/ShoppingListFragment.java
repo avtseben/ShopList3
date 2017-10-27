@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -242,13 +243,24 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         searchAutoCompleteAdapter.setResults(findedProducts);
     }
 
+    /**
+     * Метод для дочерних view елементов
+     */
     @Override
     public void incrementQuantity(long shoppingItemId){
         presenter.incrementQuantity(shoppingItemId);
     }
 
+    /**
+     * Метод для дочерних view елементов
+     */
     @Override
     public void decrementQuantity(long shoppingItemId){
         presenter.decrementQuantity(shoppingItemId);
+    }
+
+    @Override
+    public void shopErrorMessage(String message) {
+        Toast.makeText(getContext(),message,Toast.LENGTH_LONG).show();
     }
 }
