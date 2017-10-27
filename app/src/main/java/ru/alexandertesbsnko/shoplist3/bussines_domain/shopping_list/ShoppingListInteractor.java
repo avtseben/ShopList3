@@ -43,4 +43,12 @@ public class ShoppingListInteractor implements IShoppingListInteractor{
         updateDto.setState(ShoppingItem.BOUGHT);
         return shoppingListRepository.updateShoppingItem(updateDto);
     }
+
+    @Override
+    public Observable<AckResponse> deleteShoppingItem(long id) {
+        AtShoppingItemDTO updateDto = new AtShoppingItemDTO();
+        updateDto.setId(id);
+        updateDto.setState(ShoppingItem.DELETED);
+        return shoppingListRepository.updateShoppingItem(updateDto);
+    }
 }

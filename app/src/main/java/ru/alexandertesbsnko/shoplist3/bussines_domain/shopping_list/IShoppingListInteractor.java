@@ -13,4 +13,5 @@ public interface IShoppingListInteractor {
     Observable<List<Product>> searchProductsByName(String pattern);
     Observable<ShoppingItem> insertItemToShoppingList(long shoppingListId, long productId);
     Observable<AckResponse> buyShoppingItem(long id);
+    Observable<AckResponse> deleteShoppingItem(long id);
 }

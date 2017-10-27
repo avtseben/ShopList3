@@ -83,12 +83,12 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-//                handleError(e);
+                        handleUexpectedError(e);
                     }
 
                     @Override
                     public void onNext(AckResponse ackResponse) {
-//                handleSuccessBuy(ackResponse);
+                        handleExpectedErrors(ackResponse);
                     }
                 });
         compositeSubscription.add(subscription);
@@ -102,6 +102,25 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
             }
         }
         view.setTotalCost(shoppingList.getTotalCost());
+        Subscription subscription = interactor.deleteShoppingItem(id)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<AckResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        handleUexpectedError(e);
+                    }
+
+                    @Override
+                    public void onNext(AckResponse ackResponse) {
+                        handleExpectedErrors(ackResponse);
+                    }
+                });
+        compositeSubscription.add(subscription);
     }
 
 
@@ -116,7 +135,7 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        handleErrorLoadShoppingList(e);
+                        handleUexpectedError(e);
                     }
 
                     @Override
@@ -131,6 +150,20 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
         this.shoppingList = shoppingList;
 
         setShoppingListOnView();
+    }
+
+    private void handleExpectedErrors(AckResponse response) {
+        if(response.getState() == AckResponse.State.ERROR){
+            System.out.println("Expected Error");
+        } else {
+            System.out.println("All Ok");
+        }
+
+    }
+
+    private void handleUexpectedError(Throwable throwable) {
+        throwable.printStackTrace();
+        System.out.println(">>UnexpectedError");//TODO stub
     }
 
     private void handleErrorLoadShoppingList(Throwable throwable) {

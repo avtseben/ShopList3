@@ -6,7 +6,7 @@ package ru.alexandertesbsnko.shoplist3.data_source.common;
 
 public class AckResponse {
 
-    private enum State {
+    public enum State {
         OK,
         ERROR
     }
