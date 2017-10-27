@@ -15,8 +15,6 @@ public interface IShoppingListPresenter {
     void unbindView();
     void searchProductsByName(String pattern);
     void addProduct(Product product);
-
     void buyShoppingItem(long id);
-
     void deleteShoppingItem(long id);
 }

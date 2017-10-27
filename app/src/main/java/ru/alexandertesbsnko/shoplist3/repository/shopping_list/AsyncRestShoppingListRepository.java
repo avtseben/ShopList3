@@ -1,20 +1,22 @@
 package ru.alexandertesbsnko.shoplist3.repository.shopping_list;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import ru.alexandertesbsnko.shoplist3.data_source.common.AckResponse;
 import ru.alexandertesbsnko.shoplist3.data_source.net.common.ServiceBuilder;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.dto.AtShoppingItemDTO;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.dto.AtShoppingListDTO;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_lists.AtFindShoppingListsRequest;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_lists.AtInsertItemToShoppingListRequest;
+import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_lists.AtUpdateShoppingItemsRequest;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shopping_lists.AtFindShoppingListsResponse;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shopping_lists.AtInsertItemToShoppingListResponse;
 import ru.alexandertesbsnko.shoplist3.data_source.net.shopping_list.ShoppingListsService;
 
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Category;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Merchandise;
-import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Shop;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
@@ -40,6 +42,19 @@ public class AsyncRestShoppingListRepository implements IShoppingListRepository 
         request.setProductId(productId);
         Observable<AtInsertItemToShoppingListResponse> observable = service.atInsertItemToShoppingList(request);
         return observable.map(new ItemDtoAdapter());
+    }
+
+    @Override
+    public Observable<AckResponse> updateShoppingItems(List<AtShoppingItemDTO> shoppingItems) {
+        ShoppingListsService service = new ServiceBuilder().buildShoppingListService();
+        AtUpdateShoppingItemsRequest request = new AtUpdateShoppingItemsRequest();
+        request.setShoppingItemList(shoppingItems);
+        return service.atUpdateShoppingItems(request);
+    }
+
+    @Override
+    public Observable<AckResponse> updateShoppingItem(AtShoppingItemDTO shoppingItem) {
+        return updateShoppingItems(Arrays.asList(shoppingItem));
     }
 
     class ListDtoAdapter implements Func1<AtFindShoppingListsResponse,ShoppingList> {
@@ -81,4 +96,5 @@ public class AsyncRestShoppingListRepository implements IShoppingListRepository 
             return new DtoAdapter().adapt(response.getNewShoppingItem());
         }
     }
+
 }

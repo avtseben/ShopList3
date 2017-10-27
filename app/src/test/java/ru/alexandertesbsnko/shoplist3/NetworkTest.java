@@ -8,7 +8,9 @@ import java.util.List;
 
 import retrofit2.Call;
 import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.ShoppingListInteractor;
+import ru.alexandertesbsnko.shoplist3.data_source.common.AckResponse;
 import ru.alexandertesbsnko.shoplist3.data_source.net.common.ServiceBuilder;
+import ru.alexandertesbsnko.shoplist3.data_source.net.model.dto.AtShoppingItemDTO;
 import ru.alexandertesbsnko.shoplist3.data_source.net.shopping_list.ShoppingListsService;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.request.shopping_lists.AtFindShoppingListsRequest;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.shopping_lists.AtFindShoppingListsResponse;
@@ -158,6 +160,34 @@ public class NetworkTest {
                         System.out.println(shoppingItem.getMerchandise().getName());
                     }
                 });
+    }
+
+    @Test
+    public void testUpdateShoppingItemRepository() {
+        AsyncRestShoppingListRepository repository = new AsyncRestShoppingListRepository();
+        AtShoppingItemDTO updateDto = new AtShoppingItemDTO();
+        updateDto.setId(1l);
+        updateDto.setState(2);
+        repository.updateShoppingItem(updateDto)
+                .subscribe(
+                        new Subscriber<AckResponse>() {
+                            @Override
+                            public void onCompleted() {
+                                System.out.println("Complete");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                                System.out.println("Error");
+                            }
+
+                            @Override
+                            public void onNext(AckResponse ackResponse) {
+                                System.out.println(ackResponse.getState());
+                            }
+                        }
+                );
     }
 
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.IShoppingListInteractor;
 import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.ShoppingListInteractor;
+import ru.alexandertesbsnko.shoplist3.data_source.common.AckResponse;
 import ru.alexandertesbsnko.shoplist3.di.shoping_list.ShoppingListsInteractorProvider;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.IShoppingListRepository;
@@ -38,7 +39,7 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Override
-    public void loadShoppingList(){
+    public void loadShoppingList() {
         loadShoppingListFromData(1);
     }
 
@@ -46,7 +47,7 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
     public void incrementQuantity(long shoppingItemId) {//TODO оптимизировать в мапу
         List<ShoppingItem> items = shoppingList.getShoppingItems();
         for (ShoppingItem item : items) {
-            if(item.getId() == shoppingItemId){
+            if (item.getId() == shoppingItemId) {
                 item.increaseQuantity();
             }
         }
@@ -57,27 +58,46 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
     public void decrementQuantity(long shoppingItemId) {
         List<ShoppingItem> items = shoppingList.getShoppingItems();
         for (ShoppingItem item : items) {
-            if(item.getId() == shoppingItemId){
+            if (item.getId() == shoppingItemId) {
                 item.decreaseQuantity();
             }
         }
         view.setTotalCost(shoppingList.getTotalCost());
     }
 
-    public void buyShoppingItem(long id){
+    public void buyShoppingItem(long id) {
         List<ShoppingItem> items = shoppingList.getShoppingItems();
         for (ShoppingItem item : items) {
-            if(item.getId() == id){
+            if (item.getId() == id) {
                 item.setState(ShoppingItem.BOUGHT);
             }
         }
         view.setTotalBoughtCost(shoppingList.getTotalBoughtCost());
+        Subscription subscription = interactor.buyShoppingItem(id)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<AckResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+//                handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(AckResponse ackResponse) {
+//                handleSuccessBuy(ackResponse);
+                    }
+                });
+        compositeSubscription.add(subscription);
     }
 
-    public void deleteShoppingItem(long id){
+    public void deleteShoppingItem(long id) {
         List<ShoppingItem> items = shoppingList.getShoppingItems();
         for (ShoppingItem item : items) {
-            if(item.getId() == id){
+            if (item.getId() == id) {
                 item.setState(ShoppingItem.DELETED);
             }
         }
@@ -91,7 +111,8 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ShoppingList>() {
                     @Override
-                    public void onCompleted() {}
+                    public void onCompleted() {
+                    }
 
                     @Override
                     public void onError(Throwable e) {
@@ -130,7 +151,7 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
         System.out.println(">>ShowErorrOnViewShoppingItem");
     }
 
-    private void setShoppingListOnView(){
+    private void setShoppingListOnView() {
         view.setUpShopingList(shoppingList.getShoppingItems());
         view.setTotalCost(shoppingList.getTotalCost());
         view.setTotalBoughtCost(shoppingList.getTotalBoughtCost());
@@ -150,12 +171,13 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
 
     @Override
     public void searchProductsByName(String pattern) {
-        Subscription subscription  = interactor.searchProductsByName(pattern)
+        Subscription subscription = interactor.searchProductsByName(pattern)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Product>>() {
                     @Override
-                    public void onCompleted() {}
+                    public void onCompleted() {
+                    }
 
                     @Override
                     public void onError(Throwable e) {
@@ -174,18 +196,19 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
         setFindedProductsOnView(products);
     }
 
-    private void setFindedProductsOnView(List<Product> items){
+    private void setFindedProductsOnView(List<Product> items) {
         view.setFindedProducts(items);
     }
 
     @Override
     public void addProduct(Product product) {
-        Subscription subscription  = interactor.insertItemToShoppingList(shoppingList.getId(),product.getId())
+        Subscription subscription = interactor.insertItemToShoppingList(shoppingList.getId(), product.getId())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ShoppingItem>() {
                     @Override
-                    public void onCompleted() {}
+                    public void onCompleted() {
+                    }
 
                     @Override
                     public void onError(Throwable e) {

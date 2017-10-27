@@ -1,15 +1,10 @@
 package ru.alexandertesbsnko.shoplist3.repository.shopping_list;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.dto.AtShoppingItemDTO;
-import ru.alexandertesbsnko.shoplist3.data_source.net.model.dto.AtShoppingListDTO;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Category;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Merchandise;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Shop;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
-import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 
 public class DtoAdapter implements IDtoAdapter{
 
