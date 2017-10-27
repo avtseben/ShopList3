@@ -125,7 +125,7 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
 
 
     private void loadShoppingListFromData(long id) {
-        Subscription subscription = new AsyncRestShoppingListRepository().loadShoppingListById(id)//TODO обращаться к интерфейсу
+        Subscription subscription = interactor.loadShoppingListById(id)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ShoppingList>() {

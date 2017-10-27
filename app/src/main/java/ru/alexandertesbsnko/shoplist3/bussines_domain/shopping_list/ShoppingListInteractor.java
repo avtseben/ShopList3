@@ -20,7 +20,7 @@ public class ShoppingListInteractor implements IShoppingListInteractor{
 
     @Override
     public Observable<ShoppingList> loadShoppingListById(long id) {
-        return null;
+        return shoppingListRepository.loadShoppingListById(id);
     }
 
     @Override
