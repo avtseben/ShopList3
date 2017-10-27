@@ -124,6 +124,12 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
         System.out.println(">>ShowErorrOnView");
     }
 
+    private void handleErrorInsertNewShoppingItem(Throwable throwable) {
+        throwable.printStackTrace();
+        System.out.println(">>HideProgress");//TODO stub
+        System.out.println(">>ShowErorrOnViewShoppingItem");
+    }
+
     private void setShoppingListOnView(){
         view.setUpShopingList(shoppingList.getShoppingItems());
         view.setTotalCost(shoppingList.getTotalCost());
@@ -174,16 +180,27 @@ public class AnotherRestPresenterImpl implements IShoppingListPresenter {
 
     @Override
     public void addProduct(Product product) {
-        //TODO fake
-        ShoppingItem newShoppingItem = new ShoppingItem(
-                100
-                ,new Shop(100,"Лента")
-                ,new Merchandise(100
-                    ,new Category(1,product.getCategoryName(),"milk")
-                   ,product.getName() )
-                ,100d);
-        //
-        //TODO обратится к интерактору за shopping Item'ом для продукта
+        Subscription subscription  = interactor.insertItemToShoppingList(shoppingList.getId(),product.getId())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ShoppingItem>() {
+                    @Override
+                    public void onCompleted() {}
+
+                    @Override
+                    public void onError(Throwable e) {
+                        handleErrorInsertNewShoppingItem(e);
+                    }
+
+                    @Override
+                    public void onNext(ShoppingItem shoppingItem) {
+                        handleSuccessInsertShoppingItem(shoppingItem);
+                    }
+                });
+        compositeSubscription.add(subscription);
+    }
+
+    private void handleSuccessInsertShoppingItem(@NonNull ShoppingItem newShoppingItem) {
         shoppingList.getShoppingItems().add(newShoppingItem);
         view.addShoppingItem(newShoppingItem);
         view.setTotalCost(shoppingList.getTotalCost());
