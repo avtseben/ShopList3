@@ -14,6 +14,7 @@ import ru.alexandertesbsnko.shoplist3.ui.router.IRouter;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItem;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.view.ITopView;
+import ru.alexandertesbsnko.shoplist3.util.DateBuilder;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -54,8 +55,7 @@ public class TopPresenter implements ITopPresenter {
     }
 
     private void handleUnexpectedError(Throwable e){
-        e.printStackTrace();
-        System.out.println(">>Error");
+        view.shopErrorMessage("Ой! Неожиданная проблема. Возможно нет связи с сервером");
 
     }
     private void handleExpectedErrors(AckResponse response) {
@@ -70,17 +70,21 @@ public class TopPresenter implements ITopPresenter {
     private void handleLoadTopList(List<ShoppingList> topList){
         List<TopListItem> topListItems = new LinkedList<>();
         for (ShoppingList shoppingList : topList) {
-//            int shopListSize = shoppingList.getShoppingItems().size();
-            int imageId =0;
-//            if(shopListSize >= 1 & shopListSize < 5){
-//               imageId = 1;
-//            }
+            int shopListSize = shoppingList.getShoppingItems().size();
+            TopListItem.SizeState sizeState = TopListItem.SizeState.EMPTY;
+            if(shopListSize >= 1 & shopListSize < 5){
+                sizeState = TopListItem.SizeState.SMALL;
+            } else if(shopListSize >= 5 & shopListSize < 10){
+                sizeState = TopListItem.SizeState.MEDIUM;
+            } else if(shopListSize >= 10){
+                sizeState = TopListItem.SizeState.BIG;
+            }
             topListItems.add(
                     new TopListItem(
                             shoppingList.getId()
-                            ,"Date"
+                            , DateBuilder.timeTitleBuilder(shoppingList.getDate().getTime())
                             ,shoppingList.getName()
-                            ,imageId
+                            ,sizeState
                     )
             );
         }

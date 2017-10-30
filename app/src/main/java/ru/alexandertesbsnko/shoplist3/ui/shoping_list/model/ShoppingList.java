@@ -1,15 +1,18 @@
 package ru.alexandertesbsnko.shoplist3.ui.shoping_list.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class ShoppingList {
     private final long id;
     private final String name;
+    private final Date date;
     private final List<ShoppingItem> shoppingItems;
 
-    public ShoppingList(long id, String name, List<ShoppingItem> shoppingItems){
+    public ShoppingList(long id, String name, Date date, List<ShoppingItem> shoppingItems){
         this.id = id;
         this.name = name;
+        this.date = date;
         this.shoppingItems = shoppingItems;
     }
 
@@ -47,5 +50,9 @@ public class ShoppingList {
 
     public String getName() {
         return name;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

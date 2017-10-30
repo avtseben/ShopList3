@@ -6,16 +6,24 @@ package ru.alexandertesbsnko.shoplist3.ui.top_list.model;
  */
 public class TopListItem {
 
+    public enum SizeState {
+        EMPTY,
+        SMALL,
+        MEDIUM,
+        BIG
+    }
+
     private long id;
     private String name;
     private String dateTitle;
     private int imageId;
+    private SizeState sizeState;
 
-    public TopListItem(long id, String dateTitle, String name, int imageId) {
+    public TopListItem(long id, String dateTitle, String name, SizeState sizeState) {
         this.id = id;
         this.dateTitle = dateTitle;
         this.name = name;
-        this.imageId = imageId;
+        this.sizeState = sizeState;
     }
 
 
@@ -41,5 +49,13 @@ public class TopListItem {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public SizeState getSizeState() {
+        return sizeState;
+    }
+
+    public void setSizeState(SizeState sizeState) {
+        this.sizeState = sizeState;
     }
 }

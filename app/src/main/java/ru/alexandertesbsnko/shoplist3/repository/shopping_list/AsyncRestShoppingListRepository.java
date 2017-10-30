@@ -93,6 +93,7 @@ public class AsyncRestShoppingListRepository implements IShoppingListRepository 
             return new ShoppingList(
                     atShoppingListDTO.getId()
                     , atShoppingListDTO.getName()
+                    , atShoppingListDTO.getDate()
                     , shoppingItems);
         }
     }
@@ -112,6 +113,7 @@ public class AsyncRestShoppingListRepository implements IShoppingListRepository 
                 shoppingLists.add(new ShoppingList(
                         atShoppingListDTO.getId()
                         , atShoppingListDTO.getName()
+                        , atShoppingListDTO.getDate()
                         , shoppingItems));
 
             }
@@ -132,6 +134,7 @@ public class AsyncRestShoppingListRepository implements IShoppingListRepository 
             return new ShoppingList(
                     atShoppingListDTO.getId()
                     , atShoppingListDTO.getName()
+                    , atShoppingListDTO.getDate()
                     , shoppingItems);
         }
     }

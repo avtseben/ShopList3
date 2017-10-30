@@ -38,7 +38,17 @@ public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ListView
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        holder.image.setImageResource(data.get(position).getImageId());
+        final TopListItem.SizeState sizeState = data.get(position).getSizeState();
+
+        if(sizeState == TopListItem.SizeState.EMPTY){
+            holder.image.setImageResource(0);//TODO add picture for empty list
+        } else if(sizeState == TopListItem.SizeState.SMALL){
+            holder.image.setImageResource(R.drawable.bag_1);
+        } else if(sizeState == TopListItem.SizeState.MEDIUM){
+            holder.image.setImageResource(R.drawable.bag_2);
+        } else if(sizeState == TopListItem.SizeState.BIG){
+            holder.image.setImageResource(R.drawable.bag_3);
+        }
         holder.name.setText(data.get(position).getName());
         holder.date.setText(data.get(position).getDateTitle());
     }
