@@ -9,6 +9,7 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.IShoppingListView;
 
 public interface IShoppingListPresenter {
     void loadShoppingList();
+    void loadShoppingList(long id);
     void incrementQuantity(long shoppingItemId);
     void decrementQuantity(long shoppingItemId);
     void bindView(IShoppingListView view);

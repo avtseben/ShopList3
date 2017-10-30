@@ -38,9 +38,16 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
     private ShoppingList shoppingList;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
+    @Deprecated
     @Override
     public void loadShoppingList() {
-        loadShoppingListFromData(1);
+//        loadShoppingListFromData(1);
+        view.shopErrorMessage("Deprecated  loadShoppingList()");
+    }
+
+    @Override
+    public void loadShoppingList(long id) {
+        loadShoppingListFromData(id);
     }
 
     @Override

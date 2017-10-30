@@ -29,8 +29,8 @@ import ru.alexandertesbsnko.shoplist3.ui.top_list.presenter.ITopPresenter;
 
 public class TopListFragment extends AbstractFragment implements ITopView {
 
-    public OnShopListItemClickListener listenerShopListSelected;
-    public OnNewListButtonClickListener listenerNewList;
+//    public OnShopListItemClickListener listenerShopListSelected;
+//    public OnNewListButtonClickListener listenerNewList;
     private TopListAdapter adapter;
     private RecyclerView recyclerView;
 
@@ -52,8 +52,8 @@ public class TopListFragment extends AbstractFragment implements ITopView {
         View view = inflater.inflate(R.layout.fmt_top_list, container, false);
         presenter.loadTopList();
 
-        this.listenerShopListSelected = router;
-        this.listenerNewList = router;
+//        this.listenerShopListSelected = router;
+//        this.listenerNewList = router;
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.top_list_title);
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_top);
@@ -63,7 +63,7 @@ public class TopListFragment extends AbstractFragment implements ITopView {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listenerNewList.onNewListClicked();
+                presenter.createShoppingList("Список");
             }
         });
         presenter.bindView(this);
@@ -111,7 +111,7 @@ public class TopListFragment extends AbstractFragment implements ITopView {
         adapter.setOnItemClickListener(new TopListAdapter.OnClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                listenerShopListSelected.onItemClicked(topList.get(position));
+               presenter.selectExitingShopingList(position);
             }
         });
         recyclerView.setAdapter(adapter);

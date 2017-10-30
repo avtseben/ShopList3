@@ -8,7 +8,9 @@ import java.util.List;
 
 import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.IShoppingListInteractor;
 import ru.alexandertesbsnko.shoplist3.data_source.common.AckResponse;
+import ru.alexandertesbsnko.shoplist3.di.router.RouterProvider;
 import ru.alexandertesbsnko.shoplist3.di.shoping_list.ShoppingListsInteractorProvider;
+import ru.alexandertesbsnko.shoplist3.ui.router.IRouter;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItem;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.view.ITopView;
@@ -24,6 +26,7 @@ public class TopPresenter implements ITopPresenter {
     private List<TopListItem> topList;
     private ITopView view;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();//TODO to base class
+    private IRouter router = RouterProvider.INSTANCE.getRouter();
 
     IShoppingListInteractor interactor = ShoppingListsInteractorProvider.INSTANCE.provide();
 
@@ -67,11 +70,11 @@ public class TopPresenter implements ITopPresenter {
     private void handleLoadTopList(List<ShoppingList> topList){
         List<TopListItem> topListItems = new LinkedList<>();
         for (ShoppingList shoppingList : topList) {
-            int shopListSize = shoppingList.getShoppingItems().size();
+//            int shopListSize = shoppingList.getShoppingItems().size();
             int imageId =0;
-            if(shopListSize >= 1 & shopListSize < 5){
-               imageId = 1;
-            }
+//            if(shopListSize >= 1 & shopListSize < 5){
+//               imageId = 1;
+//            }
             topListItems.add(
                     new TopListItem(
                             shoppingList.getId()
@@ -88,7 +91,10 @@ public class TopPresenter implements ITopPresenter {
 
     @Override
     public void selectExitingShopingList(int position) {
-        System.out.println(">>Select: " + position);
+        long id = topList.get(position).getId();
+        System.out.println(">>Select: " + position + " id: " + id);
+        //TODO navigate to list
+        router.navigate(IRouter.Screen.SHOPING_LIST,id);
 
     }
 
@@ -157,5 +163,6 @@ public class TopPresenter implements ITopPresenter {
 
     private void handleSuccesCreatingList(ShoppingList shoppingList){
         //TODO navige to list
+        router.navigate(IRouter.Screen.SHOPING_LIST,shoppingList.getId());
     }
 }

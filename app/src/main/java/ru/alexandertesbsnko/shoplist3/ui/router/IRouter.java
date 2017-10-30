@@ -17,6 +17,7 @@ public interface IRouter extends
        ,ITopView.OnShopListItemClickListener {
 
     void navigate(String screen, Bundle bundle);
+    void navigate(String screen, long id);
     void navigate(String screen);
     void backTo(String screen);
     void finishChain();

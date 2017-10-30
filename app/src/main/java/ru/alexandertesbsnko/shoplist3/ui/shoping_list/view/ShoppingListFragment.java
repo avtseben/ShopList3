@@ -80,7 +80,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         long shoppingLisId = getArguments().getLong(SHOP_LIST_ID);//TODO пока не знаю что с этим делать
 
         presenter.bindView(this);
-        presenter.loadShoppingList();
+        presenter.loadShoppingList(shoppingLisId);
         return view;
     }
 

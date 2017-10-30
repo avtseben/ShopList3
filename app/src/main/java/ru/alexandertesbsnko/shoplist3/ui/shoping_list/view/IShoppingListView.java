@@ -12,6 +12,8 @@ import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 
 public interface IShoppingListView {
 
+    String SHOP_LIST_ID = "SHOP_LIST_ID";
+
     void setUpShopingList(List<ShoppingItem> shoppingItems);
     void setTotalCost(double totalCost);
     void setTotalBoughtCost(double totalBoughtCost);

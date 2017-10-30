@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.ui.AbstractFragment;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.IShoppingListView;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.view.ShoppingListFragment;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItem;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.view.TopListFragment;
@@ -31,6 +32,15 @@ public class RouterImpl implements IRouter {
         } else if (screen.equals(Screen.SHOPING_LIST)) {
             abstractNavigate(ShoppingListFragment.newInstance(bundle));
         }
+    }
+
+    @Override
+    public void navigate(String screen, long id) {
+        Bundle bundle = new Bundle();
+        if (screen.equals(Screen.SHOPING_LIST)) {
+            bundle.putLong(IShoppingListView.SHOP_LIST_ID,id);
+        }
+        this.navigate(screen, bundle);
     }
 
     private void abstractNavigate(AbstractFragment fragment) {
