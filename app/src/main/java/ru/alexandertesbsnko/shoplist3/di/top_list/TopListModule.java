@@ -5,6 +5,7 @@ import dagger.Module;
 import dagger.Provides;
 import ru.alexandertesbsnko.shoplist3.ui.router.IRouter;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.presenter.ITopPresenter;
+import ru.alexandertesbsnko.shoplist3.ui.top_list.presenter.TopPresenter;
 
 @Module
 public class TopListModule {
@@ -12,6 +13,6 @@ public class TopListModule {
     @Provides
     @TopListScope
     ITopPresenter provideITopPresenter() {
-        return new ITopPresenter.Fake();//Inject
+        return new TopPresenter();//Inject
     }
 }

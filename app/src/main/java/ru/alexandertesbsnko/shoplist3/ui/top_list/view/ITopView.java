@@ -1,5 +1,8 @@
 package ru.alexandertesbsnko.shoplist3.ui.top_list.view;
 
+import java.util.List;
+
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItem;
 
 /**
@@ -7,6 +10,11 @@ import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItem;
  */
 
 public interface ITopView {
+
+    void setUpTopList(List<TopListItem> topList);
+
+    void shopErrorMessage(String s);
+
     interface OnShopListItemClickListener {
         void onItemClicked(TopListItem shopListObj);
     }

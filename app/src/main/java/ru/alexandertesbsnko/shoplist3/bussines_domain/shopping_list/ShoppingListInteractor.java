@@ -59,4 +59,19 @@ public class ShoppingListInteractor implements IShoppingListInteractor{
         updateDto.setQuantity(shoppingItem.getQuantity());
         return shoppingListRepository.updateShoppingItem(updateDto);
     }
+
+    @Override
+    public Observable<AckResponse> deleteShoppingList(long id) {
+        return shoppingListRepository.deleteShoppingList(id);
+    }
+
+    @Override
+    public Observable<ShoppingList> createShoppingList(String name) {
+        return shoppingListRepository.createShoppingList(name);
+    }
+
+    @Override
+    public Observable<List<ShoppingList>> loadAllShoppingLists() {
+        return shoppingListRepository.loadAllShoppingLists();
+    }
 }

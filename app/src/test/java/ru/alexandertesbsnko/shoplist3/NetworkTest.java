@@ -18,6 +18,7 @@ import ru.alexandertesbsnko.shoplist3.repository.products.IProductsRepository;
 import ru.alexandertesbsnko.shoplist3.repository.products.ProductsRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.AsyncRestShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Shop;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingItem;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 //import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.RestPresenterImpl;
@@ -185,6 +186,83 @@ public class NetworkTest {
                             @Override
                             public void onNext(AckResponse ackResponse) {
                                 System.out.println(ackResponse.getState());
+                            }
+                        }
+                );
+    }
+
+    @Test
+    public void testCreateShoppingList() {
+        AsyncRestShoppingListRepository repository = new AsyncRestShoppingListRepository();
+        repository.createShoppingList("Test4")
+                .subscribe(
+                        new Subscriber<ShoppingList>() {
+                            @Override
+                            public void onCompleted() {
+                                System.out.println("Complete");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                                System.out.println("Error");
+                            }
+
+                            @Override
+                            public void onNext(ShoppingList shoppingList) {
+                                System.out.println(shoppingList.getId());
+                                System.out.println(shoppingList.getName());
+                            }
+                        }
+                );
+    }
+
+    @Test
+    public void testDeleteShoppingList() {
+        AsyncRestShoppingListRepository repository = new AsyncRestShoppingListRepository();
+        repository.deleteShoppingList(7l)
+                .subscribe(
+                        new Subscriber<AckResponse>() {
+                            @Override
+                            public void onCompleted() {
+                                System.out.println("Complete");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                                System.out.println("Error");
+                            }
+
+                            @Override
+                            public void onNext(AckResponse ackResponse) {
+                                System.out.println(ackResponse.getState());
+                            }
+                        }
+                );
+    }
+
+    @Test
+    public void testLoadAllShoppingLists() {
+        AsyncRestShoppingListRepository repository = new AsyncRestShoppingListRepository();
+        repository.loadAllShoppingLists()
+                .subscribe(
+                        new Subscriber<List<ShoppingList>>() {
+                            @Override
+                            public void onCompleted() {
+                                System.out.println("Complete");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                                System.out.println("Error");
+                            }
+
+                            @Override
+                            public void onNext(List<ShoppingList> listOfLists) {
+                                System.out.println(listOfLists.size());
+                                System.out.println();
                             }
                         }
                 );

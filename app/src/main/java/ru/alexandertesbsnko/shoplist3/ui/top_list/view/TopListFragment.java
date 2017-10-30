@@ -2,6 +2,7 @@ package ru.alexandertesbsnko.shoplist3.ui.top_list.view;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.SLApplication;
 import ru.alexandertesbsnko.shoplist3.di.top_list.TopListModule;
 import ru.alexandertesbsnko.shoplist3.ui.AbstractFragment;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.ShoppingList;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.model.TopListItem;
 import ru.alexandertesbsnko.shoplist3.ui.top_list.presenter.ITopPresenter;
 
@@ -29,6 +32,7 @@ public class TopListFragment extends AbstractFragment implements ITopView {
     public OnShopListItemClickListener listenerShopListSelected;
     public OnNewListButtonClickListener listenerNewList;
     private TopListAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Inject
     ITopPresenter presenter;
@@ -46,12 +50,14 @@ public class TopListFragment extends AbstractFragment implements ITopView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fmt_top_list, container, false);
-        final List<TopListItem> topList = presenter.loadTopList();
+        presenter.loadTopList();
 
         this.listenerShopListSelected = router;
         this.listenerNewList = router;
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.top_list_title);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.top_list_title);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv_top);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         ImageView btn = (ImageView) view.findViewById(R.id.btn_newList);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -60,20 +66,11 @@ public class TopListFragment extends AbstractFragment implements ITopView {
                 listenerNewList.onNewListClicked();
             }
         });
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_top);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        adapter = new TopListAdapter(topList);
-        adapter.setOnItemClickListener(new TopListAdapter.OnClickListener() {
-            @Override
-            public void onItemClick(View itemView, int position) {
-                listenerShopListSelected.onItemClicked(topList.get(position));
-            }
-        });
-        recyclerView.setAdapter(adapter);
         presenter.bindView(this);
         setUpItemTouchHelper(recyclerView);
         return view;
     }
+
 
     @Override
     public void onDestroyView() {
@@ -109,7 +106,24 @@ public class TopListFragment extends AbstractFragment implements ITopView {
     }
 
     @Override
+    public void setUpTopList(final List<TopListItem> topList) {
+        adapter = new TopListAdapter(topList);
+        adapter.setOnItemClickListener(new TopListAdapter.OnClickListener() {
+            @Override
+            public void onItemClick(View itemView, int position) {
+                listenerShopListSelected.onItemClicked(topList.get(position));
+            }
+        });
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
     public void removeItemFromList(int position) {
         adapter.notifyItemRemoved(position);
+    }
+
+    @Override
+    public void shopErrorMessage(String message) {//TODO to base class
+        Toast.makeText(getContext(),message,Toast.LENGTH_LONG).show();
     }
 }
