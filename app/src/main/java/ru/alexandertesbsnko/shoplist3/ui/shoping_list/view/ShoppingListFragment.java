@@ -45,6 +45,8 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     TextView totalCostTextView;
     TextView totalBoughtCostTextView;
     ImageView totalBoughtCostIcon;
+    ImageView addShoppingItemImageView;
+    AutoCompleteTextView searchView;
 
 
     @Inject
@@ -74,6 +76,9 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         totalCostTextView = (TextView) view.findViewById(R.id.total_sl_cost);
         totalBoughtCostTextView = (TextView) view.findViewById(R.id.total_bought_cost);
         totalBoughtCostIcon = (ImageView) view.findViewById(R.id.total_bought_icon);
+        addShoppingItemImageView = (ImageView) view.findViewById(R.id.add_shopping_item);
+        setUpAddShoppingItemListener(addShoppingItemImageView);
+        searchView = (AutoCompleteTextView) view.findViewById(R.id.search_view);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -90,6 +95,19 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         super.onDestroyView();
     }
 
+    private void setUpAddShoppingItemListener(View view){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shopErrorMessage("Clicked");
+                showSearchView();
+            }
+        });
+    }
+
+    private void showSearchView() {
+//        searchView.setVisibility(View.VISIBLE);
+    }
 
     public void setUpItemTouchHelper() {
 
@@ -139,20 +157,20 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu, menu);
         //Setup search item
-        MenuItem searchItem = menu.findItem(R.id.search_item);
-        searchAutoCompleteAdapter = new SearchAutoCompleteAdapter(this, getContext());
-        final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) MenuItemCompat.getActionView(searchItem);
-        autoCompleteTextView.setAdapter(searchAutoCompleteAdapter);
-        autoCompleteTextView.setWidth(800);//TODO without this it would wrap input chars
-        autoCompleteTextView.setHint("название продукта");
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Product product = (Product) parent.getItemAtPosition(position);
-                autoCompleteTextView.setText("");
-                presenter.addProduct(product);
-            }
-        });
+//        MenuItem searchItem = menu.findItem(R.id.search_item);
+//        searchAutoCompleteAdapter = new SearchAutoCompleteAdapter(this, getContext());
+//        final MyAutoCompleteTextView autoCompleteTextView = (MyAutoCompleteTextView) MenuItemCompat.getActionView(searchItem);
+//        autoCompleteTextView.setAdapter(searchAutoCompleteAdapter);
+//        autoCompleteTextView.setWidth(800);//TODO without this it would wrap input chars
+//        autoCompleteTextView.setHint("название продукта");
+//        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Product product = (Product) parent.getItemAtPosition(position);
+//                autoCompleteTextView.setText("");
+//                presenter.addProduct(product);
+//            }
+//        });
         //Setup send item
         MenuItem sendItem = menu.findItem(R.id.send_button_in_menu);
         sendItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

@@ -68,11 +68,11 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     superView.searchShoppingItems(constraint.toString());
-                    try {
-                        Thread.sleep(500);//TODO LAZY HACK.  Искуственнно ждем полсекунды чтобы дождаться когда презентер высавит новый список
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        Thread.sleep(500);//TODO LAZY HACK.  Искуственнно ждем полсекунды чтобы дождаться когда презентер высавит новый список
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
                     filterResults.values = mResults;
                     filterResults.count = mResults.size();
                 }
