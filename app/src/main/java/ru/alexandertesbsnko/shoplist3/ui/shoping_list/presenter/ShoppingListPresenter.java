@@ -303,10 +303,8 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
                     }
                 });
         compositeSubscription.add(subscription);
-        while (true){
-            if(finded != null){
-                break;
-            }
+        while (finded == null){
+            //NOP
         }
         return finded;
     }
