@@ -45,7 +45,6 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     TextView totalCostTextView;
     TextView totalBoughtCostTextView;
     ImageView totalBoughtCostIcon;
-    ImageView addShoppingItemImageView;
     AutoCompleteTextView searchView;
 
 
@@ -76,9 +75,8 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         totalCostTextView = (TextView) view.findViewById(R.id.total_sl_cost);
         totalBoughtCostTextView = (TextView) view.findViewById(R.id.total_bought_cost);
         totalBoughtCostIcon = (ImageView) view.findViewById(R.id.total_bought_icon);
-        addShoppingItemImageView = (ImageView) view.findViewById(R.id.add_shopping_item);
-        setUpAddShoppingItemListener(addShoppingItemImageView);
         searchView = (AutoCompleteTextView) view.findViewById(R.id.search_view);
+        setUpSearchView(searchView);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -89,24 +87,26 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         return view;
     }
 
+    private void setUpSearchView(final AutoCompleteTextView searchView){
+        searchAutoCompleteAdapter = new SearchAutoCompleteAdapter(this, getContext());
+        searchView.setAdapter(searchAutoCompleteAdapter);
+        searchView.setWidth(800);//TODO without this it would wrap input chars
+        searchView.setHint("название продукта");
+        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Product product = (Product) parent.getItemAtPosition(position);
+                searchView.setText("");
+                presenter.addProduct(product);
+            }
+        });
+
+    }
+
     @Override
     public void onDestroyView() {
         presenter.unbindView();
         super.onDestroyView();
-    }
-
-    private void setUpAddShoppingItemListener(View view){
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shopErrorMessage("Clicked");
-                showSearchView();
-            }
-        });
-    }
-
-    private void showSearchView() {
-//        searchView.setVisibility(View.VISIBLE);
     }
 
     public void setUpItemTouchHelper() {
