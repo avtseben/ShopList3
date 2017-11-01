@@ -19,9 +19,6 @@ public interface IShoppingListView {
     void setTotalBoughtCost(double totalBoughtCost);
     void setListName(String name);
 
-    //Autocomplete searching
-    void searchShoppingItems(String pattern); //#Uplink interface
-    void setFindedProducts(List<Product> findedProducts);
     void addShoppingItem(ShoppingItem shoppingItem);
 
     //Change shoppingItem quantity #Uplink interface

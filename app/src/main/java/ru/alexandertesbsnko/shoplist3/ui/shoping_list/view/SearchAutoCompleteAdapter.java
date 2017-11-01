@@ -13,16 +13,17 @@ import java.util.List;
 
 import ru.alexandertesbsnko.shoplist3.R;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
+import ru.alexandertesbsnko.shoplist3.ui.shoping_list.presenter.IShoppingListPresenter;
 
 public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable{
 
 
     private List<Product> mResults;
-    private final IShoppingListView superView;
+    private final IShoppingListPresenter presenter;
     private final Context mContext;
 
-    public SearchAutoCompleteAdapter(IShoppingListView superView, Context context) {
-        this.superView = superView;
+    public SearchAutoCompleteAdapter(IShoppingListPresenter presenter, Context context) {
+        this.presenter = presenter;
         this.mContext = context;
     }
 
@@ -67,12 +68,7 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
                 System.out.println("Perform: " + mResults + " constraint " + constraint);
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
-                    superView.searchShoppingItems(constraint.toString());
-                    try {
-                        Thread.sleep(500);//TODO LAZY HACK.  Искуственнно ждем полсекунды чтобы дождаться когда презентер высавит новый список
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    mResults = presenter.searchProductsByNameSync(constraint.toString());
                     filterResults.values = mResults;
                     filterResults.count = mResults.size();
                 }

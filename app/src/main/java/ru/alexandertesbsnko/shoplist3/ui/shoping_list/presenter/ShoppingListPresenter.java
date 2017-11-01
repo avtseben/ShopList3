@@ -38,6 +38,8 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
     private ShoppingList shoppingList;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
+    private List<Product> finded;
+
     @Deprecated
     @Override
     public void loadShoppingList() {
@@ -190,6 +192,7 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
         compositeSubscription.add(subscription);
     }
 
+
     private void handleSuccessLoadShoppingList(@NonNull ShoppingList shoppingList) {
         this.shoppingList = shoppingList;
 
@@ -250,8 +253,36 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
         view = null;
     }
 
+//    @Override
+//    public void searchProductsByName(String pattern) {
+//        Subscription subscription = interactor.searchProductsByName(pattern)
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<List<Product>>() {
+//                    @Override
+//                    public void onCompleted() {
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        handleErrorLoadProducts(e);
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<Product> products) {
+//                        handleSuccessLoadProducts(products);
+//                    }
+//                });
+//        compositeSubscription.add(subscription);
+//    }
+//
+//    private void handleSuccessLoadProducts(@NonNull List<Product> products) {
+////        setFindedProductsOnView(products);
+//    }
+
     @Override
-    public void searchProductsByName(String pattern) {
+    public List<Product> searchProductsByNameSync(String pattern) {
+        finded = null;
         Subscription subscription = interactor.searchProductsByName(pattern)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -267,19 +298,28 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
 
                     @Override
                     public void onNext(List<Product> products) {
-                        handleSuccessLoadProducts(products);
+                        setFinded(products);
                     }
                 });
         compositeSubscription.add(subscription);
+        while (true){
+            if(finded != null){
+                break;
+            }
+        }
+        return finded;
     }
 
-    private void handleSuccessLoadProducts(@NonNull List<Product> products) {
-        setFindedProductsOnView(products);
+    private void setFinded(List<Product> products){
+        System.out.println("finded");
+        finded = products;
     }
 
-    private void setFindedProductsOnView(List<Product> items) {
-        view.setFindedProducts(items);
-    }
+
+
+//    private void setFindedProductsOnView(List<Product> items) {
+//        view.setFindedProducts(items);
+//    }
 
     @Override
     public void addProduct(Product product) {

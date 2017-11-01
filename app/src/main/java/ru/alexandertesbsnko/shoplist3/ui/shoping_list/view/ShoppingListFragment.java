@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     TextView totalBoughtCostTextView;
     ImageView totalBoughtCostIcon;
     AutoCompleteTextView searchView;
+    ProgressBar searchProgressBar;
 
 
     @Inject
@@ -77,6 +79,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         totalBoughtCostIcon = (ImageView) view.findViewById(R.id.total_bought_icon);
         searchView = (AutoCompleteTextView) view.findViewById(R.id.search_view);
         setUpSearchView(searchView);
+        searchProgressBar = (ProgressBar) view.findViewById(R.id.search_progress_bar);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -88,7 +91,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     }
 
     private void setUpSearchView(final AutoCompleteTextView searchView){
-        searchAutoCompleteAdapter = new SearchAutoCompleteAdapter(this, getContext());
+        searchAutoCompleteAdapter = new SearchAutoCompleteAdapter(presenter, getContext());
         searchView.setAdapter(searchAutoCompleteAdapter);
         searchView.setWidth(800);//TODO without this it would wrap input chars
         searchView.setHint("название продукта");
@@ -156,21 +159,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu, menu);
-        //Setup search item
-//        MenuItem searchItem = menu.findItem(R.id.search_item);
-//        searchAutoCompleteAdapter = new SearchAutoCompleteAdapter(this, getContext());
-//        final MyAutoCompleteTextView autoCompleteTextView = (MyAutoCompleteTextView) MenuItemCompat.getActionView(searchItem);
-//        autoCompleteTextView.setAdapter(searchAutoCompleteAdapter);
-//        autoCompleteTextView.setWidth(800);//TODO without this it would wrap input chars
-//        autoCompleteTextView.setHint("название продукта");
-//        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Product product = (Product) parent.getItemAtPosition(position);
-//                autoCompleteTextView.setText("");
-//                presenter.addProduct(product);
-//            }
-//        });
+
         //Setup send item
         MenuItem sendItem = menu.findItem(R.id.send_button_in_menu);
         sendItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -247,19 +236,27 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         mRecyclerView.setAdapter(adapter);
     }
 
-    /**
-     * Метод для дочерних view елементов
-     * @param pattern
-     */
-    @Override
-    public void searchShoppingItems(String pattern) {
-        presenter.searchProductsByName(pattern);
-    }
-
-    @Override
-    public void setFindedProducts(List<Product> findedProducts) {
-        searchAutoCompleteAdapter.setResults(findedProducts);
-    }
+//    /**
+//     * Метод для дочерних view елементов
+//     * @param pattern
+//     */
+//    @Override
+//    public void searchShoppingItems(String pattern) {
+//        System.out.println("setVisible");
+//        searchProgressBar.setVisibility(View.VISIBLE);
+//        presenter.searchProductsByName(pattern);
+//    }
+//
+//    @Override
+//    public List<Product> searchShoppingItemsSync(String pattern) {
+//        return presenter.searchProductsByNameSync(pattern);
+//    }
+//
+//    @Override
+//    public void setFindedProducts(List<Product> findedProducts) {
+////        searchProgressBar.setVisibility(View.GONE);
+//        searchAutoCompleteAdapter.setResults(findedProducts);
+//    }
 
     /**
      * Метод для дочерних view елементов

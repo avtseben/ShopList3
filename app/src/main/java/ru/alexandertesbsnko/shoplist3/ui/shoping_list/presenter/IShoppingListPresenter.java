@@ -14,7 +14,7 @@ public interface IShoppingListPresenter {
     void decrementQuantity(long shoppingItemId);
     void bindView(IShoppingListView view);
     void unbindView();
-    void searchProductsByName(String pattern);
+    List<Product> searchProductsByNameSync(String pattern);
     void addProduct(Product product);
     void buyShoppingItem(long id);
     void deleteShoppingItem(long id);
