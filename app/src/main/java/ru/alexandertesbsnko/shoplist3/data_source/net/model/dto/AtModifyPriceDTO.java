@@ -4,6 +4,7 @@ package ru.alexandertesbsnko.shoplist3.data_source.net.model.dto;
 
 public class AtModifyPriceDTO {
     public Long id;
+    public Long merchandiseId;
 
     public Long productId;
     public Long packId;
@@ -57,5 +58,13 @@ public class AtModifyPriceDTO {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Long getMerchandiseId() {
+        return merchandiseId;
+    }
+
+    public void setMerchandiseId(Long merchandiseId) {
+        this.merchandiseId = merchandiseId;
     }
 }

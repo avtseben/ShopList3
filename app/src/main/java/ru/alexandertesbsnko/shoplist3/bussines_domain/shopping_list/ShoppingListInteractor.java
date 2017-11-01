@@ -5,9 +5,11 @@ import java.util.List;
 import ru.alexandertesbsnko.shoplist3.data_source.common.AckResponse;
 import ru.alexandertesbsnko.shoplist3.data_source.net.model.dto.AtShoppingItemDTO;
 import ru.alexandertesbsnko.shoplist3.di.merchandises.MerchandiseRepositoryProvider;
+import ru.alexandertesbsnko.shoplist3.di.prices.PriceRepositoryProvider;
 import ru.alexandertesbsnko.shoplist3.di.products.ProductsRepositoryProvider;
 import ru.alexandertesbsnko.shoplist3.di.shoping_list.ShoppingListsRepositoryProvider;
 import ru.alexandertesbsnko.shoplist3.repository.merchandises.IMerchandiseRepository;
+import ru.alexandertesbsnko.shoplist3.repository.prices.IPriceRepository;
 import ru.alexandertesbsnko.shoplist3.repository.products.IProductsRepository;
 import ru.alexandertesbsnko.shoplist3.repository.shopping_list.IShoppingListRepository;
 import ru.alexandertesbsnko.shoplist3.ui.shoping_list.model.Product;
@@ -19,7 +21,8 @@ public class ShoppingListInteractor implements IShoppingListInteractor{
 
     IProductsRepository productsRepository = ProductsRepositoryProvider.INSTANCE.provide();
     IShoppingListRepository shoppingListRepository = ShoppingListsRepositoryProvider.INSTANCE.provide();
-    IMerchandiseRepository merchandiseRepository = MerchandiseRepositoryProvider.INSTANCE.provide();
+//    IMerchandiseRepository merchandiseRepository = MerchandiseRepositoryProvider.INSTANCE.provide();
+    IPriceRepository priceRepository = PriceRepositoryProvider.INSTANCE.provide();
 
     @Override
     public Observable<ShoppingList> loadShoppingListById(long id) {
@@ -80,8 +83,6 @@ public class ShoppingListInteractor implements IShoppingListInteractor{
 
     @Override
     public Observable<AckResponse> updatePrice(ShoppingItem shoppingItem) {
-        long merchandiseId = shoppingItem.getMerchandise().getId();
-        double newPrice = shoppingItem.getPrice();
-        return merchandiseRepository.updateMerchandisePrice(merchandiseId,newPrice);
+        return priceRepository.updatePrice(shoppingItem);
     }
 }
