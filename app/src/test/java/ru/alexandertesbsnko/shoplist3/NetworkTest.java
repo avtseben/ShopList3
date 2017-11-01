@@ -81,10 +81,10 @@ public class NetworkTest {
 
 
 
-    @Test
-    public void testPresenterProductSearch() {
-        new ShoppingListPresenter().searchProductsByName("Мол");
-    }
+//    @Test
+//    public void testPresenterProductSearch() {
+//        new ShoppingListPresenter().searchProductsByName("Мол");
+//    }
 
     @Test
     public void testAsyncProductRepository() {
