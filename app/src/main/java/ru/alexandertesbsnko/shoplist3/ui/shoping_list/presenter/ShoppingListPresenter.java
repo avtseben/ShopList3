@@ -310,7 +310,6 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
     }
 
     private void setFinded(List<Product> products){
-        System.out.println("finded");
         finded = products;
     }
 
