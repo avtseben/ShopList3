@@ -270,4 +270,9 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     public void shopErrorMessage(String message) {
         Toast.makeText(getContext(),message,Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void updatePrice(ShoppingItem shoppingItem, double newPrice) {
+        System.out.println("Update price " + newPrice);
+    }
 }

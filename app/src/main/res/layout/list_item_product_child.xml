@@ -69,22 +69,51 @@
         android:layout_height="match_parent">
         <TextView
             android:layout_row="0"
-            android:layout_column="0"
+            android:layout_column="1"
             android:text="Цена: "
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/product_price_title"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
+        <Button
+            android:visibility="gone"
+            android:text="v"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/save_price"/>
+        <Button
+            android:visibility="gone"
+            android:text="x"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_row="0"
+            android:layout_column="3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/undo_edit_price"/>
         <TextView
+            android:visibility="visible"
             android:layout_row="0"
             android:layout_column="7"
-            android:text="Цена: "
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/product_price_value"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
+        <EditText
+            android:visibility="gone"
+            android:layout_row="0"
+            android:layout_column="7"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/product_price_value_edit"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+
 
     </GridLayout>
 </GridLayout>

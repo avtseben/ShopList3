@@ -1,6 +1,8 @@
 package ru.alexandertesbsnko.shoplist3.ui.shoping_list.view;
 
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.TextView;
@@ -18,7 +20,11 @@ public class ChildProductViewHolder extends ChildViewHolder implements View.OnLo
     TextView mProductInstanceView;
     TextView shoppingItemQuantity;
     TextView priceValue;
+    EditText priceValueEdit;
+    Button savePrice;
+    Button undoPriceEdit;
     IShoppingListView superView;
+    ShoppingItem shoppingItem;
 
     public ChildProductViewHolder(View itemView,IShoppingListView superView){
         super(itemView);
@@ -36,6 +42,7 @@ public class ChildProductViewHolder extends ChildViewHolder implements View.OnLo
         shoppingItemQuantity = (TextView) itemView.findViewById(R.id.tv_product_quantity);
         shoppingItemInfoLayout = (GridLayout) itemView.findViewById(R.id.shopping_list_info_layout);
         shoppingItemInfoLayout.setVisibility(View.GONE);//TODO remove
+        priceValueEdit = (EditText) itemView.findViewById(R.id.product_price_value_edit);
         priceValue = (TextView) itemView.findViewById(R.id.product_price_value);
         priceValue.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -44,12 +51,27 @@ public class ChildProductViewHolder extends ChildViewHolder implements View.OnLo
                 return true;
             }
         });
+        savePrice = (Button) itemView.findViewById(R.id.save_price);
+        savePrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                savePrice();
+            }
+        });
+        undoPriceEdit = (Button) itemView.findViewById(R.id.undo_edit_price);
+        undoPriceEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                undoEditPrice();
+            }
+        });
 
     }
 
 
 
     public void bind(final ShoppingItem shoppingItem){
+        this.shoppingItem = shoppingItem;
         decreaseFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +123,35 @@ public class ChildProductViewHolder extends ChildViewHolder implements View.OnLo
 
     }
 
+    private void toEditPriceVisibility(){
+        savePrice.setVisibility(View.VISIBLE);
+        undoPriceEdit.setVisibility(View.VISIBLE);
+        priceValue.setVisibility(View.GONE);
+        priceValueEdit.setVisibility(View.VISIBLE);
+    }
+
+    private void toNormalVisibility(){
+        savePrice.setVisibility(View.GONE);
+        undoPriceEdit.setVisibility(View.GONE);
+        priceValue.setVisibility(View.VISIBLE);
+        priceValueEdit.setVisibility(View.GONE);
+    }
+
     private void editPriceCalled(){
-        System.out.println(">>EditPrice");
+        System.out.println(">>EditPrice: " + priceValue.getText());
+        priceValueEdit.setText(priceValue.getText());
+        toEditPriceVisibility();
+
+    }
+
+    private void savePrice(){
+        double newPrice = Double.parseDouble(priceValueEdit.getText().toString());
+        priceValue.setText(String.valueOf(newPrice));
+        superView.updatePrice(shoppingItem, newPrice);
+        toNormalVisibility();
+    }
+    private void undoEditPrice(){
+        priceValueEdit.setText(priceValue.getText());
+        toNormalVisibility();
     }
 }

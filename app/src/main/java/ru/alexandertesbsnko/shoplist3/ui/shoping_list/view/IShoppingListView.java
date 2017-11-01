@@ -29,6 +29,8 @@ public interface IShoppingListView {
     void hideSearchProgress();
     void shopErrorMessage(String message);
 
+    void updatePrice(ShoppingItem shoppingItem, double newPrice);
+
     interface OnSendButtonClickListener {
         void onSendButtonClicked(ShoppingList shoppingList);
     }
