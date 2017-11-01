@@ -220,6 +220,7 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
 
     private void handleErrorLoadProducts(Throwable throwable) {
         throwable.printStackTrace();
+        finded = new ArrayList<>(0);
         view.shopErrorMessage("Ой! Что-то сломалось. Возможно нет связи с сервером");
     }
 
