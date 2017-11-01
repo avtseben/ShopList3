@@ -18,4 +18,5 @@ public interface IShoppingListPresenter {
     void addProduct(Product product);
     void buyShoppingItem(long id);
     void deleteShoppingItem(long id);
+    void updatePrice(ShoppingItem shoppingItem, double newPrice);
 }

@@ -18,4 +18,6 @@ public interface IShoppingListInteractor {
     Observable<AckResponse> deleteShoppingList(long id);
     Observable<ShoppingList> createShoppingList(String name);
     Observable<List<ShoppingList>> loadAllShoppingLists();
+
+    Observable<AckResponse> updatePrice(ShoppingItem shoppingItem);
 }

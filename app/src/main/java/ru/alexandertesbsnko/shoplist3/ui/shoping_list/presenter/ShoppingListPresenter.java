@@ -169,6 +169,36 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
         compositeSubscription.add(subscription);
     }
 
+    @Override
+    public void updatePrice(final ShoppingItem shoppingItem, double newPrice) {
+        final double oldPrice = shoppingItem.getPrice();
+        shoppingItem.setPrice(newPrice);
+        updateCostsOnView();
+        //TODO обновляется только один Shopping Item. Баг архитектуры
+        Subscription subscription = interactor.updatePrice(shoppingItem)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<AckResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        shoppingItem.setPrice(oldPrice);
+                        view.shopErrorMessage("Не получилось обновить цену");
+                        updateCostsOnView();
+                    }
+
+                    @Override
+                    public void onNext(AckResponse response) {
+                       //NOP
+                    }
+                });
+        compositeSubscription.add(subscription);
+
+    }
+
 
     private void loadShoppingListFromData(long id) {
         Subscription subscription = interactor.loadShoppingListById(id)
@@ -239,9 +269,13 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
             }
         }
         view.setUpShopingList(onlyInListStateItems);
+        updateCostsOnView();
+        view.setListName(shoppingList.getName());
+    }
+
+    private void updateCostsOnView(){
         view.setTotalCost(shoppingList.getTotalCost());
         view.setTotalBoughtCost(shoppingList.getTotalBoughtCost());
-        view.setListName(shoppingList.getName());
     }
 
 

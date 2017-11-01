@@ -10,7 +10,7 @@ public class ShoppingItem {
     private final long id;
     private final Shop shop;
     private final Merchandise merchandise;
-    private final double price;
+    private double price;
 
 
     public ShoppingItem(long id, Shop shop, Merchandise merchandise, double price){
@@ -19,6 +19,8 @@ public class ShoppingItem {
         this.merchandise = merchandise;
         this.price = price;
     }
+
+
 
     public void increaseQuantity(){
         quantity++;
@@ -68,5 +70,10 @@ public class ShoppingItem {
     public double getPrice() {
         return price;
     }
+
+    public void setPrice(double price){
+        this.price = price;
+    }
+
 
 }

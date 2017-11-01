@@ -1,6 +1,8 @@
 package ru.alexandertesbsnko.shoplist3.data_source.common;
 
-public class AckResponse {
+import ru.alexandertesbsnko.shoplist3.data_source.net.model.response.AbstractResponse;
+
+public class AckResponse extends AbstractResponse {
 
     public enum State {
         OK,

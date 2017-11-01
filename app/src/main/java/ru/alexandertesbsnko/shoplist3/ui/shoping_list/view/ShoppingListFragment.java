@@ -274,5 +274,6 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     @Override
     public void updatePrice(ShoppingItem shoppingItem, double newPrice) {
         System.out.println("Update price " + newPrice);
+        presenter.updatePrice(shoppingItem, newPrice);
     }
 }
