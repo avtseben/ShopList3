@@ -221,6 +221,7 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
     private void handleErrorLoadProducts(Throwable throwable) {
         throwable.printStackTrace();
         finded = new ArrayList<>(0);
+        view.hideSearchProgress();
         view.shopErrorMessage("Ой! Что-то сломалось. Возможно нет связи с сервером");
     }
 
@@ -254,35 +255,9 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
         view = null;
     }
 
-//    @Override
-//    public void searchProductsByName(String pattern) {
-//        Subscription subscription = interactor.searchProductsByName(pattern)
-//                .subscribeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<List<Product>>() {
-//                    @Override
-//                    public void onCompleted() {
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        handleErrorLoadProducts(e);
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<Product> products) {
-//                        handleSuccessLoadProducts(products);
-//                    }
-//                });
-//        compositeSubscription.add(subscription);
-//    }
-//
-//    private void handleSuccessLoadProducts(@NonNull List<Product> products) {
-////        setFindedProductsOnView(products);
-//    }
-
     @Override
     public List<Product> searchProductsByNameSync(String pattern) {
+        view.showSearchProgress();
         finded = null;
         Subscription subscription = interactor.searchProductsByName(pattern)
                 .subscribeOn(Schedulers.newThread())
@@ -306,6 +281,7 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
         while (finded == null){
             //NOP
         }
+        view.hideSearchProgress();
         return finded;
     }
 

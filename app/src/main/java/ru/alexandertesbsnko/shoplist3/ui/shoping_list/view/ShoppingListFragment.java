@@ -83,7 +83,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_product_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        long shoppingLisId = getArguments().getLong(SHOP_LIST_ID);//TODO пока не знаю что с этим делать
+        long shoppingLisId = getArguments().getLong(SHOP_LIST_ID);
 
         presenter.bindView(this);
         presenter.loadShoppingList(shoppingLisId);
@@ -94,7 +94,7 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         searchAutoCompleteAdapter = new SearchAutoCompleteAdapter(presenter, getContext());
         searchView.setAdapter(searchAutoCompleteAdapter);
         searchView.setWidth(800);//TODO without this it would wrap input chars
-        searchView.setHint("название продукта");
+        searchView.setHint("добавить продукт");
         searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -236,28 +236,6 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
         mRecyclerView.setAdapter(adapter);
     }
 
-//    /**
-//     * Метод для дочерних view елементов
-//     * @param pattern
-//     */
-//    @Override
-//    public void searchShoppingItems(String pattern) {
-//        System.out.println("setVisible");
-//        searchProgressBar.setVisibility(View.VISIBLE);
-//        presenter.searchProductsByName(pattern);
-//    }
-//
-//    @Override
-//    public List<Product> searchShoppingItemsSync(String pattern) {
-//        return presenter.searchProductsByNameSync(pattern);
-//    }
-//
-//    @Override
-//    public void setFindedProducts(List<Product> findedProducts) {
-////        searchProgressBar.setVisibility(View.GONE);
-//        searchAutoCompleteAdapter.setResults(findedProducts);
-//    }
-
     /**
      * Метод для дочерних view елементов
      */
@@ -272,6 +250,20 @@ public class ShoppingListFragment extends AbstractFragment implements IShoppingL
     @Override
     public void decrementQuantity(long shoppingItemId){
         presenter.decrementQuantity(shoppingItemId);
+    }
+
+    @Override
+    public void showSearchProgress() {
+//        System.out.println("Show progress");
+//        System.out.println("OnCreateView Thread: " + Thread.currentThread().getName());
+//        searchProgressBar.setVisibility(View.VISIBLE); //TODO не возможно из потока Filter изменить view созданную в main потоке
+//        android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
+    }
+
+    @Override
+    public void hideSearchProgress() {
+//        System.out.println("Hide progress");
+//        searchProgressBar.setVisibility(View.GONE);
     }
 
     @Override

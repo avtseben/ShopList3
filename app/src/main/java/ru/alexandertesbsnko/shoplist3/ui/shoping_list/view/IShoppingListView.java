@@ -25,6 +25,8 @@ public interface IShoppingListView {
     void incrementQuantity(long shoppingItemId);
     void decrementQuantity(long shoppingItemId);
 
+    void showSearchProgress();
+    void hideSearchProgress();
     void shopErrorMessage(String message);
 
     interface OnSendButtonClickListener {
