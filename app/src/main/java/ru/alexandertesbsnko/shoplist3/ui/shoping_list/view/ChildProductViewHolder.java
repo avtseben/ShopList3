@@ -25,6 +25,11 @@ public class ChildProductViewHolder extends ChildViewHolder implements View.OnLo
     Button undoPriceEdit;
     IShoppingListView superView;
     ShoppingItem shoppingItem;
+    private enum State {
+        COLLAPSED,
+        EXPANDED
+    }
+    State state = State.COLLAPSED;
 
     public ChildProductViewHolder(View itemView,IShoppingListView superView){
         super(itemView);
@@ -36,7 +41,7 @@ public class ChildProductViewHolder extends ChildViewHolder implements View.OnLo
         mProductInstanceView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                colapseChild();
+                toggleChild();
             }
         });
         shoppingItemQuantity = (TextView) itemView.findViewById(R.id.tv_product_quantity);
@@ -68,6 +73,13 @@ public class ChildProductViewHolder extends ChildViewHolder implements View.OnLo
 
     }
 
+    private void toggleChild() {
+        if(state == State.COLLAPSED){
+            expandChild();
+        } else {
+            colapseChild();
+        }
+    }
 
 
     public void bind(final ShoppingItem shoppingItem){
@@ -114,12 +126,12 @@ public class ChildProductViewHolder extends ChildViewHolder implements View.OnLo
     }
 
     private void expandChild(){
+        state = State.EXPANDED;
         shoppingItemInfoLayout.setVisibility(View.VISIBLE);
-        System.out.println(">>Expand");
     }
     private void colapseChild(){
+        state = State.COLLAPSED;
         shoppingItemInfoLayout.setVisibility(View.GONE);
-        System.out.println(">>Collapse");
 
     }
 
