@@ -15,7 +15,7 @@ public interface ProductsService {
     String authBasic64 = "cm9vdDpzZGZsa20zNDUwMzQtd3JlIyR3ZWZld2Y=";
 
     @Headers({
-            "Accept: application/json",
+            "Content-type:application/json",
             "Authorization:Basic " + authBasic64
     })
     @POST("atFindProduct")

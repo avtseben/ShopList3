@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "ru.alexandertesbsnko.shoplist3"
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -19,23 +19,26 @@ android {
     }
 }
 
+
 dependencies {
+    annotationProcessor 'com.google.auto.value:auto-value:1.5.2'
+    android.defaultConfig.javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //Material
-    compile 'com.android.support:cardview-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:cardview-v7:28.0.0'
+    compile 'com.android.support:recyclerview-v7:28.0.0'
+    compile 'com.android.support:appcompat-v7:28.0.0'
+    compile 'com.android.support:design:28.0.0'
     // Rx
     compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'io.reactivex:rxjava:1.1.0'
+    compile  'io.reactivex:rxjava:1.1.0'
     // dagger2
-    compile 'com.google.dagger:dagger:2.0'
-    provided 'com.google.dagger:dagger-compiler:2.0'
-    provided 'org.glassfish:javax.annotation:10.0-b28'
+    compile  'com.google.dagger:dagger:2.0'
+    compileOnly 'com.google.dagger:dagger-compiler:2.0'
+    compileOnly 'org.glassfish:javax.annotation:10.0-b28'
     testCompile 'junit:junit:4.12'
     compile 'org.jetbrains:annotations-java5:15.0'
     compile 'javax.inject:javax.inject:1'

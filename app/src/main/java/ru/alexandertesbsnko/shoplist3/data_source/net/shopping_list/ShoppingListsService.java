@@ -22,14 +22,14 @@ public interface ShoppingListsService {
     String authBasic64 = "cm9vdDpzZGZsa20zNDUwMzQtd3JlIyR3ZWZld2Y=";
 
     @Headers({
-            "Accept: application/json",
+            "Content-type:application/json",
             "Authorization:Basic " + authBasic64
     })
     @POST("atFindShoppingLists")
     Observable<AtFindShoppingListsResponse> atFindShoppingListsAsync(@Body AtFindShoppingListsRequest request);
 
     @Headers({
-            "Accept: application/json",
+            "Content-type:application/json",
             "Authorization:Basic " + authBasic64
     })
     @POST("atInsertItemToShoppingList")
@@ -37,28 +37,28 @@ public interface ShoppingListsService {
 
 
     @Headers({
-            "Accept: application/json",
+            "Content-type:application/json",
             "Authorization:Basic " + authBasic64
     })
     @POST("atFindShoppingLists")
     Call<AtFindShoppingListsResponse> atFindShoppingLists(@Body AtFindShoppingListsRequest request);
 
     @Headers({
-            "Accept: application/json",
+            "Content-type:application/json",
             "Authorization:Basic " + authBasic64
     })
     @POST("atUpdateShoppingItems")
     Observable<AckResponse> atUpdateShoppingItems(@Body AtUpdateShoppingItemsRequest request);
 
     @Headers({
-            "Accept: application/json",
+            "Content-type:application/json",
             "Authorization:Basic " + authBasic64
     })
     @POST("atDeleteShoppingList")
     Observable<AckResponse> atDeleteShoppingList(@Body AtDeleteShoppingListRequest request);
 
     @Headers({
-            "Accept: application/json",
+            "Content-type:application/json",
             "Authorization:Basic " + authBasic64
     })
     @POST("atCreateShoppingList")

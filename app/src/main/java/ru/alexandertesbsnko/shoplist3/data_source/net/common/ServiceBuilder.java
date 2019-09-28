@@ -11,9 +11,8 @@ import ru.alexandertesbsnko.shoplist3.data_source.net.shopping_list.ShoppingList
 
 public class ServiceBuilder {
 
-//    private final String BASE_URL = "http://10.0.2.2:8080/";
-//    private final String BASE_URL = "http://localhost:8080/";
-    private final String BASE_URL = "http://89.223.31.48:8080/shoplist-rs/";
+//    private final String BASE_URL = "http://89.223.31.48:8080/shoplist-rs/";
+    private final String BASE_URL = "http://194.99.23.216:9080/shoplist-rs/";
 
 
     public ShoppingListsService buildShoppingListService(){

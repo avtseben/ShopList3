@@ -4,7 +4,6 @@ package ru.alexandertesbsnko.shoplist3.data_source.net.model.dto;
 public class AtBrandDTO {
 
     public Long id;
-
     public String name;
 
     public Long getId() {
