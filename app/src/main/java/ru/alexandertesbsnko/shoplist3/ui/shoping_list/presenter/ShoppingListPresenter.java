@@ -7,6 +7,7 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.IShoppingListInteractor;
 import ru.alexandertesbsnko.shoplist3.bussines_domain.shopping_list.ShoppingListInteractor;
@@ -37,15 +38,6 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
     IShoppingListInteractor interactor = ShoppingListsInteractorProvider.INSTANCE.provide();
     private ShoppingList shoppingList;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
-
-    private List<Product> finded;
-
-    @Deprecated
-    @Override
-    public void loadShoppingList() {
-//        loadShoppingListFromData(1);
-        view.shopErrorMessage("Deprecated  loadShoppingList()");
-    }
 
     @Override
     public void loadShoppingList(long id) {
@@ -250,7 +242,6 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
 
     private void handleErrorLoadProducts(Throwable throwable) {
         throwable.printStackTrace();
-        finded = new ArrayList<>(0);
         view.hideSearchProgress();
         view.shopErrorMessage("Ой! Что-то сломалось. Возможно нет связи с сервером");
     }
@@ -292,42 +283,39 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
     @Override
     public List<Product> searchProductsByNameSync(String pattern) {
         view.showSearchProgress();
-        finded = null;
+        final List<Product> founded = new ArrayList<>();
+        final CountDownLatch latch = new CountDownLatch(1);
         Subscription subscription = interactor.searchProductsByName(pattern)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Product>>() {
                     @Override
                     public void onCompleted() {
+                        latch.countDown();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         handleErrorLoadProducts(e);
+                        latch.countDown();
                     }
 
                     @Override
                     public void onNext(List<Product> products) {
-                        setFinded(products);
+                        founded.addAll(products);
+                        latch.countDown();
                     }
                 });
         compositeSubscription.add(subscription);
-        while (finded == null){
-            //NOP
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            view.shopErrorMessage("Нас прервали! Повтори еще");
         }
         view.hideSearchProgress();
-        return finded;
+        return founded;
     }
-
-    private void setFinded(List<Product> products){
-        finded = products;
-    }
-
-
-
-//    private void setFindedProductsOnView(List<Product> items) {
-//        view.setFindedProducts(items);
-//    }
 
     @Override
     public void addProduct(Product product) {
@@ -352,7 +340,7 @@ public class ShoppingListPresenter implements IShoppingListPresenter {
         compositeSubscription.add(subscription);
     }
 
-    private void handleSuccessInsertShoppingItem(@NonNull ShoppingItem newShoppingItem) {
+    private void handleSuccessInsertShoppingItem(ShoppingItem newShoppingItem) {
         if(newShoppingItem == null){
             view.shopErrorMessage("Не удалось добавить в список. " +
                     "Мы попробовали создать покупку по названию продукта," +

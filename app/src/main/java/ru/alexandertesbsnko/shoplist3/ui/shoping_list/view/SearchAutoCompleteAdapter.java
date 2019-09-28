@@ -56,28 +56,27 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
     }
 
 
-    public void setResults(List<Product> findedProducts) {
+    private void setResults(List<Product> findedProducts) {
         this.mResults = findedProducts;
     }
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
+        return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                System.out.println("Perform: " + mResults + " constraint " + constraint);
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
-                    mResults = presenter.searchProductsByNameSync(constraint.toString());
-                    filterResults.values = mResults;
-                    filterResults.count = mResults.size();
+                    List<Product> founded = presenter.searchProductsByNameSync(constraint.toString());
+                    setResults(founded);
+                    filterResults.values = founded;
+                    filterResults.count = founded.size();
                 }
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults results) {
-                System.out.println("Publish: " + mResults);
                 if (results != null && results.count > 0) {
                     mResults = (List<Product>) results.values;
                     notifyDataSetChanged();
@@ -86,7 +85,6 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
                 }
             }
         };
-        return filter;
     }
 }
 
