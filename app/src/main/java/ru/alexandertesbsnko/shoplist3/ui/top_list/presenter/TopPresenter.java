@@ -1,8 +1,8 @@
 package ru.alexandertesbsnko.shoplist3.ui.top_list.presenter;
 
 
-import java.util.ArrayList;
-import java.util.Date;
+import android.util.Log;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -55,16 +55,17 @@ public class TopPresenter implements ITopPresenter {
     }
 
     private void handleUnexpectedError(Throwable e){
+        Log.e("net",e.getMessage());
+        e.printStackTrace();
         view.shopErrorMessage("Ой! Неожиданная проблема. Возможно нет связи с сервером");
-
     }
+
     private void handleExpectedErrors(AckResponse response) {
         if(response.getState() == AckResponse.State.ERROR){
             view.shopErrorMessage("Ожидаемая проблема. Ты что-то не так делаешь");
         } else {
             System.out.println("All Ok");
         }
-
     }
 
     private void handleLoadTopList(List<ShoppingList> topList){

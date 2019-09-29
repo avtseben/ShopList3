@@ -15,8 +15,4 @@ public interface AppComponent {
     TopListComponent plus(TopListModule topListModule);
     ShopingListComponent plus(ShopingListModule topListModule);
 
-//    ProfileComponent plus(ProfileModule profileModule);
-//
-//    TransferComponent plus(TransferModule transferModule);
-
 }
